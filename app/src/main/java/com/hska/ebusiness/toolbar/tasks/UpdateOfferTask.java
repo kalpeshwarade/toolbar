@@ -14,7 +14,7 @@ public class UpdateOfferTask extends AsyncTask<Offer, Void, Integer> {
     private Offer offer;
 
     public UpdateOfferTask(Context context) {
-        context = context;
+        this.context = context;
     }
 
     @Override

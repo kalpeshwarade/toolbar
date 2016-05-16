@@ -27,7 +27,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     UserEntry.COLUMN_NAME_COUNTRY + " TEXT," +
                     UserEntry.COLUMN_NAME_PHONE + " TEXT," +
                     UserEntry.COLUMN_NAME_DESCRIPTION + " TEXT" +
-                    " );";
+                    ");";
 
     private static final String SQL_CREATE_TABLE_CREDENTIALS =
             "CREATE TABLE " + CredentialsEntry.TABLE_NAME + " (" +
@@ -35,7 +35,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     CredentialsEntry.COLUMN_NAME_PASSWORD + " TEXT," +
                     CredentialsEntry.COLUMN_NAME_USER_FK + " INTEGER," +
                     "FOREIGN KEY (" + CredentialsEntry.COLUMN_NAME_USER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
-                    " );";
+                    ")";
 
     private static final String SQL_CREATE_TABLE_BALANCE =
             "CREATE TABLE " + BalanceEntry.TABLE_NAME + " (" +
@@ -43,7 +43,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     BalanceEntry.COLUMN_NAME_AMOUNT + " INTEGER," +
                     BalanceEntry.COLUMN_NAME_USER_FK + " INTEGER," +
                     "FOREIGN KEY (" + BalanceEntry.COLUMN_NAME_USER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
-                    " );";
+                    ")";
 
     private static final String SQL_CREATE_TABLE_OFFER =
             "CREATE TABLE " + OfferEntry.TABLE_NAME + " (" +
@@ -54,23 +54,23 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     OfferEntry.COLUMN_NAME_ZIP_CODE + " TEXT," +
                     OfferEntry.COLUMN_NAME_PRICE + " INTEGER," +
                     OfferEntry.COLUMN_NAME_VALID_FROM + " DATE," +
-                    OfferEntry.COLUMN_NAME_VALID_TO + " DATE," +
-                    " );";
+                    OfferEntry.COLUMN_NAME_VALID_TO + " DATE" +
+                    ");";
 
 
     private static final String SQL_CREATE_TABLE_RENTAL =
             "CREATE TABLE " + RentalEntry.TABLE_NAME + " (" +
-                    RentalEntry._ID + " INTEGER PRIMARY KEY," +
-                    RentalEntry.COLUMN_NAME_FROM + " DATE," +
-                    RentalEntry.COLUMN_NAME_TO + " DATE," +
-                    RentalEntry.COLUMN_NAME_STATUS + " INTEGER," +
-                    RentalEntry.COLUMN_NAME_OFFER_FK + " INTEGER," +
-                    RentalEntry.COLUMN_NAME_HIRER_FK + " INTEGER," +
-                    RentalEntry.COLUMN_NAME_LENDER_FK + " INTEGER," +
-                    "FOREIGN KEY (" + RentalEntry.COLUMN_NAME_OFFER_FK + ") REFERENCES " + OfferEntry.TABLE_NAME + "(" + OfferEntry._ID + ")" +
-                    "FOREIGN KEY (" + RentalEntry.COLUMN_NAME_HIRER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
+                    RentalEntry._ID + " INTEGER PRIMARY KEY, " +
+                    RentalEntry.COLUMN_NAME_FROM + " DATE, " +
+                    RentalEntry.COLUMN_NAME_TO + " DATE, " +
+                    RentalEntry.COLUMN_NAME_STATUS + " INTEGER, " +
+                    RentalEntry.COLUMN_NAME_OFFER_FK + " INTEGER, " +
+                    RentalEntry.COLUMN_NAME_HIRER_FK + " INTEGER, " +
+                    RentalEntry.COLUMN_NAME_LENDER_FK + " INTEGER, " +
+                    "FOREIGN KEY (" + RentalEntry.COLUMN_NAME_OFFER_FK + ") REFERENCES " + OfferEntry.TABLE_NAME + "(" + OfferEntry._ID + "), " +
+                    "FOREIGN KEY (" + RentalEntry.COLUMN_NAME_HIRER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + "), " +
                     "FOREIGN KEY (" + RentalEntry.COLUMN_NAME_LENDER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
-                    " );";
+                    ")";
 
 
     private static final String SQL_DROP_TABLE_USER = "DROP TABLE IF EXISTS " + UserEntry.TABLE_NAME + ";";

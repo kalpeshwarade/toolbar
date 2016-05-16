@@ -117,11 +117,13 @@ public class EditOfferActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_offer_edit_save:
                 updateOffer();
-                return true;
+                Intent mainIntentSave = new Intent(this, MainActivity.class);
+                mainIntentSave.putExtra(TOOLBAR_OFFER, updatedOffer);
+                startActivity(mainIntentSave);
             case R.id.action_offer_edit_cancel:
-                Intent MainIntent = new Intent(this, MainActivity.class);
-                MainIntent.putExtra(TOOLBAR_OFFER, offer);
-                startActivity(MainIntent);
+                Intent mainIntentCancel = new Intent(this, MainActivity.class);
+                mainIntentCancel.putExtra(TOOLBAR_OFFER, offer);
+                startActivity(mainIntentCancel);
             default:
                 return super.onOptionsItemSelected(item);
         }

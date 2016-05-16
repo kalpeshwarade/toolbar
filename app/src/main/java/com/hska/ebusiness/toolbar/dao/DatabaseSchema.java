@@ -44,8 +44,8 @@ public final class DatabaseSchema {
 
     public static abstract class RentalEntry implements BaseColumns {
         public static final String TABLE_NAME = "rental";
-        public static final String COLUMN_NAME_FROM = "from";
-        public static final String COLUMN_NAME_TO = "to";
+        public static final String COLUMN_NAME_FROM = "rental_from";
+        public static final String COLUMN_NAME_TO = "rental_to";
         public static final String COLUMN_NAME_STATUS = "status";
         public static final String COLUMN_NAME_OFFER_FK = "offer_fk";
         public static final String COLUMN_NAME_LENDER_FK = "lender_fk";

@@ -8,22 +8,23 @@
 
     <ImageView
         android:id="@+id/image_offer_image"
+        android:background="@drawable/picture_frame"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_margin="20dp" />
 
     <EditText
         android:id="@+id/edit_input_offer_name"
-        android:hint="Offer name..."
+        android:hint="@string/edit_text_hint_offer_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/image_offer_image"
+        android:layout_toEndOf="@+id/image_offer_image"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginEnd="20dp" />
 
     <EditText
         android:id="@+id/input_offer_description"
-        android:hint="Offer description..."
+        android:hint="@string/edit_text_hint_offer_description"
         android:gravity="top"
         android:singleLine="false"
         android:layout_width="match_parent"
@@ -42,7 +43,7 @@
 
         <EditText
             android:id="@+id/input_offer_from"
-            android:hint="Valid from"
+            android:hint="@string/edit_text_hint_valid_from"
             android:inputType="none"
             android:drawableEnd="@drawable/ic_event_black_24dp"
             android:layout_width="match_parent"
@@ -53,7 +54,7 @@
 
         <EditText
             android:id="@+id/input_offer_to"
-            android:hint="Valid to"
+            android:hint="@string/edit_text_hint_valid_to"
             android:inputType="date"
             android:drawableEnd="@drawable/ic_event_black_24dp"
             android:layout_width="match_parent"
@@ -65,7 +66,7 @@
 
     <EditText
         android:id="@+id/input_zip_code"
-        android:hint="ZIP code"
+        android:hint="@string/edit_text_hint_zip_code"
         android:drawableEnd="@drawable/ic_home_black_24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
