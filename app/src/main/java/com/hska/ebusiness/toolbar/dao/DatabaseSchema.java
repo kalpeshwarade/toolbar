@@ -33,6 +33,7 @@ public final class DatabaseSchema {
 
     public static abstract class OfferEntry implements BaseColumns {
         public static final String TABLE_NAME = "offer";
+        public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_IMAGE = "image";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_ZIP_CODE = "zip_code";

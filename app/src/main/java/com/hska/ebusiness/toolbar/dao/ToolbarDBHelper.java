@@ -48,6 +48,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE_OFFER =
             "CREATE TABLE " + OfferEntry.TABLE_NAME + " (" +
                     OfferEntry._ID + " INTEGER PRIMARY KEY," +
+                    OfferEntry.COLUMN_NAME_NAME + " NAME," +
                     OfferEntry.COLUMN_NAME_IMAGE + " TEXT," +
                     OfferEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
                     OfferEntry.COLUMN_NAME_ZIP_CODE + " TEXT," +
@@ -119,6 +120,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     private ContentValues getOfferValues(Offer offer) {
         ContentValues values = new ContentValues();
+        values.put(OfferEntry.COLUMN_NAME_NAME, offer.getName());
         Uri image = offer.getImage();
         if (image == null) {
             offer.setImage(Uri.parse(""));

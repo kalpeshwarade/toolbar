@@ -12,7 +12,8 @@ public class Offer implements Parcelable {
 
     }
 
-    public Offer(String description, String zipCode, long price, DateTime validFrom, DateTime validTo) {
+    public Offer(String name, String description, String zipCode, long price, DateTime validFrom, DateTime validTo) {
+        this.name = name;
         this.description = description;
         this.zipCode = zipCode;
         this.price = price;
@@ -21,6 +22,8 @@ public class Offer implements Parcelable {
     }
 
     private long id;
+
+    private String name;
     private Uri image;
     private String description;
     private String zipCode;
@@ -34,6 +37,14 @@ public class Offer implements Parcelable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Uri getImage() {
@@ -88,6 +99,7 @@ public class Offer implements Parcelable {
     public String toString() {
         return "Offer{" +
                 "id=" + id +
+                ", name=" + name +
                 ", image=" + image +
                 ", description='" + description + '\'' +
                 ", zipCode='" + zipCode + '\'' +
@@ -105,7 +117,9 @@ public class Offer implements Parcelable {
     @Override
     public void writeToParcel(Parcel destination, int flags) {
         destination.writeLong(id);
-        destination.writeString(image.getPath());
+        destination.writeString(name);
+        if(image != null)
+            destination.writeString(image.getPath());
         destination.writeString(description);
         destination.writeString(zipCode);
         destination.writeLong(price);
@@ -127,6 +141,7 @@ public class Offer implements Parcelable {
 
     private Offer(Parcel source) {
         id = source.readLong();
+        name = source.readString();
         image = Uri.parse(source.readString());
         description = source.readString();
         zipCode = source.readString();

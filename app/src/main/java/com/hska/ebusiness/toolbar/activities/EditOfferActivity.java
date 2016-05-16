@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +23,9 @@ import android.widget.Toast;
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.fragments.DatePickerFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
+import com.hska.ebusiness.toolbar.tasks.UpdateOfferTask;
+
+import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +40,9 @@ public class EditOfferActivity extends AppCompatActivity {
     private Offer offer;
     private Offer updatedOffer;
     private AlertDialog.Builder builder;
+
+    private EditText offerFrom;
+    private EditText offerTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +85,7 @@ public class EditOfferActivity extends AppCompatActivity {
             }
         });
 
-        EditText offerFrom = (EditText) findViewById(R.id.input_offer_from);
+        offerFrom = (EditText) findViewById(R.id.input_offer_from);
         assert offerFrom != null;
         offerFrom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +95,7 @@ public class EditOfferActivity extends AppCompatActivity {
             }
         });
 
-        EditText offerTo = (EditText) findViewById(R.id.input_offer_to);
+        offerTo = (EditText) findViewById(R.id.input_offer_to);
         assert offerTo != null;
         offerTo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,10 +128,27 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     private void initContent() {
-
+        ((EditText) findViewById(R.id.edit_input_offer_name)).setText(updatedOffer.getName());
+        Uri image = updatedOffer.getImage();
+        if (image != null && new File(image.getPath()).exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(updatedOffer.getImage().getPath());
+            ((ImageView) findViewById(R.id.image_offer_image)).setImageBitmap(myBitmap);
+        }
+        ((EditText) findViewById(R.id.input_offer_description)).setText(updatedOffer.getDescription());
+        ((EditText) findViewById(R.id.input_offer_from)).setText(updatedOffer.getValidFrom().toString("YYYY-MM-DD"));
+        ((EditText) findViewById(R.id.input_offer_to)).setText(updatedOffer.getValidTo().toString("YYYY-MM-DD"));
+        ((EditText) findViewById(R.id.input_zip_code)).setText(updatedOffer.getZipCode());
     }
 
     private void updateOffer() {
+        updatedOffer.setName(getStringValue(R.id.edit_input_offer_name));
+        updatedOffer.setDescription(getStringValue(R.id.input_offer_description));
+        updatedOffer.setZipCode(getStringValue(R.id.input_zip_code));
+        updatedOffer.setValidFrom(DateTime.parse(offerFrom.getText().toString()));
+        updatedOffer.setValidTo(DateTime.parse(offerTo.getText().toString()));
+
+        UpdateOfferTask updateOfferTask = new UpdateOfferTask(this);
+        updateOfferTask.execute(updatedOffer);
     }
 
     private String getStringValue(int id) {
