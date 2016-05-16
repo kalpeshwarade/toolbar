@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Toolbar</string>
+    <string name="action_offer_edit_save">Save</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -1,10 +1,15 @@
 package com.hska.ebusiness.toolbar.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
+import android.util.Log;
+
+import com.hska.ebusiness.toolbar.model.Offer;
 
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.*;
 
@@ -101,6 +106,34 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return queryBuilder.query(getReadableDatabase(), null, null, null, null, null, sortOder);
     }
 
+
+    public int updateOffer(Offer offer) {
+        String whereClause = OfferEntry._ID + "=?";
+        String[] whereArgs = new String[]{String.valueOf(offer.getId())};
+
+        ContentValues values = getOfferValues(offer);
+        Log.d(ToolbarDBHelper.class.getSimpleName(), "updateOffer: " + offer.toString());
+
+        return getWritableDatabase().update(OfferEntry.TABLE_NAME, values, whereClause, whereArgs);
+    }
+
+    private ContentValues getOfferValues(Offer offer) {
+        ContentValues values = new ContentValues();
+        Uri image = offer.getImage();
+        if (image == null) {
+            offer.setImage(Uri.parse(""));
+        }
+        values.put(OfferEntry.COLUMN_NAME_IMAGE, offer.getImage().getPath());
+        values.put(OfferEntry.COLUMN_NAME_DESCRIPTION, offer.getDescription());
+        values.put(OfferEntry.COLUMN_NAME_ZIP_CODE, offer.getZipCode());
+        values.put(OfferEntry.COLUMN_NAME_PRICE, offer.getPrice());
+        values.put(OfferEntry.COLUMN_NAME_VALID_FROM, offer.getValidFrom().getMillis());
+        values.put(OfferEntry.COLUMN_NAME_VALID_TO, offer.getValidTo().getMillis());
+
+        return values;
+    }
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE_USER);
@@ -112,11 +145,18 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(SQL_DROP_TABLE_RENTAL);
+        db.execSQL(SQL_DROP_TABLE_OFFER);
+        db.execSQL(SQL_DROP_TABLE_BALANCE);
+        db.execSQL(SQL_DROP_TABLE_CREDENTIALS);
+        db.execSQL(SQL_DROP_TABLE_USER);
+
         db.execSQL(SQL_CREATE_TABLE_RENTAL);
         db.execSQL(SQL_CREATE_TABLE_OFFER);
         db.execSQL(SQL_CREATE_TABLE_BALANCE);
         db.execSQL(SQL_CREATE_TABLE_CREDENTIALS);
         db.execSQL(SQL_CREATE_TABLE_USER);
+
         onCreate(db);
     }
 
