@@ -1,6 +1,7 @@
 package com.hska.ebusiness.toolbar.activities;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,15 +14,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hska.ebusiness.toolbar.R;
-import com.hska.ebusiness.toolbar.fragments.DatePickerFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.tasks.UpdateOfferTask;
 
@@ -30,8 +32,10 @@ import org.joda.time.DateTime;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.*;
 
@@ -43,6 +47,9 @@ public class EditOfferActivity extends AppCompatActivity {
 
     private EditText offerFrom;
     private EditText offerTo;
+
+    private Calendar calendarFrom = Calendar.getInstance();
+    private Calendar calendarTo = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,25 +92,62 @@ public class EditOfferActivity extends AppCompatActivity {
             }
         });
 
-        offerFrom = (EditText) findViewById(R.id.input_offer_from);
-        assert offerFrom != null;
-        offerFrom.setOnClickListener(new View.OnClickListener() {
+        final DatePickerDialog.OnDateSetListener fromDate = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onClick(View v) {
-                DatePickerFragment datePickerFragment = new DatePickerFragment();
-                datePickerFragment.show(getFragmentManager(), "datePicker");
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendarFrom.set(Calendar.YEAR, year);
+                calendarFrom.set(Calendar.MONTH, monthOfYear);
+                calendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateFromDate();
+            }
+        };
+
+        final DatePickerDialog.OnDateSetListener toDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendarTo.set(Calendar.YEAR, year);
+                calendarTo.set(Calendar.MONTH, monthOfYear);
+                calendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateToDate();
+            }
+        };
+
+        offerFrom = (EditText) findViewById(R.id.input_offer_from);
+        offerFrom.setRawInputType(InputType.TYPE_NULL);
+        assert offerFrom != null;
+        offerFrom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus == true)
+                    new DatePickerDialog(EditOfferActivity.this, fromDate, calendarFrom.get(Calendar.YEAR),
+                            calendarTo.get(Calendar.MONTH), calendarFrom.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
         offerTo = (EditText) findViewById(R.id.input_offer_to);
+        offerTo.setRawInputType(InputType.TYPE_NULL);
         assert offerTo != null;
-        offerTo.setOnClickListener(new View.OnClickListener() {
+        offerTo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
             @Override
-            public void onClick(View v) {
-                DatePickerFragment datePickerFragment = new DatePickerFragment();
-                datePickerFragment.show(getFragmentManager(), "datePicker");
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus == true)
+                    new DatePickerDialog(EditOfferActivity.this, toDate, calendarTo.get(Calendar.YEAR),
+                            calendarTo.get(Calendar.MONTH), calendarTo.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+    }
+
+    private void updateFromDate() {
+        String dateFormat = "MM/dd/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        offerFrom.setText(sdf.format(calendarFrom.getTime()));
+    }
+
+    private void updateToDate() {
+        String dateFormat = "MM/dd/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        offerTo.setText(sdf.format(calendarTo.getTime()));
     }
 
     @Override
@@ -222,7 +266,7 @@ public class EditOfferActivity extends AppCompatActivity {
         try {
             startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "Seems like your device can not rop images!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Seems like your device can not crop images!", Toast.LENGTH_SHORT).show();
         }
     }
 

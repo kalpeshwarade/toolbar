@@ -16,6 +16,7 @@ public class OfferMapper {
         offer.setDescription(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_DESCRIPTION)));
         offer.setImage(Uri.parse(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_IMAGE))));
         offer.setZipCode(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_ZIP_CODE)));
+        offer.setPrice(Long.parseLong(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_PRICE))));
         offer.setValidFrom(new DateTime(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_VALID_FROM))));
         offer.setValidTo(new DateTime(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_VALID_TO))));
 
