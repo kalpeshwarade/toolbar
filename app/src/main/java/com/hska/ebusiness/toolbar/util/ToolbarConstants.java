@@ -3,6 +3,7 @@ package com.hska.ebusiness.toolbar.util;
 public class ToolbarConstants {
 
     public static final String TOOLBAR_OFFER = "com.hska.toolbar.model.offer";
+    public static final String TOOLBAR_OFFER_IS_EDIT_MODE = "isEditMode";
 
     public static final int REQUEST_IMAGE_CAPTURE = 0;
     public static final int REQUEST_IMAGE_CROP = 1;

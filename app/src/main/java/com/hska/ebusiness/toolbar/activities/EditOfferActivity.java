@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.model.Offer;
+import com.hska.ebusiness.toolbar.tasks.InsertOfferTask;
 import com.hska.ebusiness.toolbar.tasks.UpdateOfferTask;
 
 import org.joda.time.DateTime;
@@ -43,6 +45,8 @@ public class EditOfferActivity extends AppCompatActivity {
 
     private Offer offer;
     private Offer updatedOffer;
+
+    private Intent intent;
     private AlertDialog.Builder builder;
 
     private EditText offerFrom;
@@ -51,14 +55,22 @@ public class EditOfferActivity extends AppCompatActivity {
     private Calendar calendarFrom = Calendar.getInstance();
     private Calendar calendarTo = Calendar.getInstance();
 
+    private final String LOG = this.getClass().getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_offer);
 
-        offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
-        updatedOffer = offer;
-        initContent();
+        intent = getIntent();
+
+        final Boolean isEditMode = intent.getBooleanExtra(TOOLBAR_OFFER_IS_EDIT_MODE, false);
+
+        if(isEditMode) {
+            offer = intent.getParcelableExtra(TOOLBAR_OFFER);
+            updatedOffer = offer;
+            initContent();
+        }
 
         builder = new AlertDialog.Builder(this);
 
@@ -77,7 +89,7 @@ public class EditOfferActivity extends AppCompatActivity {
                                 try {
                                     captureImage();
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Log.e(LOG, ": " + e.getMessage());
                                 }
                                 break;
                             case DIALOG_CHOOSE_IMAGE:
@@ -174,6 +186,7 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     private void initContent() {
+        Log.d(LOG, ": Initialize Content");
         ((EditText) findViewById(R.id.edit_input_offer_name)).setText(updatedOffer.getName());
         Uri image = updatedOffer.getImage();
         if (image != null && new File(image.getPath()).exists()) {
@@ -187,6 +200,8 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     private void updateOffer() {
+        Log.d(LOG, ": Update offer " + updatedOffer.getId());
+
         updatedOffer.setName(getStringValue(R.id.edit_input_offer_name));
         updatedOffer.setDescription(getStringValue(R.id.input_offer_description));
         updatedOffer.setZipCode(getStringValue(R.id.input_zip_code));
@@ -195,6 +210,20 @@ public class EditOfferActivity extends AppCompatActivity {
 
         UpdateOfferTask updateOfferTask = new UpdateOfferTask(this);
         updateOfferTask.execute(updatedOffer);
+    }
+
+    private void insertOffer() {
+        Log.d(LOG, ": Insert offer");
+
+        Offer insertOffer = new Offer();
+        insertOffer.setName(getStringValue(R.id.edit_input_offer_name));
+        insertOffer.setDescription(getStringValue(R.id.input_offer_description));
+        insertOffer.setZipCode(getStringValue(R.id.input_zip_code));
+        insertOffer.setValidFrom(DateTime.parse(offerFrom.getText().toString()));
+        insertOffer.setValidTo(DateTime.parse(offerTo.getText().toString()));
+
+        InsertOfferTask insertOfferTask = new InsertOfferTask(this);
+        insertOfferTask.execute(offer);
     }
 
     private String getStringValue(int id) {
@@ -237,6 +266,7 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     private void captureImage() throws IOException {
+        Log.d(LOG, " : Capture image");
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (isIntentSupported(cameraIntent)) {
             updatedOffer.setImage(Uri.fromFile(createImageFile()));
@@ -246,6 +276,7 @@ public class EditOfferActivity extends AppCompatActivity {
                     startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "Please try again!", Toast.LENGTH_SHORT).show();
+                    Log.e(LOG, ": " + e.getMessage());
                 }
             }
         } else {
@@ -254,6 +285,7 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     private void cropImage() {
+        Log.d(LOG, " : Crop image");
         Intent cropIntent = new Intent("com.android.camera.action.CROP");
         cropIntent.setDataAndType(updatedOffer.getImage(), "image/*");
         cropIntent.putExtra("crop", "true");
@@ -271,6 +303,7 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     private File createImageFile() {
+        Log.d(LOG, " : Create image file");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "OFFER_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);

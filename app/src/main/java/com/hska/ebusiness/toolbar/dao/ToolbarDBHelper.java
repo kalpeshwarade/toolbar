@@ -17,6 +17,8 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "toolbar.db";
 
+    private final String LOG = this.getClass().getSimpleName();
+
     private static final String SQL_CREATE_TABLE_USER =
             "CREATE TABLE " + UserEntry.TABLE_NAME + " (" +
                     UserEntry._ID + " INTEGER PRIMARY KEY," +
@@ -107,13 +109,20 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return queryBuilder.query(getReadableDatabase(), null, null, null, null, null, sortOder);
     }
 
+    public long insertOffer(Offer offer) {
+        Log.d(LOG, ": insertOffer: " + offer.getName());
+
+        ContentValues values = getOfferValues(offer);
+        return getWritableDatabase().insert(OfferEntry.TABLE_NAME, null, values);
+
+    }
 
     public int updateOffer(Offer offer) {
         String whereClause = OfferEntry._ID + "=?";
         String[] whereArgs = new String[]{String.valueOf(offer.getId())};
 
         ContentValues values = getOfferValues(offer);
-        Log.d(ToolbarDBHelper.class.getSimpleName(), "updateOffer: " + offer.toString());
+        Log.d(LOG, ": updateOffer: " + offer.getId());
 
         return getWritableDatabase().update(OfferEntry.TABLE_NAME, values, whereClause, whereArgs);
     }
