@@ -81,7 +81,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     private static final String SQL_DROP_TABLE_OFFER = "DROP TABLE IF EXISTS " + OfferEntry.TABLE_NAME + ";";
     private static final String SQL_DROP_TABLE_RENTAL = "DROP TABLE IF EXISTS " + RentalEntry.TABLE_NAME + ";";
 
-
     private static ToolbarDBHelper instance = null;
     private Context context;
 
@@ -112,12 +111,12 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor findOfferById(final long id) {
-        Log.d(TAG, ": findOfferById " + id);
+        Log.d( TAG, ": findOfferById " + id );
 
-        final String selection = UserEntry._ID;
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables(OfferEntry.TABLE_NAME);
-        return queryBuilder.query(getReadableDatabase(), null, selection, null, null, null, null);
+        queryBuilder.setTables( OfferEntry.TABLE_NAME );
+        return queryBuilder.query( getReadableDatabase(),
+                new String[]{"_id", "name", "description"}, "id = " + id, null, null, null, null );
     }
 
     public long insertOffer(final Offer offer) {
@@ -154,7 +153,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
         return values;
     }
-
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
