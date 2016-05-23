@@ -12,7 +12,8 @@ public class Offer implements Parcelable {
 
     }
 
-    public Offer(String name, String description, String zipCode, long price, DateTime validFrom, DateTime validTo) {
+    public Offer(final String name, final String description, final String zipCode,
+                 final long price, final DateTime validFrom, final DateTime validTo) {
         this.name = name;
         this.description = description;
         this.zipCode = zipCode;
@@ -22,7 +23,6 @@ public class Offer implements Parcelable {
     }
 
     private long id;
-
     private String name;
     private Uri image;
     private String description;
@@ -35,7 +35,7 @@ public class Offer implements Parcelable {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -43,7 +43,7 @@ public class Offer implements Parcelable {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -51,7 +51,7 @@ public class Offer implements Parcelable {
         return image;
     }
 
-    public void setImage(Uri image) {
+    public void setImage(final Uri image) {
         this.image = image;
     }
 
@@ -59,7 +59,7 @@ public class Offer implements Parcelable {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -67,7 +67,7 @@ public class Offer implements Parcelable {
         return zipCode;
     }
 
-    public void setZipCode(String zipCode) {
+    public void setZipCode(final String zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -75,7 +75,7 @@ public class Offer implements Parcelable {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(final long price) {
         this.price = price;
     }
 
@@ -83,7 +83,7 @@ public class Offer implements Parcelable {
         return validFrom;
     }
 
-    public void setValidFrom(DateTime validFrom) {
+    public void setValidFrom(final DateTime validFrom) {
         this.validFrom = validFrom;
     }
 
@@ -91,7 +91,7 @@ public class Offer implements Parcelable {
         return validTo;
     }
 
-    public void setValidTo(DateTime validTo) {
+    public void setValidTo(final DateTime validTo) {
         this.validTo = validTo;
     }
 
@@ -115,7 +115,7 @@ public class Offer implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel destination, int flags) {
+    public void writeToParcel(final Parcel destination, final int flags) {
         destination.writeLong(id);
         destination.writeString(name);
         if(image != null)
@@ -129,17 +129,17 @@ public class Offer implements Parcelable {
 
     public static final Parcelable.Creator<Offer> CREATOR = new Creator<Offer>() {
         @Override
-        public Offer createFromParcel(Parcel source) {
+        public Offer createFromParcel(final Parcel source) {
             return new Offer(source);
         }
 
         @Override
-        public Offer[] newArray(int size) {
+        public Offer[] newArray(final int size) {
             return new Offer[0];
         }
     };
 
-    private Offer(Parcel source) {
+    private Offer(final Parcel source) {
         id = source.readLong();
         name = source.readString();
         image = Uri.parse(source.readString());

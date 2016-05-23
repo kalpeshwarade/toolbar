@@ -28,6 +28,7 @@ import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.tasks.InsertOfferTask;
 import com.hska.ebusiness.toolbar.tasks.UpdateOfferTask;
+import com.hska.ebusiness.toolbar.util.ToolbarConstants;
 
 import org.joda.time.DateTime;
 
@@ -35,11 +36,18 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.hska.ebusiness.toolbar.util.ToolbarConstants.*;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_CAPTURE_IMAGE;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_CHOOSE_IMAGE;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_IMAGE_OPTIONS;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_IMAGE_TITLE;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CAPTURE;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CHOOSE;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CROP;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE;
 
 public class EditOfferActivity extends AppCompatActivity {
 
@@ -52,13 +60,13 @@ public class EditOfferActivity extends AppCompatActivity {
     private EditText offerFrom;
     private EditText offerTo;
 
-    private Calendar calendarFrom = Calendar.getInstance();
-    private Calendar calendarTo = Calendar.getInstance();
+    private final Calendar calendarFrom = Calendar.getInstance();
+    private final Calendar calendarTo = Calendar.getInstance();
 
     private final String LOG = this.getClass().getSimpleName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_offer);
 
@@ -74,7 +82,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
         builder = new AlertDialog.Builder(this);
 
-        ImageView offerImage = (ImageView) findViewById(R.id.image_offer_image);
+        final ImageView offerImage = (ImageView) findViewById(R.id.image_offer_image);
         assert offerImage != null;
         offerImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +91,7 @@ public class EditOfferActivity extends AppCompatActivity {
                 builder.setItems(DIALOG_IMAGE_OPTIONS, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String selected = (String) DIALOG_IMAGE_OPTIONS[which];
+                        final String selected = (String) DIALOG_IMAGE_OPTIONS[which];
                         switch (selected) {
                             case DIALOG_CAPTURE_IMAGE:
                                 try {
@@ -142,7 +150,7 @@ public class EditOfferActivity extends AppCompatActivity {
         offerTo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onFocusChange(final View v, final boolean hasFocus) {
                 if(hasFocus == true)
                     new DatePickerDialog(EditOfferActivity.this, toDate, calendarTo.get(Calendar.YEAR),
                             calendarTo.get(Calendar.MONTH), calendarTo.get(Calendar.DAY_OF_MONTH)).show();
@@ -151,33 +159,37 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     private void updateFromDate() {
-        String dateFormat = "MM/dd/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT;
+        final SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
         offerFrom.setText(sdf.format(calendarFrom.getTime()));
     }
 
     private void updateToDate() {
-        String dateFormat = "MM/dd/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT;
+        final SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
         offerTo.setText(sdf.format(calendarTo.getTime()));
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.action_menu_edit_offer, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final Boolean isEditMode = intent.getBooleanExtra(TOOLBAR_OFFER_IS_EDIT_MODE, false);
         switch (item.getItemId()) {
             case R.id.action_offer_edit_save:
-                updateOffer();
-                Intent mainIntentSave = new Intent(this, MainActivity.class);
+                if(isEditMode)
+                    updateOffer();
+                else
+                    insertOffer();
+                final Intent mainIntentSave = new Intent(this, MainActivity.class);
                 mainIntentSave.putExtra(TOOLBAR_OFFER, updatedOffer);
                 startActivity(mainIntentSave);
             case R.id.action_offer_edit_cancel:
-                Intent mainIntentCancel = new Intent(this, MainActivity.class);
+                final Intent mainIntentCancel = new Intent(this, MainActivity.class);
                 mainIntentCancel.putExtra(TOOLBAR_OFFER, offer);
                 startActivity(mainIntentCancel);
             default:
@@ -188,9 +200,9 @@ public class EditOfferActivity extends AppCompatActivity {
     private void initContent() {
         Log.d(LOG, ": Initialize Content");
         ((EditText) findViewById(R.id.edit_input_offer_name)).setText(updatedOffer.getName());
-        Uri image = updatedOffer.getImage();
+        final Uri image = updatedOffer.getImage();
         if (image != null && new File(image.getPath()).exists()) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(updatedOffer.getImage().getPath());
+            final Bitmap myBitmap = BitmapFactory.decodeFile(updatedOffer.getImage().getPath());
             ((ImageView) findViewById(R.id.image_offer_image)).setImageBitmap(myBitmap);
         }
         ((EditText) findViewById(R.id.input_offer_description)).setText(updatedOffer.getDescription());
@@ -208,35 +220,37 @@ public class EditOfferActivity extends AppCompatActivity {
         updatedOffer.setValidFrom(DateTime.parse(offerFrom.getText().toString()));
         updatedOffer.setValidTo(DateTime.parse(offerTo.getText().toString()));
 
-        UpdateOfferTask updateOfferTask = new UpdateOfferTask(this);
+        final UpdateOfferTask updateOfferTask = new UpdateOfferTask(this);
         updateOfferTask.execute(updatedOffer);
     }
 
     private void insertOffer() {
         Log.d(LOG, ": Insert offer");
 
-        Offer insertOffer = new Offer();
+        final Offer insertOffer = new Offer();
         insertOffer.setName(getStringValue(R.id.edit_input_offer_name));
         insertOffer.setDescription(getStringValue(R.id.input_offer_description));
         insertOffer.setZipCode(getStringValue(R.id.input_zip_code));
         insertOffer.setValidFrom(DateTime.parse(offerFrom.getText().toString()));
         insertOffer.setValidTo(DateTime.parse(offerTo.getText().toString()));
 
-        InsertOfferTask insertOfferTask = new InsertOfferTask(this);
-        insertOfferTask.execute(offer);
+        updatedOffer = insertOffer;
+
+        final InsertOfferTask insertOfferTask = new InsertOfferTask(this);
+        insertOfferTask.execute(updatedOffer);
     }
 
-    private String getStringValue(int id) {
-        View field = findViewById(id);
+    private String getStringValue(final int id) {
+        final View field = findViewById(id);
         if (field instanceof EditText) {
-            EditText textField = (EditText) field;
+            final EditText textField = (EditText) field;
             return textField.getText().toString();
         }
         return "";
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_IMAGE_CAPTURE:
@@ -247,8 +261,8 @@ public class EditOfferActivity extends AppCompatActivity {
                     cropImage();
                     break;
                 case REQUEST_IMAGE_CROP:
-                    ImageView preview = (ImageView) findViewById(R.id.image_offer_image);
-                    Bitmap tmp = data.getExtras().getParcelable("data");
+                    final ImageView preview = (ImageView) findViewById(R.id.image_offer_image);
+                    final Bitmap tmp = data.getExtras().getParcelable("data");
                     preview.setImageBitmap(tmp);
                     break;
                 default:
@@ -260,14 +274,14 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     private void chooseImage() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+        final Intent galleryIntent = new Intent(Intent.ACTION_PICK);
         galleryIntent.setType("image/*");
         startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), REQUEST_IMAGE_CHOOSE);
     }
 
     private void captureImage() throws IOException {
         Log.d(LOG, " : Capture image");
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (isIntentSupported(cameraIntent)) {
             updatedOffer.setImage(Uri.fromFile(createImageFile()));
             if (updatedOffer.getImage() != null) {
@@ -286,7 +300,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
     private void cropImage() {
         Log.d(LOG, " : Crop image");
-        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        final Intent cropIntent = new Intent("com.android.camera.action.CROP");
         cropIntent.setDataAndType(updatedOffer.getImage(), "image/*");
         cropIntent.putExtra("crop", "true");
         cropIntent.putExtra("aspectX", 1);
@@ -304,9 +318,11 @@ public class EditOfferActivity extends AppCompatActivity {
 
     private File createImageFile() {
         Log.d(LOG, " : Create image file");
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "OFFER_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        final String dateFormat = ToolbarConstants.TOOLBAR_FILE_DATE_SUFFIX;
+        final SimpleDateFormat timeStamp = new SimpleDateFormat(dateFormat, Locale.GERMAN);
+        final String imageFileName = "OFFER_" + timeStamp + "_";
+        final File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (!storageDir.exists()) {
             storageDir.mkdir();
         }
@@ -314,9 +330,9 @@ public class EditOfferActivity extends AppCompatActivity {
         return new File(storageDir, imageFileName + ".jpg");
     }
 
-    private boolean isIntentSupported(Intent cameraIntent) {
-        PackageManager packageManager = getPackageManager();
-        List<ResolveInfo> activities = packageManager.queryIntentActivities(cameraIntent, PackageManager.MATCH_ALL);
+    private boolean isIntentSupported(final Intent cameraIntent) {
+        final PackageManager packageManager = getPackageManager();
+        final List<ResolveInfo> activities = packageManager.queryIntentActivities(cameraIntent, PackageManager.MATCH_ALL);
         return !activities.isEmpty();
     }
 

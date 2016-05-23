@@ -10,8 +10,8 @@ import org.joda.time.DateTime;
 
 public class OfferMapper {
 
-    public static Offer map(Cursor cursor) {
-        Offer offer = new Offer();
+    public static Offer map(final Cursor cursor) {
+        final Offer offer = new Offer();
         offer.setId(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry._ID)));
         offer.setDescription(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_DESCRIPTION)));
         offer.setImage(Uri.parse(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_IMAGE))));
