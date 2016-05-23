@@ -12,6 +12,7 @@ public class OfferMapper {
 
     public static Offer map(final Cursor cursor) {
         final Offer offer = new Offer();
+
         offer.setId(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry._ID)));
         offer.setName(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_NAME)));
         offer.setDescription(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_DESCRIPTION)));
@@ -21,6 +22,7 @@ public class OfferMapper {
         offer.setValidFrom(new DateTime(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_VALID_FROM))));
         offer.setValidTo(new DateTime(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_VALID_TO))));
 
+        cursor.close();
         return offer;
     }
 

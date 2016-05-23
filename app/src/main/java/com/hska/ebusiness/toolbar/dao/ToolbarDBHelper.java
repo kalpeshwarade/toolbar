@@ -114,9 +114,10 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         Log.d( TAG, ": findOfferById " + id );
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables( OfferEntry.TABLE_NAME );
-        return queryBuilder.query( getReadableDatabase(),
-                new String[]{"_id", "name", "description"}, "id = " + id, null, null, null, null );
+        queryBuilder.setTables(OfferEntry.TABLE_NAME);
+        return queryBuilder.query(getReadableDatabase(),
+                new String[]{OfferEntry._ID, OfferEntry.COLUMN_NAME_NAME}, OfferEntry._ID + "=?",
+                    new String[]{Long.toString(id)}, null, null, null);
     }
 
     public long insertOffer(final Offer offer) {

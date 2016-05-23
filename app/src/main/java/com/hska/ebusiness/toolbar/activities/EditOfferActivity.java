@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,7 +51,7 @@ import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CRO
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE;
 
-public class EditOfferActivity extends AppCompatActivity {
+public class EditOfferActivity extends AppCompatActivity implements TextWatcher {
 
     private Offer offer;
     private Offer updatedOffer;
@@ -78,6 +80,8 @@ public class EditOfferActivity extends AppCompatActivity {
             offer = intent.getParcelableExtra(TOOLBAR_OFFER);
             updatedOffer = offer;
             initContent();
+        } else {
+            updatedOffer = new Offer();
         }
 
         builder = new AlertDialog.Builder(this);
@@ -336,4 +340,22 @@ public class EditOfferActivity extends AppCompatActivity {
         return !activities.isEmpty();
     }
 
+    private void validateInput() {
+
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }
