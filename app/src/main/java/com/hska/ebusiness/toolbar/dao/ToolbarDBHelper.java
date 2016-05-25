@@ -132,9 +132,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
         final String whereClause = OfferEntry._ID + "=?";
         final String[] whereArgs = new String[]{String.valueOf(offer.getId())};
-
         final ContentValues values = getOfferValues(offer);
-
         return getWritableDatabase().update(OfferEntry.TABLE_NAME, values, whereClause, whereArgs);
     }
 

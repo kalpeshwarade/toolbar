@@ -13,10 +13,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,7 +50,7 @@ import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CRO
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE;
 
-public class EditOfferActivity extends AppCompatActivity implements TextWatcher {
+public class EditOfferActivity extends AppCompatActivity {
 
     private Offer offer;
     private Offer updatedOffer;
@@ -59,13 +58,17 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
     private Intent intent;
     private AlertDialog.Builder builder;
 
-    private EditText offerFrom;
+    private ImageView offerImage;
+    private EditText offerName;
+    private EditText offerDescription;
     private EditText offerTo;
+    private EditText offerFrom;
+    private EditText offerZipCode;
 
     private final Calendar calendarFrom = Calendar.getInstance();
     private final Calendar calendarTo = Calendar.getInstance();
 
-    private final String LOG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
 
         intent = getIntent();
 
-        final Boolean isEditMode = intent.getBooleanExtra(TOOLBAR_OFFER_IS_EDIT_MODE, false);
+        final boolean isEditMode = intent.getBooleanExtra(TOOLBAR_OFFER_IS_EDIT_MODE, false);
 
         if(isEditMode) {
             offer = intent.getParcelableExtra(TOOLBAR_OFFER);
@@ -86,22 +89,25 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
 
         builder = new AlertDialog.Builder(this);
 
-        final ImageView offerImage = (ImageView) findViewById(R.id.image_offer_image);
-        assert offerImage != null;
+        offerName = (EditText) findViewById(R.id.edit_input_offer_name);
+        offerDescription = (EditText) findViewById(R.id.input_offer_description);
+        offerZipCode = (EditText) findViewById(R.id.input_zip_code);
+        offerImage = (ImageView) findViewById(R.id.image_offer_image);
+
         offerImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 builder.setTitle(DIALOG_IMAGE_TITLE);
                 builder.setItems(DIALOG_IMAGE_OPTIONS, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, final int which) {
                         final String selected = (String) DIALOG_IMAGE_OPTIONS[which];
                         switch (selected) {
                             case DIALOG_CAPTURE_IMAGE:
                                 try {
                                     captureImage();
                                 } catch (IOException e) {
-                                    Log.e(LOG, ": " + e.getMessage());
+                                    Log.e( TAG, ": " + e.getMessage());
                                 }
                                 break;
                             case DIALOG_CHOOSE_IMAGE:
@@ -118,7 +124,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
 
         final DatePickerDialog.OnDateSetListener fromDate = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
                 calendarFrom.set(Calendar.YEAR, year);
                 calendarFrom.set(Calendar.MONTH, monthOfYear);
                 calendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -128,7 +134,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
 
         final DatePickerDialog.OnDateSetListener toDate = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
                 calendarTo.set(Calendar.YEAR, year);
                 calendarTo.set(Calendar.MONTH, monthOfYear);
                 calendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -138,10 +144,9 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
 
         offerFrom = (EditText) findViewById(R.id.input_offer_from);
         offerFrom.setRawInputType(InputType.TYPE_NULL);
-        assert offerFrom != null;
         offerFrom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onFocusChange(final View v, final boolean hasFocus) {
                 if(hasFocus == true)
                     new DatePickerDialog(EditOfferActivity.this, fromDate, calendarFrom.get(Calendar.YEAR),
                             calendarTo.get(Calendar.MONTH), calendarFrom.get(Calendar.DAY_OF_MONTH)).show();
@@ -150,7 +155,6 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
 
         offerTo = (EditText) findViewById(R.id.input_offer_to);
         offerTo.setRawInputType(InputType.TYPE_NULL);
-        assert offerTo != null;
         offerTo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -183,8 +187,13 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         final Boolean isEditMode = intent.getBooleanExtra(TOOLBAR_OFFER_IS_EDIT_MODE, false);
+
         switch (item.getItemId()) {
             case R.id.action_offer_edit_save:
+                if (!((validateDateFields(offerFrom, offerTo) && validateInputField(offerName) &&
+                        validateInputField(offerDescription) && validateInputField(offerZipCode)))) {
+                    return false;
+                }
                 if(isEditMode)
                     updateOffer();
                 else
@@ -202,7 +211,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
     }
 
     private void initContent() {
-        Log.d(LOG, ": Initialize Content");
+        Log.d( TAG, ": Initialize Content");
         ((EditText) findViewById(R.id.edit_input_offer_name)).setText(updatedOffer.getName());
         final Uri image = updatedOffer.getImage();
         if (image != null && new File(image.getPath()).exists()) {
@@ -216,7 +225,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
     }
 
     private void updateOffer() {
-        Log.d(LOG, ": Update offer " + updatedOffer.getId());
+        Log.d( TAG, ": Update offer " + updatedOffer.getId());
 
         updatedOffer.setName(getStringValue(R.id.edit_input_offer_name));
         updatedOffer.setDescription(getStringValue(R.id.input_offer_description));
@@ -229,7 +238,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
     }
 
     private void insertOffer() {
-        Log.d(LOG, ": Insert offer");
+        Log.d( TAG, ": Insert offer");
 
         final Offer insertOffer = new Offer();
         insertOffer.setName(getStringValue(R.id.edit_input_offer_name));
@@ -244,6 +253,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
         insertOfferTask.execute(updatedOffer);
     }
 
+    @NonNull
     private String getStringValue(final int id) {
         final View field = findViewById(id);
         if (field instanceof EditText) {
@@ -265,9 +275,8 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
                     cropImage();
                     break;
                 case REQUEST_IMAGE_CROP:
-                    final ImageView preview = (ImageView) findViewById(R.id.image_offer_image);
                     final Bitmap tmp = data.getExtras().getParcelable("data");
-                    preview.setImageBitmap(tmp);
+                    offerImage.setImageBitmap(tmp);
                     break;
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
@@ -284,7 +293,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
     }
 
     private void captureImage() throws IOException {
-        Log.d(LOG, " : Capture image");
+        Log.d( TAG, " : Capture image");
         final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (isIntentSupported(cameraIntent)) {
             updatedOffer.setImage(Uri.fromFile(createImageFile()));
@@ -294,7 +303,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
                     startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "Please try again!", Toast.LENGTH_SHORT).show();
-                    Log.e(LOG, ": " + e.getMessage());
+                    Log.e( TAG, ": " + e.getMessage());
                 }
             }
         } else {
@@ -303,7 +312,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
     }
 
     private void cropImage() {
-        Log.d(LOG, " : Crop image");
+        Log.d( TAG, " : Crop image");
         final Intent cropIntent = new Intent("com.android.camera.action.CROP");
         cropIntent.setDataAndType(updatedOffer.getImage(), "image/*");
         cropIntent.putExtra("crop", "true");
@@ -321,7 +330,7 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
     }
 
     private File createImageFile() {
-        Log.d(LOG, " : Create image file");
+        Log.d( TAG, " : Create image file");
 
         final String dateFormat = ToolbarConstants.TOOLBAR_FILE_DATE_SUFFIX;
         final SimpleDateFormat timeStamp = new SimpleDateFormat(dateFormat, Locale.GERMAN);
@@ -340,22 +349,34 @@ public class EditOfferActivity extends AppCompatActivity implements TextWatcher 
         return !activities.isEmpty();
     }
 
-    private void validateInput() {
+    private boolean validateInputField(final EditText editText) {
+        if(!(editText.getText().toString().length() > 0)) {
+            editText.setError("Eingabe zu kurz!");
+            return false;
+        }
 
+        return true;
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    private boolean validateDateFields(final EditText offerFrom, final EditText offerTo) {
+        DateTime offerFromDate;
+        DateTime offerToDate;
+        try {
+            offerFromDate = DateTime.parse(offerFrom.getText().toString());
+            offerToDate = DateTime.parse(offerTo.getText().toString());
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, " while validating date fields: " + e.getMessage());
 
-    }
+            offerFrom.setError("Falsches oder kein Datum angegeben!");
+            offerTo.setError("Falsches oder kein Datum angegeben!");
+            return false;
+        }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if(offerFromDate.isAfter(offerToDate)) {
+            offerFrom.setError("Start can not be after the end of an offer.");
+            return false;
+        }
 
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
+        return true;
     }
 }
