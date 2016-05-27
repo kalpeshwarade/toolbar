@@ -55,8 +55,8 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     OfferEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
                     OfferEntry.COLUMN_NAME_ZIP_CODE + " TEXT," +
                     OfferEntry.COLUMN_NAME_PRICE + " INTEGER," +
-                    OfferEntry.COLUMN_NAME_VALID_FROM + " STRING," +
-                    OfferEntry.COLUMN_NAME_VALID_TO + " STRING" +
+                    OfferEntry.COLUMN_NAME_VALID_FROM + " TEXT," +
+                    OfferEntry.COLUMN_NAME_VALID_TO + " TEXT" +
                     ");";
 
 
