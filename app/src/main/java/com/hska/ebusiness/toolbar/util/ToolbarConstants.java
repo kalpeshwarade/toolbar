@@ -20,6 +20,4 @@ public class ToolbarConstants {
     public static final String DIALOG_CHOOSE_IMAGE = "Choose from gallery";
     public static final CharSequence[] DIALOG_IMAGE_OPTIONS = {DIALOG_CAPTURE_IMAGE, DIALOG_CHOOSE_IMAGE, "Cancel"};
 
-
-
 }

@@ -84,6 +84,11 @@ public class EditOfferActivity extends AppCompatActivity {
 
         checkPermissions();
 
+        final boolean isCameraAllowed = ContextCompat.checkSelfPermission(EditOfferActivity.this,
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        final boolean isStorageAllowed = ContextCompat.checkSelfPermission(EditOfferActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
         builder = new AlertDialog.Builder(this);
         isEditMode = getIntent().getBooleanExtra(TOOLBAR_OFFER_IS_EDIT_MODE, false);
 
@@ -123,7 +128,7 @@ public class EditOfferActivity extends AppCompatActivity {
                         }
                     }
                 });
-                if (permissionsGranted)
+                if (isCameraAllowed && isStorageAllowed)
                     builder.show();
                 else
                     Toast.makeText(EditOfferActivity.this,
@@ -328,9 +333,9 @@ public class EditOfferActivity extends AppCompatActivity {
      * Sets the permissions for this activity. If the permission is denied
      * for camera or storage access, the user will not be able to specify an image for the offer.
      *
-     * @param requestCode   which is the permission request
-     * @param permissions   which contains the permissions asked from the user
-     * @param grantResults  which contains the user picked permissions
+     * @param requestCode   is the permission request
+     * @param permissions   contains the permissions asked from the user
+     * @param grantResults  contains the user picked permissions
      */
     @Override
     public void onRequestPermissionsResult(final int requestCode,
@@ -345,9 +350,7 @@ public class EditOfferActivity extends AppCompatActivity {
                     return;
                 }
             }
-            return;
         }
-        permissionsGranted = false;
     }
 
     /**
