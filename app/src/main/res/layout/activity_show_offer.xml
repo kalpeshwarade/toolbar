@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_show_offer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="2dp">
+
+
+    <ImageView
+        android:id="@+id/show_image_offer_image"
+        android:background="@drawable/picture_frame"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp" />
+
+    <TextView
+        android:id="@+id/show_input_offer_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/show_image_offer_image"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp" />
+
+    <TextView
+        android:id="@+id/show_input_offer_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/show_image_offer_image"
+        android:layout_toEndOf="@+id/show_image_offer_image"
+        android:layout_marginBottom="32dp" />
+
+    <TextView
+        android:id="@+id/show_input_offer_description"
+        android:gravity="top"
+        android:singleLine="false"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/show_image_offer_image"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
+
+    <sun.bob.mcalendarview.MCalendarView
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        tools:context=".MainActivity"
+        android:id="@+id/calendar"
+        android:layout_below="@+id/show_input_offer_description"/>
+
+
+
+</RelativeLayout>

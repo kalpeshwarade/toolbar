@@ -38,5 +38,9 @@
             android:name=".activities.EditOfferActivity"
             android:label="Edit Offer"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.ShowOfferActivity"
+            android:label="Show Offer"
+            android:theme="@style/AppTheme" />
     </application>
 </manifest>

@@ -29,5 +29,8 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(TOOLBAR_OFFER, offer);
         startActivity(intent);
 
+        //final Intent intent = new Intent(this, ShowOfferActivity.class);
+        //intent.putExtra(ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE, false);
+        //startActivity(intent);
     }
 }
