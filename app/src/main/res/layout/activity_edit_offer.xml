@@ -1,77 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_edit_offer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="2dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorFront"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
 
-    <ImageView
-        android:id="@+id/image_offer_image"
-        android:background="@drawable/picture_frame"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="20dp" />
-
-    <EditText
-        android:id="@+id/edit_input_offer_name"
-        android:hint="@string/edit_text_hint_offer_name"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_edit_offer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/image_offer_image"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_height="match_parent"
+        android:layout_margin="2dp">
 
-    <EditText
-        android:id="@+id/input_offer_description"
-        android:hint="@string/edit_text_hint_offer_description"
-        android:gravity="top"
-        android:singleLine="false"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_below="@+id/image_offer_image"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
-
-    <LinearLayout
-        android:id="@+id/layout_date_pickers"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/input_offer_description">
+        <ImageView
+            android:id="@+id/image_offer_image"
+            android:background="@drawable/picture_frame"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="20dp" />
 
         <EditText
-            android:id="@+id/input_offer_from"
-            android:hint="@string/edit_text_hint_valid_from"
-            android:inputType="none"
-            android:drawableEnd="@drawable/ic_event_black_24dp"
+            android:id="@+id/edit_input_offer_name"
+            android:hint="@string/edit_text_hint_offer_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"/>
+            android:layout_toEndOf="@+id/image_offer_image"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp" />
 
         <EditText
-            android:id="@+id/input_offer_to"
-            android:hint="@string/edit_text_hint_valid_to"
-            android:inputType="date"
-            android:drawableEnd="@drawable/ic_event_black_24dp"
+            android:id="@+id/input_offer_description"
+            android:hint="@string/edit_text_hint_offer_description"
+            android:gravity="top"
+            android:singleLine="false"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_below="@+id/image_offer_image"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_date_pickers"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/input_offer_description">
+
+            <EditText
+                android:id="@+id/input_offer_from"
+                android:hint="@string/edit_text_hint_valid_from"
+                android:inputType="none"
+                android:drawableEnd="@drawable/ic_event_black_24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/input_offer_to"
+                android:hint="@string/edit_text_hint_valid_to"
+                android:inputType="date"
+                android:drawableEnd="@drawable/ic_event_black_24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/input_zip_code"
+            android:hint="@string/edit_text_hint_zip_code"
+            android:drawableEnd="@drawable/ic_home_black_24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_date_pickers"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            android:layout_marginRight="20dp"/>
 
-    <EditText
-        android:id="@+id/input_zip_code"
-        android:hint="@string/edit_text_hint_zip_code"
-        android:drawableEnd="@drawable/ic_home_black_24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_date_pickers"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

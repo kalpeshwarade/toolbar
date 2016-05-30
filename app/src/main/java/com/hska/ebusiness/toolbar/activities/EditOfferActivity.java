@@ -1,6 +1,5 @@
 package com.hska.ebusiness.toolbar.activities;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
@@ -15,8 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -47,8 +44,6 @@ import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_CAPTURE_IM
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_CHOOSE_IMAGE;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_IMAGE_OPTIONS;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_IMAGE_TITLE;
-import static com.hska.ebusiness.toolbar.util.ToolbarConstants.PERMISSIONS_REQUEST_CAMERA;
-import static com.hska.ebusiness.toolbar.util.ToolbarConstants.PERMISSIONS_REQUEST_WRITE_STORAGE;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CAPTURE;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CHOOSE;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CROP;
@@ -57,8 +52,9 @@ import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_
 
 public class EditOfferActivity extends AppCompatActivity {
 
-    private boolean isEditMode = false;
-    private boolean permissionsGranted = false;
+    private final String TAG = this.getClass().getSimpleName();
+
+    private Boolean isEditMode = false;
     private Offer offer;
     private AlertDialog.Builder builder;
     private ImageView offerImage;
@@ -70,7 +66,6 @@ public class EditOfferActivity extends AppCompatActivity {
 
     private final Calendar calendarFrom = Calendar.getInstance();
     private final Calendar calendarTo = Calendar.getInstance();
-    private final String TAG = this.getClass().getSimpleName();
 
     /**
      * Used to initialize the layout and field of the Activity
@@ -82,15 +77,15 @@ public class EditOfferActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_offer);
 
-        checkPermissions();
+        offerName = (EditText) findViewById(R.id.edit_input_offer_name);
+        offerDescription = (EditText) findViewById(R.id.input_offer_description);
+        offerFrom = (EditText) findViewById(R.id.input_offer_from);
+        offerTo = (EditText) findViewById(R.id.input_offer_to);
+        offerZipCode = (EditText) findViewById(R.id.input_zip_code);
+        offerImage = (ImageView) findViewById(R.id.image_offer_image);
 
-        final boolean isCameraAllowed = ContextCompat.checkSelfPermission(EditOfferActivity.this,
-                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-        final boolean isStorageAllowed = ContextCompat.checkSelfPermission(EditOfferActivity.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-
+        isEditMode = getIntent().getExtras().getBoolean(TOOLBAR_OFFER_IS_EDIT_MODE);
         builder = new AlertDialog.Builder(this);
-        isEditMode = getIntent().getBooleanExtra(TOOLBAR_OFFER_IS_EDIT_MODE, false);
 
         if(isEditMode) {
             offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
@@ -98,11 +93,6 @@ public class EditOfferActivity extends AppCompatActivity {
         } else {
             offer = new Offer();
         }
-
-        offerName = (EditText) findViewById(R.id.edit_input_offer_name);
-        offerDescription = (EditText) findViewById(R.id.input_offer_description);
-        offerZipCode = (EditText) findViewById(R.id.input_zip_code);
-        offerImage = (ImageView) findViewById(R.id.image_offer_image);
 
         offerImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,11 +118,7 @@ public class EditOfferActivity extends AppCompatActivity {
                         }
                     }
                 });
-                if (isCameraAllowed && isStorageAllowed)
-                    builder.show();
-                else
-                    Toast.makeText(EditOfferActivity.this,
-                            "You have not granted the permissions", Toast.LENGTH_SHORT).show();
+                builder.show();
             }
         });
 
@@ -158,13 +144,12 @@ public class EditOfferActivity extends AppCompatActivity {
             }
         };
 
-        offerFrom = (EditText) findViewById(R.id.input_offer_from);
         if (offerFrom != null)
             offerFrom.setRawInputType(InputType.TYPE_NULL);
         offerFrom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(final View v, final boolean hasFocus) {
-                if(hasFocus == true)
+                if(hasFocus)
                     new DatePickerDialog(EditOfferActivity.this, fromDate,
                             calendarFrom.get(Calendar.YEAR),
                             calendarTo.get(Calendar.MONTH),
@@ -173,19 +158,18 @@ public class EditOfferActivity extends AppCompatActivity {
             }
         });
 
-        offerTo = (EditText) findViewById(R.id.input_offer_to);
         if (offerTo != null)
             offerTo.setRawInputType(InputType.TYPE_NULL);
         offerTo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(final View v, final boolean hasFocus) {
-                if(hasFocus == true)
+                if(hasFocus)
                     new DatePickerDialog(EditOfferActivity.this, toDate,
                             calendarTo.get(Calendar.YEAR),
                             calendarTo.get(Calendar.MONTH),
                             calendarTo.get(Calendar.DAY_OF_MONTH))
                             .show();
-            }
+                }
         });
     }
 
@@ -250,15 +234,15 @@ public class EditOfferActivity extends AppCompatActivity {
 
         offerName.setText(offer.getName());
 
-        final Uri image = offer.getImage();
+        final Uri image = Uri.parse(offer.getImage());
         if (image != null && new File(image.getPath()).exists()) {
-            final Bitmap offerBitmap = BitmapFactory.decodeFile(offer.getImage().getPath());
+            final Bitmap offerBitmap = BitmapFactory.decodeFile(offer.getImage());
             offerImage.setImageBitmap(offerBitmap);
         }
 
         offerDescription.setText(offer.getDescription());
-        offerFrom.setText(offer.getValidFrom().toString("YYYY-MM-DD"));
-        offerTo.setText(offer.getValidTo().toString("YYYY-MM-DD"));
+        offerFrom.setText(new DateTime(offer.getValidFrom()).toString("YYYY-MM-DD"));
+        offerTo.setText(new DateTime(offer.getValidTo()).toString("YYYY-MM-DD"));
         offerZipCode.setText(offer.getZipCode());
     }
 
@@ -268,11 +252,11 @@ public class EditOfferActivity extends AppCompatActivity {
     private void insertOffer() {
         Log.d( TAG, ": Insert offer");
 
-        offer.setName(getStringValue(R.id.edit_input_offer_name));
-        offer.setDescription(getStringValue(R.id.input_offer_description));
-        offer.setZipCode(getStringValue(R.id.input_zip_code));
-        offer.setValidFrom(DateTime.parse(offerFrom.getText().toString()));
-        offer.setValidTo(DateTime.parse(offerTo.getText().toString()));
+        offer.setName(offerName.getText().toString());
+        offer.setDescription(offerDescription.getText().toString());
+        offer.setZipCode(offerZipCode.getText().toString());
+        offer.setValidFrom(DateTime.parse(offerFrom.getText().toString()).getMillis());
+        offer.setValidTo(DateTime.parse(offerTo.getText().toString()).getMillis());
 
         final InsertOfferTask insertOfferTask = new InsertOfferTask(this);
         insertOfferTask.execute(offer);
@@ -284,73 +268,14 @@ public class EditOfferActivity extends AppCompatActivity {
     private void updateOffer() {
         Log.d(TAG, ": Update offer " + offer.getId());
 
-        offer.setName(getStringValue(R.id.edit_input_offer_name));
-        offer.setDescription(getStringValue(R.id.input_offer_description));
-        offer.setZipCode(getStringValue(R.id.input_zip_code));
-        offer.setValidFrom(DateTime.parse(offerFrom.getText().toString()));
-        offer.setValidTo(DateTime.parse(offerTo.getText().toString()));
+        offer.setName(offerName.getText().toString());
+        offer.setDescription(offerDescription.getText().toString());
+        offer.setZipCode(offerZipCode.getText().toString());
+        offer.setValidFrom(DateTime.parse(offerFrom.getText().toString()).getMillis());
+        offer.setValidTo(DateTime.parse(offerTo.getText().toString()).getMillis());
 
         final UpdateOfferTask updateOfferTask = new UpdateOfferTask(this);
         updateOfferTask.execute(offer);
-    }
-
-    /**
-     * Helper method to extract String values from input fields
-     *
-     * @param id id of the EditText
-     * @return text value of EditText
-     */
-    @NonNull
-    private String getStringValue(final int id) {
-        final View field = findViewById(id);
-        if (field instanceof EditText) {
-            final EditText textField = (EditText) field;
-            return textField.getText().toString();
-        }
-        return "";
-    }
-
-    /**
-     * Check permissions since this is not only done in the AndroidManifest.xml anymore.
-     * This needs to be done for API 23 and coming API levels.
-     */
-    private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA},
-                    PERMISSIONS_REQUEST_CAMERA);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    PERMISSIONS_REQUEST_WRITE_STORAGE);
-        }
-    }
-
-    /**
-     * Sets the permissions for this activity. If the permission is denied
-     * for camera or storage access, the user will not be able to specify an image for the offer.
-     *
-     * @param requestCode   is the permission request
-     * @param permissions   contains the permissions asked from the user
-     * @param grantResults  contains the user picked permissions
-     */
-    @Override
-    public void onRequestPermissionsResult(final int requestCode,
-                                           @NonNull final String permissions[],
-                                           @NonNull final int[] grantResults) {
-        if (grantResults.length > 0) {
-            for (int grantResult : grantResults) {
-                if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                    permissionsGranted = true;
-                } else {
-                    permissionsGranted = false;
-                    return;
-                }
-            }
-        }
     }
 
     /**
@@ -361,14 +286,13 @@ public class EditOfferActivity extends AppCompatActivity {
      * @param data        returned data of the intent
      */
     @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        if (resultCode == RESULT_OK) {
+    protected void onActivityResult(final int requestCode, final int resultCode, @NonNull final Intent data) {
             switch (requestCode) {
                 case REQUEST_IMAGE_CAPTURE:
-                    if (data != null && data.getData() != null) {
-                        offer.setImage(data.getData());
+                    if (data.getExtras().get("data") != null) {
                         try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), offer.getImage());
+                            createImageFile();
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(offer.getImage()));
                             final float width = bitmap.getWidth();
                             final float height = bitmap.getHeight();
                             final int aimedHeight = 300;
@@ -381,8 +305,9 @@ public class EditOfferActivity extends AppCompatActivity {
                         }
                     }
                 case REQUEST_IMAGE_CHOOSE:
-                    if (data != null && data.getData() != null) {
-                        offer.setImage(data.getData());
+                    chooseImage();
+                    if (data.getData() != null) {
+                        offer.setImage(data.getData().toString());
                         offerImage.setImageURI(data.getData());
                         cropImage();
                         break;
@@ -390,9 +315,6 @@ public class EditOfferActivity extends AppCompatActivity {
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
             }
-        } else {
-            Toast.makeText(this, "Please try again!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     /**
@@ -411,18 +333,21 @@ public class EditOfferActivity extends AppCompatActivity {
         Log.d(TAG, " : Capture image");
         final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (isIntentSupported(cameraIntent)) {
-            offer.setImage(Uri.fromFile(createImageFile()));
+            try {
+                offer.setImage(Uri.fromFile(createImageFile()).toString());
+            } catch (IOException ex) {
+                Toast.makeText(this, "Whoops - could not access external storage!", Toast.LENGTH_SHORT).show();
+            }
             if (offer.getImage() != null) {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, offer.getImage());
                 try {
                     startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(this, "Please try again!", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, ": " + e.getMessage());
+                    Toast.makeText(this, "Whoops - something went wrong!", Toast.LENGTH_SHORT).show();
                 }
             }
         } else {
-            Toast.makeText(this, "Seems like you have no camera!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Whoops - your device doesn't support capturing images!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -431,7 +356,7 @@ public class EditOfferActivity extends AppCompatActivity {
      */
     private void cropImage() {
         Intent cropIntent = new Intent("com.android.camera.action.CROP");
-        cropIntent.setDataAndType(offer.getImage(), "image/*");
+        cropIntent.setDataAndType(Uri.parse(offer.getImage()), "image/*");
         cropIntent.putExtra("crop", "true");
         cropIntent.putExtra("aspectX", 1);
         cropIntent.putExtra("aspectY", 1);
@@ -463,7 +388,7 @@ public class EditOfferActivity extends AppCompatActivity {
             storageDir.mkdir();
         }
 
-        return new File(storageDir, imageFileName + ".jpg");
+        return new File(storageDir, imageFileName + ".png");
     }
 
     /**

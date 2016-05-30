@@ -12,9 +12,6 @@ public class ToolbarConstants {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int REQUEST_IMAGE_CHOOSE = 2;
 
-    public static final int PERMISSIONS_REQUEST_CAMERA = 100;
-    public static final int PERMISSIONS_REQUEST_WRITE_STORAGE = 101;
-
     public static final String DIALOG_IMAGE_TITLE = "Add photo";
     public static final String DIALOG_CAPTURE_IMAGE = "Take picture";
     public static final String DIALOG_CHOOSE_IMAGE = "Choose from gallery";

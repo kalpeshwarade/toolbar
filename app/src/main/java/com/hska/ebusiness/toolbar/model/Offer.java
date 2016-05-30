@@ -1,6 +1,5 @@
 package com.hska.ebusiness.toolbar.model;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,7 +12,7 @@ public class Offer implements Parcelable {
     }
 
     public Offer(final String name, final String description, final String zipCode,
-                 final long price, final DateTime validFrom, final DateTime validTo) {
+                 final long price, final long validFrom, final long validTo) {
         this.name = name;
         this.description = description;
         this.zipCode = zipCode;
@@ -24,12 +23,12 @@ public class Offer implements Parcelable {
 
     private long id;
     private String name;
-    private Uri image;
+    private String image;
     private String description;
     private String zipCode;
     private long price;
-    private DateTime validFrom;
-    private DateTime validTo;
+    private long validFrom;
+    private long validTo;
 
     public long getId() {
         return id;
@@ -47,11 +46,11 @@ public class Offer implements Parcelable {
         this.name = name;
     }
 
-    public Uri getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(final Uri image) {
+    public void setImage(final String image) {
         this.image = image;
     }
 
@@ -79,19 +78,19 @@ public class Offer implements Parcelable {
         this.price = price;
     }
 
-    public DateTime getValidFrom() {
+    public long getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(final DateTime validFrom) {
+    public void setValidFrom(final long validFrom) {
         this.validFrom = validFrom;
     }
 
-    public DateTime getValidTo() {
+    public long getValidTo() {
         return validTo;
     }
 
-    public void setValidTo(final DateTime validTo) {
+    public void setValidTo(final long validTo) {
         this.validTo = validTo;
     }
 
@@ -104,8 +103,8 @@ public class Offer implements Parcelable {
                 ", description='" + description + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", price=" + price +
-                ", validFrom=" + validFrom +
-                ", validTo=" + validTo +
+                ", validFrom=" + new DateTime(validFrom).toString("YYYY-MM-DD") +
+                ", validTo=" + new DateTime(validTo).toString("YYYY-MM-DD") +
                 '}';
     }
 
@@ -119,12 +118,12 @@ public class Offer implements Parcelable {
         destination.writeLong(id);
         destination.writeString(name);
         if(image != null)
-            destination.writeString(image.getPath());
+            destination.writeString(image);
         destination.writeString(description);
         destination.writeString(zipCode);
         destination.writeLong(price);
-        destination.writeLong(validFrom.getMillis());
-        destination.writeLong(validTo.getMillis());
+        destination.writeLong(validFrom);
+        destination.writeLong(validTo);
     }
 
     public static final Parcelable.Creator<Offer> CREATOR = new Creator<Offer>() {
@@ -142,11 +141,11 @@ public class Offer implements Parcelable {
     private Offer(final Parcel source) {
         id = source.readLong();
         name = source.readString();
-        image = Uri.parse(source.readString());
+        image = source.readString();
         description = source.readString();
         zipCode = source.readString();
         price = source.readLong();
-        validFrom = new DateTime(source.readLong());
-        validTo = new DateTime(source.readLong());
+        validFrom = source.readLong();
+        validTo = source.readLong();
     }
 }

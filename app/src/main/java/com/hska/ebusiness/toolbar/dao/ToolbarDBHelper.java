@@ -6,12 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.net.Uri;
 import android.util.Log;
 
 import com.hska.ebusiness.toolbar.model.Offer;
 
-import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.*;
+import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.BalanceEntry;
+import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.CredentialsEntry;
+import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.OfferEntry;
+import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.RentalEntry;
+import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 public class ToolbarDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 6;
@@ -55,8 +58,8 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     OfferEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
                     OfferEntry.COLUMN_NAME_ZIP_CODE + " TEXT," +
                     OfferEntry.COLUMN_NAME_PRICE + " INTEGER," +
-                    OfferEntry.COLUMN_NAME_VALID_FROM + " TEXT," +
-                    OfferEntry.COLUMN_NAME_VALID_TO + " TEXT" +
+                    OfferEntry.COLUMN_NAME_VALID_FROM + " INTEGER," +
+                    OfferEntry.COLUMN_NAME_VALID_TO + " INTEGER" +
                     ");";
 
 
@@ -139,16 +142,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     private ContentValues getOfferValues(final Offer offer) {
         final ContentValues values = new ContentValues();
         values.put(OfferEntry.COLUMN_NAME_NAME, offer.getName());
-        final Uri image = offer.getImage();
-        if (image == null) {
-            offer.setImage(Uri.parse(""));
-        }
-        values.put(OfferEntry.COLUMN_NAME_IMAGE, offer.getImage().getPath());
+        final String image = offer.getImage() == null ? "" : offer.getImage();
+        values.put(OfferEntry.COLUMN_NAME_IMAGE, image);
         values.put(OfferEntry.COLUMN_NAME_DESCRIPTION, offer.getDescription());
         values.put(OfferEntry.COLUMN_NAME_ZIP_CODE, offer.getZipCode());
         values.put(OfferEntry.COLUMN_NAME_PRICE, offer.getPrice());
-        values.put(OfferEntry.COLUMN_NAME_VALID_FROM, offer.getValidFrom().getMillis());
-        values.put(OfferEntry.COLUMN_NAME_VALID_TO, offer.getValidTo().getMillis());
+        values.put(OfferEntry.COLUMN_NAME_VALID_FROM, offer.getValidFrom());
+        values.put(OfferEntry.COLUMN_NAME_VALID_TO, offer.getValidTo());
 
         return values;
     }
