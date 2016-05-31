@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         final InsertOfferTask insertOfferTask = new InsertOfferTask(this);
         insertOfferTask.execute(offer);
 
-        Intent intent = new Intent(this, EditOfferActivity.class);
+        final Intent intent = new Intent(this, EditOfferActivity.class);
         intent.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
         intent.putExtra(TOOLBAR_OFFER, offer);
         startActivity(intent);

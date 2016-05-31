@@ -15,6 +15,7 @@ public class Offer implements Parcelable {
     public Offer(final String name, final String description, final String zipCode,
                  final long price, final long validFrom, final long validTo) {
         this.name = name;
+        this.image = null;
         this.description = description;
         this.zipCode = zipCode;
         this.price = price;
@@ -116,10 +117,8 @@ public class Offer implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel destination, final int flags) {
-        destination.writeLong(id);
         destination.writeString(name);
-        if(image != null)
-            destination.writeString(image);
+        destination.writeString(image);
         destination.writeString(description);
         destination.writeString(zipCode);
         destination.writeLong(price);

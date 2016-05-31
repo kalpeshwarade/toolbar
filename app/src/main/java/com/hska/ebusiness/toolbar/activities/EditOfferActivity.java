@@ -232,14 +232,16 @@ public class EditOfferActivity extends AppCompatActivity {
     private void initContent() {
         Log.d(TAG, ": Initialize Content");
 
-        offerName.setText(offer.getName());
-
-        final Uri image = Uri.parse(offer.getImage());
-        if (image != null && new File(image.getPath()).exists()) {
-            final Bitmap offerBitmap = BitmapFactory.decodeFile(offer.getImage());
-            offerImage.setImageBitmap(offerBitmap);
+        if(offer.getImage() != null) {
+            final Uri image = Uri.parse(offer.getImage());
+            if (image != null && new File(image.getPath()).exists()) {
+                final Bitmap offerBitmap = BitmapFactory.decodeFile(offer.getImage());
+                offerImage.setImageBitmap(offerBitmap);
+            }
         }
 
+        // offer.setName("Hans");
+        offerName.setText(offer.getName().toString());
         offerDescription.setText(offer.getDescription());
         offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
         offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
@@ -250,7 +252,7 @@ public class EditOfferActivity extends AppCompatActivity {
      * Retrieves oder fields from UI and starts AsyncTask for database insert
      */
     private void insertOffer() {
-        Log.d( TAG, ": Insert offer");
+        Log.d(TAG, ": Insert offer");
 
         offer.setName(offerName.getText().toString());
         offer.setDescription(offerDescription.getText().toString());
