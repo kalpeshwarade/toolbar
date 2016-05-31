@@ -1,30 +1,23 @@
 package com.hska.ebusiness.toolbar.activities;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import sun.bob.mcalendarview.MCalendarView;
 
 import com.hska.ebusiness.toolbar.R;
-import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.Rental;
 import com.hska.ebusiness.toolbar.model.User;
-import com.hska.ebusiness.toolbar.tasks.InsertRentalTask;
-import com.hska.ebusiness.toolbar.util.MyApplication;
-import com.hska.ebusiness.toolbar.util.OfferMapper;
+import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 import com.hska.ebusiness.toolbar.util.RentalMapper;
 
 import org.joda.time.DateTime;
@@ -33,8 +26,6 @@ import org.joda.time.Days;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import java.util.Date;
 
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE;
@@ -55,7 +46,7 @@ public class ShowOfferActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_offer);
         offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
-        user = ((MyApplication) getApplication()).getCurrentUser();
+        user = ((ToolbarApplication) getApplication()).getCurrentUser();
 
         Log.d(TAG, offer.toString());
 

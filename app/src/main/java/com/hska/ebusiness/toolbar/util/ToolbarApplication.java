@@ -8,7 +8,7 @@ import com.hska.ebusiness.toolbar.model.User;
  * Created by bettinakuhefuss on 30.05.16.
  */
 
-public class MyApplication extends Application {
+public class ToolbarApplication extends Application {
 
     private User currentUser;
 

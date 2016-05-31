@@ -19,7 +19,7 @@ import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.model.Credentials;
 import com.hska.ebusiness.toolbar.model.User;
 import com.hska.ebusiness.toolbar.util.CredentialsMapper;
-import com.hska.ebusiness.toolbar.util.MyApplication;
+import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 import com.hska.ebusiness.toolbar.util.UserMapper;
 
 
@@ -85,8 +85,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 // Global  variable user
-                // GET: User user = ((MyApplication) getApplication()).getCurrentUser();
-                ((MyApplication) getApplication()).setCurrentUser(user);
+                // GET: User user = ((ToolbarApplication) getApplication()).getCurrentUser();
+                ((ToolbarApplication) getApplication()).setCurrentUser(user);
                 final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
