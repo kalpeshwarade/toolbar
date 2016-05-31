@@ -19,7 +19,7 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.RentalEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 public class ToolbarDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "toolbar.db";
 
     private final String TAG = this.getClass().getSimpleName();
@@ -68,8 +68,8 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE_RENTAL =
             "CREATE TABLE " + RentalEntry.TABLE_NAME + " (" +
                     RentalEntry._ID + " INTEGER PRIMARY KEY, " +
-                    RentalEntry.COLUMN_NAME_FROM + " DATE, " +
-                    RentalEntry.COLUMN_NAME_TO + " DATE, " +
+                    RentalEntry.COLUMN_NAME_FROM + " INTEGER, " +
+                    RentalEntry.COLUMN_NAME_TO + " INTEGER, " +
                     RentalEntry.COLUMN_NAME_STATUS + " INTEGER, " +
                     RentalEntry.COLUMN_NAME_OFFER_FK + " INTEGER, " +
                     RentalEntry.COLUMN_NAME_HIRER_FK + " INTEGER, " +

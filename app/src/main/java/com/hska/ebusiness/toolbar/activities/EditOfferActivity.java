@@ -241,8 +241,8 @@ public class EditOfferActivity extends AppCompatActivity {
         }
 
         offerDescription.setText(offer.getDescription());
-        offerFrom.setText(new DateTime(offer.getValidFrom()).toString("YYYY-MM-DD"));
-        offerTo.setText(new DateTime(offer.getValidTo()).toString("YYYY-MM-DD"));
+        offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
+        offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
         offerZipCode.setText(offer.getZipCode());
     }
 
