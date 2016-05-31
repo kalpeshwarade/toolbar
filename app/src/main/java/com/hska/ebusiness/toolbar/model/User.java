@@ -1,5 +1,6 @@
 package com.hska.ebusiness.toolbar.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -123,5 +124,4 @@ public class User implements Parcelable {
         country = source.readString();
         description = source.readString();
     }
-
 }

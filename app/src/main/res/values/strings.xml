@@ -26,4 +26,5 @@
     <string name="login_loginButton_text">Login</string>
     <string name="login_forgot_password_text">Forgot Password?</string>
     <string name="login_register_now_text">Register Now!</string>
+    <string name="toolbar_logo">ToolBar</string>
 </resources>

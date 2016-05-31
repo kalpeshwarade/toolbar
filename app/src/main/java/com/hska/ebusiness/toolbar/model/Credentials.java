@@ -1,10 +1,17 @@
 package com.hska.ebusiness.toolbar.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.StrictMode;
 
+import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
+
 public class Credentials implements Parcelable {
+
+    public Credentials() {
+        super();
+    }
 
     public Credentials(String password, long userId) {
         this.password = password;
@@ -13,7 +20,6 @@ public class Credentials implements Parcelable {
 
     private long id;
     private String password;
-    private String username;
     private long userId;
 
     public long getId() {
@@ -32,14 +38,6 @@ public class Credentials implements Parcelable {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(final String username) {
-        this.username = username;
-    }
-
     public long getUserId() {
         return userId;
     }
@@ -51,7 +49,6 @@ public class Credentials implements Parcelable {
     @Override
     public String toString() {
         return "Credentials{" +
-                "username='" + username + '\'' +
                 ", id=" + id +
                 ", userId=" + userId +
                 '}';

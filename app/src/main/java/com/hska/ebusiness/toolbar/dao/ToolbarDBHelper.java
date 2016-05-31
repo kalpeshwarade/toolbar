@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.hska.ebusiness.toolbar.model.Credentials;
 import com.hska.ebusiness.toolbar.model.Offer;
+import com.hska.ebusiness.toolbar.model.User;
 
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.BalanceEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.CredentialsEntry;
@@ -139,6 +141,40 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return getWritableDatabase().update(OfferEntry.TABLE_NAME, values, whereClause, whereArgs);
     }
 
+    public long insertUser(final User user) {
+        Log.d(TAG, ": insertUser: " + user.getUsername());
+
+        final ContentValues values = getUserValues(user);
+        return getWritableDatabase().insert(UserEntry.TABLE_NAME, null, values);
+    }
+
+    public long insertCredentials(final Credentials credentials) {
+        Log.d(TAG, ": insertCredentials: " + credentials.getUserId());
+
+        final ContentValues values = getCredentialValues(credentials);
+        return getWritableDatabase().insert(CredentialsEntry.TABLE_NAME, null, values);
+    }
+
+    public Cursor findUserByUsername(final String username) {
+        Log.d( TAG, ": findUserByUsername " + username );
+
+        final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(UserEntry.TABLE_NAME);
+        return queryBuilder.query(getReadableDatabase(),
+                null, UserEntry.COLUMN_NAME_USERNAME + "=?",
+                new String[]{username}, null, null, null);
+    }
+
+    public Cursor findCredentialsByUserId(final long userId) {
+        Log.d( TAG, ": findCredentialsByUserId " + userId );
+
+        final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(CredentialsEntry.TABLE_NAME);
+        return queryBuilder.query(getReadableDatabase(),
+                null, CredentialsEntry._ID + "=?",
+                new String[]{Long.toString(userId)}, null, null, null);
+    }
+
     private ContentValues getOfferValues(final Offer offer) {
         final ContentValues values = new ContentValues();
         values.put(OfferEntry.COLUMN_NAME_NAME, offer.getName());
@@ -149,6 +185,26 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         values.put(OfferEntry.COLUMN_NAME_PRICE, offer.getPrice());
         values.put(OfferEntry.COLUMN_NAME_VALID_FROM, offer.getValidFrom());
         values.put(OfferEntry.COLUMN_NAME_VALID_TO, offer.getValidTo());
+
+        return values;
+    }
+
+    private ContentValues getUserValues(final User user) {
+        final ContentValues values = new ContentValues();
+        values.put(UserEntry.COLUMN_NAME_USERNAME, user.getUsername());
+        values.put(UserEntry.COLUMN_NAME_EMAIL, user.getEmail());
+        values.put(UserEntry.COLUMN_NAME_STREET, user.getStreet());
+        values.put(UserEntry.COLUMN_NAME_ZIP_CODE, user.getZipCode());
+        values.put(UserEntry.COLUMN_NAME_COUNTRY, user.getCountry());
+        values.put(UserEntry.COLUMN_NAME_DESCRIPTION, user.getDescription());
+
+        return values;
+    }
+
+    private ContentValues getCredentialValues(final Credentials credentials) {
+        final ContentValues values = new ContentValues();
+        values.put(CredentialsEntry.COLUMN_NAME_PASSWORD, credentials.getPassword());
+        values.put(CredentialsEntry.COLUMN_NAME_USER_FK, credentials.getUserId());
 
         return values;
     }
