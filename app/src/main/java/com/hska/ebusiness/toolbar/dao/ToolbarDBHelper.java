@@ -13,8 +13,6 @@ import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.User;
 import com.hska.ebusiness.toolbar.model.Rental;
 
-import org.joda.time.DateTime;
-
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.BalanceEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.CredentialsEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.OfferEntry;
@@ -22,7 +20,7 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.RentalEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 public class ToolbarDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 13;
+    public static final int DATABASE_VERSION = 14;
 
     public static final String DATABASE_NAME = "toolbar.db";
 
@@ -202,7 +200,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     //Neu
     public long insertRental(final Rental rental) {
-        Log.d(TAG, ": insertRental: " + rental.getOffer_fk());
+        Log.d(TAG, ": insertRental: " + rental.getOffer());
 
         final ContentValues values = getRentalValues(rental);
         return getWritableDatabase().insert(RentalEntry.TABLE_NAME, null, values);
@@ -249,7 +247,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         values.put(RentalEntry.COLUMN_NAME_FROM, rental.getRentFrom());
         values.put(RentalEntry.COLUMN_NAME_TO, rental.getRentTo());
         values.put(RentalEntry.COLUMN_NAME_STATUS, rental.getStatus());
-        values.put(RentalEntry.COLUMN_NAME_OFFER_FK, rental.getOffer_fk());
+        values.put(RentalEntry.COLUMN_NAME_OFFER_FK, rental.getOffer());
         //values.put(RentalEntry.COLUMN_NAME_LENDER_FK, rental.getLender().getId());
         //values.put(RentalEntry.COLUMN_NAME_HIRER_FK, rental.getHirer().getId());
 

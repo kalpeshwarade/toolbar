@@ -18,8 +18,6 @@ import com.hska.ebusiness.toolbar.util.UserMapper;
 
 import org.joda.time.DateTime;
 
-import java.util.Date;
-
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         Rental rental1 = new Rental();
         rental1.setStatus(0);
-        rental1.setOffer_fk(offer.getId());
+        rental1.setOffer(offer.getId());
         rental1.setRentFrom(DateTime.now().minusDays(5).getMillis());
         rental1.setRentTo(DateTime.now().getMillis());
 
@@ -62,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         Rental rental2 = new Rental();
         rental2.setStatus(1);
-        rental2.setOffer_fk(offer.getId());
+        rental2.setOffer(offer.getId());
         rental2.setRentFrom(DateTime.now().minusMonths(1).minusDays(5).getMillis());
         rental2.setRentTo(DateTime.now().minusMonths(1).getMillis());
 

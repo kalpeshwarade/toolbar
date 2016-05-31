@@ -1,10 +1,7 @@
 package com.hska.ebusiness.toolbar.model;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import org.joda.time.DateTime;
 
 public class Rental implements Parcelable {
 
@@ -17,18 +14,18 @@ public class Rental implements Parcelable {
         this.rentFrom = rentFrom;
         this.rentTo = rentTo;
         this.status = status;
-        this.offer_fk = offer_fk;
-        this.lender_fk = lender_fk;
-        this.hirer_fk = hirer_fk;
+        this.offer = offer_fk;
+        this.lender = lender_fk;
+        this.hirer = hirer_fk;
     }
 
     private long id;
     private long rentFrom;
     private long rentTo;
     private int status;
-    private long offer_fk;
-    private long lender_fk;
-    private long hirer_fk;
+    private long offer;
+    private long lender;
+    private long hirer;
 
 
     public long getId() {
@@ -63,28 +60,28 @@ public class Rental implements Parcelable {
         this.status = status;
     }
 
-    public long getOffer_fk(){
-        return offer_fk;
+    public long getOffer(){
+        return offer;
     }
 
-    public void setOffer_fk(final long offer_fk){
-        this.offer_fk = offer_fk;
+    public void setOffer(final long offer){
+        this.offer = offer;
     }
 
-    public long getLender_fk(){
-        return lender_fk;
+    public long getLender(){
+        return lender;
     }
 
-    public  void setLender_fk(final long lender_fk){
-        this.lender_fk = lender_fk;
+    public  void setLender(final long lender){
+        this.lender = lender;
     }
 
-    public long getHirer_fk(){
-        return hirer_fk;
+    public long getHirer(){
+        return hirer;
     }
 
-    public  void setHirer_fk(final long hirer_fk) {
-        this.hirer_fk = hirer_fk;
+    public  void setHirer(final long hirer) {
+        this.hirer = hirer;
     }
 
 
@@ -94,9 +91,9 @@ public class Rental implements Parcelable {
                 "rentFrom=" + rentFrom +
                 ", rentTo=" + rentTo +
                 ", status=" + status +
-                ", offer=" + offer_fk +
-                ", lender=" + lender_fk +
-                ", hirer=" + hirer_fk +
+                ", offer=" + offer +
+                ", lender=" + lender +
+                ", hirer=" + hirer +
                 '}';
     }
 
@@ -110,9 +107,9 @@ public class Rental implements Parcelable {
         destination.writeLong(rentFrom);
         destination.writeLong(rentTo);
         destination.writeInt(status);
-        destination.writeLong(offer_fk);
-        destination.writeLong(lender_fk);
-        destination.writeLong(hirer_fk);
+        destination.writeLong(offer);
+        destination.writeLong(lender);
+        destination.writeLong(hirer);
     }
 
     public static final Parcelable.Creator<Rental> CREATOR = new Creator<Rental>() {
@@ -131,8 +128,8 @@ public class Rental implements Parcelable {
         rentFrom = source.readLong();
         rentTo = source.readLong();
         status = source.readInt();
-        offer_fk = source.readLong();
-        lender_fk = source.readLong();
-        hirer_fk = source.readLong();
+        offer = source.readLong();
+        lender = source.readLong();
+        hirer = source.readLong();
     }
 }
