@@ -3,12 +3,13 @@ package com.hska.ebusiness.toolbar.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.hska.ebusiness.toolbar.util.ToolbarConstants;
+
 import org.joda.time.DateTime;
 
 public class Offer implements Parcelable {
 
     public Offer() {
-
     }
 
     public Offer(final String name, final String description, final String zipCode,
@@ -103,8 +104,8 @@ public class Offer implements Parcelable {
                 ", description='" + description + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", price=" + price +
-                ", validFrom=" + new DateTime(validFrom).toString("YYYY-MM-DD") +
-                ", validTo=" + new DateTime(validTo).toString("YYYY-MM-DD") +
+                ", validFrom=" + new DateTime(validFrom).toString(ToolbarConstants.TOOLBAR_DATE_FORMAT) +
+                ", validTo=" + new DateTime(validTo).toString(ToolbarConstants.TOOLBAR_DATE_FORMAT) +
                 '}';
     }
 
@@ -128,18 +129,17 @@ public class Offer implements Parcelable {
 
     public static final Parcelable.Creator<Offer> CREATOR = new Creator<Offer>() {
         @Override
-        public Offer createFromParcel(final Parcel source) {
-            return new Offer(source);
+        public Offer createFromParcel(final Parcel parcel) {
+            return new Offer(parcel);
         }
 
         @Override
         public Offer[] newArray(final int size) {
-            return new Offer[0];
+            return new Offer[size];
         }
     };
 
     private Offer(final Parcel source) {
-        id = source.readLong();
         name = source.readString();
         image = source.readString();
         description = source.readString();
