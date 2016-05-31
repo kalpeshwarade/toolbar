@@ -172,6 +172,17 @@ public class LoginActivity extends AppCompatActivity {
 
         ToolbarDBHelper.getInstance(context).insertUser(user1);
         insertMockingCredentials("aaa", "123");
+
+        User user2 = new User();
+        user2.setUsername("bbb");
+        user2.setDescription("Test-User 2");
+        user2.setCountry("Deutschland");
+        user2.setZipCode("12345");
+        user2.setEmail("test1@test1.de");
+        user2.setStreet("Teststrasse");
+
+        ToolbarDBHelper.getInstance(context).insertUser(user2);
+        insertMockingCredentials("bbb", "123");
     }
 
     public void insertMockingCredentials(final String username, final String pwd) {

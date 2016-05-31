@@ -10,8 +10,9 @@
 
     <item
         android:id="@+id/offer_show_edit"
-        android:title="@string/action_offer_edit_save"
+        android:title="Edit"
         android:icon="@drawable/ic_mode_edit_black_24dp"
         app:showAsAction="ifRoom" />
+
 
 </menu>

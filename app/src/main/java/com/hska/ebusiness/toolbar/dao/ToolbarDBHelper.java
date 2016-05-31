@@ -13,6 +13,8 @@ import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.User;
 import com.hska.ebusiness.toolbar.model.Rental;
 
+import org.joda.time.DateTime;
+
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.BalanceEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.CredentialsEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.OfferEntry;
@@ -63,7 +65,9 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     OfferEntry.COLUMN_NAME_ZIP_CODE + " TEXT," +
                     OfferEntry.COLUMN_NAME_PRICE + " INTEGER," +
                     OfferEntry.COLUMN_NAME_VALID_FROM + " INTEGER," +
-                    OfferEntry.COLUMN_NAME_VALID_TO + " INTEGER" +
+                    OfferEntry.COLUMN_NAME_VALID_TO + " INTEGER," +
+                    OfferEntry.COLUMN_NAME_LENDER_FK + " INTEGER, " +
+                    "FOREIGN KEY (" + OfferEntry.COLUMN_NAME_LENDER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
                     ");";
 
 
@@ -214,6 +218,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         values.put(OfferEntry.COLUMN_NAME_PRICE, offer.getPrice());
         values.put(OfferEntry.COLUMN_NAME_VALID_FROM, offer.getValidFrom());
         values.put(OfferEntry.COLUMN_NAME_VALID_TO, offer.getValidTo());
+        values.put(OfferEntry.COLUMN_NAME_LENDER_FK, offer.getLender_fk());
 
         return values;
     }
@@ -288,3 +293,4 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 }
+

@@ -13,7 +13,7 @@ public class Offer implements Parcelable {
     }
 
     public Offer(final String name, final String description, final String zipCode,
-                 final long price, final long validFrom, final long validTo) {
+                 final long price, final long validFrom, final long validTo, final long lender_fk) {
         this.name = name;
         this.image = null;
         this.description = description;
@@ -21,6 +21,7 @@ public class Offer implements Parcelable {
         this.price = price;
         this.validFrom = validFrom;
         this.validTo = validTo;
+        this.lender_fk = lender_fk;
     }
 
     private long id;
@@ -31,6 +32,8 @@ public class Offer implements Parcelable {
     private long price;
     private long validFrom;
     private long validTo;
+    private long lender_fk;
+
 
     public long getId() {
         return id;
@@ -96,6 +99,15 @@ public class Offer implements Parcelable {
         this.validTo = validTo;
     }
 
+    public Long getLender_fk(){
+        return lender_fk;
+    }
+
+    public  void setLender_fk(final Long lender_fk){
+        this.lender_fk = lender_fk;
+    }
+
+
     @Override
     public String toString() {
         return "Offer{" +
@@ -107,6 +119,7 @@ public class Offer implements Parcelable {
                 ", price=" + price +
                 ", validFrom=" + new DateTime(validFrom).toString(ToolbarConstants.TOOLBAR_DATE_FORMAT) +
                 ", validTo=" + new DateTime(validTo).toString(ToolbarConstants.TOOLBAR_DATE_FORMAT) +
+                ", lender=" + lender_fk +
                 '}';
     }
 
@@ -124,6 +137,7 @@ public class Offer implements Parcelable {
         destination.writeLong(price);
         destination.writeLong(validFrom);
         destination.writeLong(validTo);
+        destination.writeLong(lender_fk);
     }
 
     public static final Parcelable.Creator<Offer> CREATOR = new Creator<Offer>() {
@@ -146,5 +160,6 @@ public class Offer implements Parcelable {
         price = source.readLong();
         validFrom = source.readLong();
         validTo = source.readLong();
+        lender_fk = source.readLong();
     }
 }

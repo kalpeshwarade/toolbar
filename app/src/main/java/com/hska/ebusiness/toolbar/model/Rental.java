@@ -12,7 +12,8 @@ public class Rental implements Parcelable {
 
     }
 
-    public Rental(final long rentFrom, final long rentTo, Integer status, Long offer_fk, Long lender_fk, Long hirer_fk) {
+    public Rental(final long rentFrom, final long rentTo, final int status, final long offer_fk,
+                  final long lender_fk, final long hirer_fk) {
         this.rentFrom = rentFrom;
         this.rentTo = rentTo;
         this.status = status;
@@ -21,13 +22,13 @@ public class Rental implements Parcelable {
         this.hirer_fk = hirer_fk;
     }
 
-    private Long id;
-    private Long rentFrom;
-    private Long rentTo;
-    private Integer status;
-    private Long offer_fk;
-    private Long lender_fk;
-    private Long hirer_fk;
+    private long id;
+    private long rentFrom;
+    private long rentTo;
+    private int status;
+    private long offer_fk;
+    private long lender_fk;
+    private long hirer_fk;
 
 
     public long getId() {
@@ -54,35 +55,35 @@ public class Rental implements Parcelable {
         this.rentTo = rentTo;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(final Integer status) {
+    public void setStatus(final int status) {
         this.status = status;
     }
 
-    public Long getOffer_fk(){
+    public long getOffer_fk(){
         return offer_fk;
     }
 
-    public void setOffer_fk(final Long offer_fk){
+    public void setOffer_fk(final long offer_fk){
         this.offer_fk = offer_fk;
     }
 
-    public Long getLender_fk(){
+    public long getLender_fk(){
         return lender_fk;
     }
 
-    public  void setLender_fk(final Long lender_fk){
+    public  void setLender_fk(final long lender_fk){
         this.lender_fk = lender_fk;
     }
 
-    public Long getHirer_fk(){
+    public long getHirer_fk(){
         return hirer_fk;
     }
 
-    public  void setHirer_fk(final Long hirer_fk) {
+    public  void setHirer_fk(final long hirer_fk) {
         this.hirer_fk = hirer_fk;
     }
 
@@ -129,9 +130,9 @@ public class Rental implements Parcelable {
     private Rental(final Parcel source) {
         rentFrom = source.readLong();
         rentTo = source.readLong();
-        status = new Integer(source.readInt());
-        offer_fk = source.readParcelable(Offer.class.getClassLoader());
-        lender_fk = source.readParcelable(User.class.getClassLoader());
-        hirer_fk = source.readParcelable(User.class.getClassLoader());
+        status = source.readInt();
+        offer_fk = source.readLong();
+        lender_fk = source.readLong();
+        hirer_fk = source.readLong();
     }
 }

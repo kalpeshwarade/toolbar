@@ -19,7 +19,9 @@ import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.Rental;
+import com.hska.ebusiness.toolbar.model.User;
 import com.hska.ebusiness.toolbar.tasks.InsertRentalTask;
+import com.hska.ebusiness.toolbar.util.MyApplication;
 import com.hska.ebusiness.toolbar.util.RentalMapper;
 
 import org.joda.time.DateTime;
@@ -41,7 +43,7 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     private Offer offer;
     private Context context;
-
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class ShowOfferActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_offer);
         context = getApplicationContext();
         offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
+        user = ((MyApplication) getApplication()).getCurrentUser();
 
         initContent();
     }
@@ -103,13 +106,21 @@ public class ShowOfferActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
 
                 final Intent mainIntentSave = new Intent(this, EditOfferActivity.class);
-                mainIntentSave.putExtra(TOOLBAR_OFFER, offer);
                 mainIntentSave.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
+                mainIntentSave.putExtra(TOOLBAR_OFFER, offer);
                 startActivity(mainIntentSave);
                 return true;
 
             case R.id.offer_show_delete:
+                if(user.getId() == offer.getLender_fk()) {
+                    ToolbarDBHelper.getInstance(context).deleteOffer(offer);
+                    Toast.makeText(ShowOfferActivity.this, offer.getDescription(), Toast.LENGTH_LONG).show();
+                }
+                else
+                    Toast.makeText(ShowOfferActivity.this, "Falscher User!", Toast.LENGTH_LONG).show();
+
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

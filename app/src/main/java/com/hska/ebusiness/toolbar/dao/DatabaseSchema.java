@@ -40,6 +40,7 @@ public final class DatabaseSchema {
         public static final String COLUMN_NAME_PRICE = "price";
         public static final String COLUMN_NAME_VALID_FROM = "valid_from";
         public static final String COLUMN_NAME_VALID_TO = "valid_to";
+        public static final String COLUMN_NAME_LENDER_FK = "lender_fk";
     }
 
     public static abstract class RentalEntry implements BaseColumns {
