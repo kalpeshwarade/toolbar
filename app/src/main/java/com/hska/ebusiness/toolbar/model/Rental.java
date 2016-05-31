@@ -123,7 +123,7 @@ public class Rental implements Parcelable {
 
         @Override
         public Rental[] newArray(final int size) {
-            return new Rental[0];
+            return new Rental[size];
         }
     };
 

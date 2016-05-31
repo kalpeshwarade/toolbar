@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         Offer offer = new Offer();
         offer.setName("Hammer");
-        offer.setPrice(5);
+        offer.setImage(null);
         offer.setDescription("HamHam");
+        offer.setPrice(5);
         offer.setZipCode("12345");
         offer.setValidFrom(DateTime.now().minusDays(2).getMillis());
         offer.setValidTo(DateTime.now().getMillis());
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         insertRentalTask2.execute(rental2);
 
         Offer offer2 = new Offer();
+        offer2.setImage(null);
         offer2.setName("Hammer2");
         offer2.setPrice(5);
         offer2.setDescription("HamHam");
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ShowOfferActivity.class);
         //intent.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
         intent.putExtra(TOOLBAR_OFFER, offer);
+        //intent.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
         startActivity(intent);
 
         //final Intent intent = new Intent(this, ShowOfferActivity.class);
