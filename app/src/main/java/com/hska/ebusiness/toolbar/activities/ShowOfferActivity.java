@@ -1,16 +1,26 @@
 package com.hska.ebusiness.toolbar.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import sun.bob.mcalendarview.MCalendarView;
 
 import com.hska.ebusiness.toolbar.R;
+import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
+import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.Rental;
+import com.hska.ebusiness.toolbar.tasks.InsertRentalTask;
+import com.hska.ebusiness.toolbar.util.RentalMapper;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -22,6 +32,7 @@ import java.util.List;
 import java.util.Date;
 
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER;
+import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE;
 
 /**
  * Created by Sebastian on 16.05.2016.
@@ -29,30 +40,15 @@ import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER;
 public class ShowOfferActivity extends AppCompatActivity {
 
     private Offer offer;
-    private Rental rental;
-    private Offer updatedOffer;
-    private AlertDialog.Builder builder;
-    private int firstDayOfWeek;
+    private Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_offer);
-
-        //offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
-        //updatedOffer = offer;
-
-        offer = new Offer();
-        offer.setName("Hammer");
-        offer.setPrice(5);
-        offer.setDescription("Ein Hammer für besondere Schrauben...HammiHam :)");
-
-
-
-        rental = new Rental();
-        rental.setRentFrom(new DateTime(2016, 5, 12, 23, 25));
-        rental.setRentTo(new DateTime(2016, 5, 25, 23, 29));
-        rental.setOffer(offer);
+        context = getApplicationContext();
+        offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
 
         initContent();
     }
@@ -64,8 +60,19 @@ public class ShowOfferActivity extends AppCompatActivity {
 
         MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
 
-        for(DateTime date : getRentalDays(rental.getRentFrom(), rental.getRentTo())){
-            calendarView.markDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+        for(Rental rental : getRentals(offer.getId())){
+
+            if(rental.getStatus() == 1){
+
+                DateTime fromDate = new DateTime(rental.getRentFrom());
+                DateTime toDate = new DateTime(rental.getRentTo());
+
+                for(DateTime date : getRentalDays(fromDate, toDate)) {
+                    calendarView.markDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+                }
+            }
+            else
+                continue;
         }
 
     }
@@ -77,8 +84,35 @@ public class ShowOfferActivity extends AppCompatActivity {
         for (DateTime date = fromDate; !date.isAfter(toDate); date = date.plusDays(1)) {
             daysList.add(date);
         }
-
         return daysList;
+    }
+
+
+    /**
+     * Gets called when item from menu gets selected
+     *
+     * @param item the selected menu item
+     * @return true if event was handled successfully
+     */
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.offer_show_edit:
+
+                Toast.makeText(getApplicationContext(), String.valueOf(getRentals(offer.getId()).size()),
+                        Toast.LENGTH_LONG).show();
+
+                final Intent mainIntentSave = new Intent(this, EditOfferActivity.class);
+                mainIntentSave.putExtra(TOOLBAR_OFFER, offer);
+                mainIntentSave.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
+                startActivity(mainIntentSave);
+                return true;
+
+            case R.id.offer_show_delete:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -86,4 +120,19 @@ public class ShowOfferActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.action_menu_show_offer, menu);
         return true;
     }
+
+    public ArrayList<Rental> getRentals(long id){
+        Cursor cursor = ToolbarDBHelper.getInstance(context).findAllRentalsToOffer(id);
+        if(cursor != null && cursor.moveToFirst()) {
+            ArrayList <Rental> rentalList = new ArrayList<Rental>();
+            for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+                       rentalList.add(RentalMapper.map(cursor));
+                }
+            cursor.close();
+            return rentalList;
+        }
+        cursor.close();
+        return null;
+    }
+
 }

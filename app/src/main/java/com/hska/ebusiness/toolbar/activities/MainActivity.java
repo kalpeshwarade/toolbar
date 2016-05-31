@@ -1,31 +1,64 @@
 package com.hska.ebusiness.toolbar.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.hska.ebusiness.toolbar.R;
+import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.model.Offer;
+import com.hska.ebusiness.toolbar.model.Rental;
+
 import com.hska.ebusiness.toolbar.tasks.InsertOfferTask;
+import com.hska.ebusiness.toolbar.tasks.InsertRentalTask;
 
 import org.joda.time.DateTime;
+
+import java.util.Date;
 
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.*;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Offer offer = new Offer("Offer", "desc", "12345", 123, DateTime.now().getMillis(), DateTime.now().getMillis());
+        Offer offer = new Offer();
+        offer.setName("Hammer");
+        offer.setPrice(5);
+        offer.setDescription("HamHam");
+        offer.setZipCode("12345");
+        offer.setValidFrom(DateTime.now().minusDays(2).getMillis());
+        offer.setValidTo(DateTime.now().getMillis());
 
         final InsertOfferTask insertOfferTask = new InsertOfferTask(this);
         insertOfferTask.execute(offer);
 
-        final Intent intent = new Intent(this, EditOfferActivity.class);
-        intent.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
+        Rental rental1 = new Rental();
+        rental1.setStatus(0);
+        rental1.setOffer_fk(offer.getId());
+        rental1.setRentFrom(DateTime.now().minusDays(5).getMillis());
+        rental1.setRentTo(DateTime.now().getMillis());
+
+        final InsertRentalTask insertRentalTask1 = new InsertRentalTask(this);
+        insertRentalTask1.execute(rental1);
+
+        Rental rental2 = new Rental();
+        rental2.setStatus(1);
+        rental2.setOffer_fk(offer.getId());
+        rental2.setRentFrom(DateTime.now().minusMonths(1).minusDays(5).getMillis());
+        rental2.setRentTo(DateTime.now().minusMonths(1).getMillis());
+
+        final InsertRentalTask insertRentalTask2 = new InsertRentalTask(this);
+        insertRentalTask2.execute(rental2);
+
+
+        Intent intent = new Intent(this, ShowOfferActivity.class);
+        //intent.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
         intent.putExtra(TOOLBAR_OFFER, offer);
         startActivity(intent);
 

@@ -11,6 +11,7 @@ import android.util.Log;
 import com.hska.ebusiness.toolbar.model.Credentials;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.User;
+import com.hska.ebusiness.toolbar.model.Rental;
 
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.BalanceEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.CredentialsEntry;
@@ -19,7 +20,8 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.RentalEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 public class ToolbarDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 1;
+
     public static final String DATABASE_NAME = "toolbar.db";
 
     private final String TAG = this.getClass().getSimpleName();
@@ -125,6 +127,16 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     new String[]{Long.toString(id)}, null, null, null);
     }
 
+    //Neu
+    public Cursor findAllRentalsToOffer(final long offerId){
+        Log.d(TAG, ": findAllRentalsToOffer");
+
+        final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(RentalEntry.TABLE_NAME);
+        return queryBuilder.query(getReadableDatabase(), null, RentalEntry.COLUMN_NAME_OFFER_FK
+                + "=?", new String[]{Long.toString(offerId)}, null, null, null);
+    }
+
     public long insertOffer(final Offer offer) {
         Log.d(TAG, ": insertOffer: " + offer.getName());
 
@@ -166,13 +178,30 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor findCredentialsByUserId(final long userId) {
-        Log.d( TAG, ": findCredentialsByUserId " + userId );
+        Log.d(TAG, ": findCredentialsByUserId " + userId);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(CredentialsEntry.TABLE_NAME);
         return queryBuilder.query(getReadableDatabase(),
                 null, CredentialsEntry._ID + "=?",
                 new String[]{Long.toString(userId)}, null, null, null);
+    }
+
+    public int deleteOffer(final Offer offer){
+        Log.d(TAG, ": deleteOffer: " + offer.getName());
+
+        final String whereClause = OfferEntry._ID + "=?";
+        final String[] whereArgs = new String[]{String.valueOf(offer.getId())};
+        final ContentValues values = getOfferValues(offer);
+        return getWritableDatabase().delete(OfferEntry.TABLE_NAME, whereClause, whereArgs);
+    }
+
+    //Neu
+    public long insertRental(final Rental rental) {
+        Log.d(TAG, ": insertRental: " + rental.getOffer_fk());
+
+        final ContentValues values = getRentalValues(rental);
+        return getWritableDatabase().insert(RentalEntry.TABLE_NAME, null, values);
     }
 
     private ContentValues getOfferValues(final Offer offer) {
@@ -205,6 +234,19 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         final ContentValues values = new ContentValues();
         values.put(CredentialsEntry.COLUMN_NAME_PASSWORD, credentials.getPassword());
         values.put(CredentialsEntry.COLUMN_NAME_USER_FK, credentials.getUserId());
+
+        return  values;
+    }
+
+    //Neu
+    private ContentValues getRentalValues(final Rental rental) {
+        final ContentValues values = new ContentValues();
+        values.put(RentalEntry.COLUMN_NAME_FROM, rental.getRentFrom());
+        values.put(RentalEntry.COLUMN_NAME_TO, rental.getRentTo());
+        values.put(RentalEntry.COLUMN_NAME_STATUS, rental.getStatus());
+        values.put(RentalEntry.COLUMN_NAME_OFFER_FK, rental.getOffer_fk());
+        //values.put(RentalEntry.COLUMN_NAME_LENDER_FK, rental.getLender().getId());
+        //values.put(RentalEntry.COLUMN_NAME_HIRER_FK, rental.getHirer().getId());
 
         return values;
     }

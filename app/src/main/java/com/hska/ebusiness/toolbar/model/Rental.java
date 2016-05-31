@@ -12,22 +12,22 @@ public class Rental implements Parcelable {
 
     }
 
-    public Rental(final DateTime rentFrom, final DateTime rentTo, Integer status, Offer offer, User lender, User hirer) {
+    public Rental(final long rentFrom, final long rentTo, Integer status, Long offer_fk, Long lender_fk, Long hirer_fk) {
         this.rentFrom = rentFrom;
         this.rentTo = rentTo;
         this.status = status;
-        this.offer = offer;
-        this.lender = lender;
-        this.hirer = hirer;
+        this.offer_fk = offer_fk;
+        this.lender_fk = lender_fk;
+        this.hirer_fk = hirer_fk;
     }
 
     private Long id;
-    private DateTime rentFrom;
-    private DateTime rentTo;
+    private Long rentFrom;
+    private Long rentTo;
     private Integer status;
-    private Offer offer;
-    private User lender;
-    private User hirer;
+    private Long offer_fk;
+    private Long lender_fk;
+    private Long hirer_fk;
 
 
     public long getId() {
@@ -38,19 +38,19 @@ public class Rental implements Parcelable {
         this.id = id;
     }
 
-    public DateTime getRentFrom() {
+    public long getRentFrom() {
         return rentFrom;
     }
 
-    public void setRentFrom(final DateTime rentFrom) {
+    public void setRentFrom(final long rentFrom) {
         this.rentFrom = rentFrom;
     }
 
-    public DateTime getRentTo() {
+    public long getRentTo() {
         return rentTo;
     }
 
-    public void setRentTo(final DateTime rentTo) {
+    public void setRentTo(final long rentTo) {
         this.rentTo = rentTo;
     }
 
@@ -62,28 +62,28 @@ public class Rental implements Parcelable {
         this.status = status;
     }
 
-    public Offer getOffer(){
-        return offer;
+    public Long getOffer_fk(){
+        return offer_fk;
     }
 
-    public void setOffer(final Offer offer){
-        this.offer = offer;
+    public void setOffer_fk(final Long offer_fk){
+        this.offer_fk = offer_fk;
     }
 
-    public User getLender(){
-        return lender;
+    public Long getLender_fk(){
+        return lender_fk;
     }
 
-    public  void setLender(final User lender){
-        this.lender = lender;
+    public  void setLender_fk(final Long lender_fk){
+        this.lender_fk = lender_fk;
     }
 
-    public User getHirer(){
-        return hirer;
+    public Long getHirer_fk(){
+        return hirer_fk;
     }
 
-    public  void setHirer(final User hirer) {
-        this.hirer = hirer;
+    public  void setHirer_fk(final Long hirer_fk) {
+        this.hirer_fk = hirer_fk;
     }
 
 
@@ -93,9 +93,9 @@ public class Rental implements Parcelable {
                 "rentFrom=" + rentFrom +
                 ", rentTo=" + rentTo +
                 ", status=" + status +
-                ", offer=" + offer +
-                ", lender=" + lender +
-                ", hirer=" + hirer +
+                ", offer=" + offer_fk +
+                ", lender=" + lender_fk +
+                ", hirer=" + hirer_fk +
                 '}';
     }
 
@@ -106,12 +106,12 @@ public class Rental implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel destination, final int flags) {
-        destination.writeLong(rentFrom.getMillis());
-        destination.writeLong(rentTo.getMillis());
+        destination.writeLong(rentFrom);
+        destination.writeLong(rentTo);
         destination.writeInt(status);
-        destination.writeParcelable(offer, flags);
-        destination.writeParcelable(lender, flags);
-        destination.writeParcelable(hirer, flags);
+        destination.writeLong(offer_fk);
+        destination.writeLong(lender_fk);
+        destination.writeLong(hirer_fk);
     }
 
     public static final Parcelable.Creator<Rental> CREATOR = new Creator<Rental>() {
@@ -127,11 +127,11 @@ public class Rental implements Parcelable {
     };
 
     private Rental(final Parcel source) {
-        rentFrom = new DateTime(source.readLong());
-        rentTo = new DateTime(source.readLong());
+        rentFrom = source.readLong();
+        rentTo = source.readLong();
         status = new Integer(source.readInt());
-        offer = source.readParcelable(Offer.class.getClassLoader());
-        lender = source.readParcelable(User.class.getClassLoader());
-        hirer = source.readParcelable(User.class.getClassLoader());
+        offer_fk = source.readParcelable(Offer.class.getClassLoader());
+        lender_fk = source.readParcelable(User.class.getClassLoader());
+        hirer_fk = source.readParcelable(User.class.getClassLoader());
     }
 }

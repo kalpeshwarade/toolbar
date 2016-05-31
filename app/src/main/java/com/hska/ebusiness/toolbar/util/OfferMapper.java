@@ -8,7 +8,7 @@ import com.hska.ebusiness.toolbar.model.Offer;
 public class OfferMapper {
 
     public static Offer map(final Cursor cursor) {
-        final Offer offer = new Offer();
+        Offer offer = new Offer();
 
         offer.setId(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry._ID)));
         offer.setName(cursor.getString(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_NAME)));
