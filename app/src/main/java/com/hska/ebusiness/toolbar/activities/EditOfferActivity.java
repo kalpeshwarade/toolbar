@@ -1,5 +1,6 @@
 package com.hska.ebusiness.toolbar.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
@@ -8,13 +9,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcel;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -38,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,7 +49,6 @@ import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_IMAGE_OPTI
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.DIALOG_IMAGE_TITLE;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CAPTURE;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CHOOSE;
-import static com.hska.ebusiness.toolbar.util.ToolbarConstants.REQUEST_IMAGE_CROP;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE;
 
@@ -56,6 +57,7 @@ public class EditOfferActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
 
     private Boolean isEditMode = false;
+    private Uri file;
     private Offer offer;
     private AlertDialog.Builder builder;
     private ImageView offerImage;
@@ -95,33 +97,16 @@ public class EditOfferActivity extends AppCompatActivity {
             offer = new Offer();
         }
 
-        offerImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                builder.setTitle(DIALOG_IMAGE_TITLE);
-                builder.setItems(DIALOG_IMAGE_OPTIONS, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        final String selected = (String) DIALOG_IMAGE_OPTIONS[which];
-                        switch (selected) {
-                            case DIALOG_CAPTURE_IMAGE:
-                                try {
-                                    captureImage();
-                                } catch (IOException e) {
-                                    Log.e(TAG, ": " + e.getMessage());
-                                }
-                                break;
-                            case DIALOG_CHOOSE_IMAGE:
-                                chooseImage();
-                                break;
-                            default:
-                                dialog.dismiss();
-                        }
-                    }
-                });
-                builder.show();
-            }
-        });
+        /**
+         * Asks user for required permissions.
+         * If permissions are not granted, it will not be possible to choose or capture an image.
+         */
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+                offerImage.setOnClickListener(null);
+        } else {
+            addImageClickListener();
+        }
 
         final DatePickerDialog.OnDateSetListener fromDate = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -174,6 +159,46 @@ public class EditOfferActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        addImageClickListener();
+            }
+        }
+    }
+
+    private void addImageClickListener() {
+        offerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                builder.setTitle(DIALOG_IMAGE_TITLE);
+                builder.setItems(DIALOG_IMAGE_OPTIONS, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        final String selected = (String) DIALOG_IMAGE_OPTIONS[which];
+                        switch (selected) {
+                            case DIALOG_CAPTURE_IMAGE:
+                                try {
+                                    captureImage();
+                                } catch (IOException e) {
+                                    Log.e(TAG, "Error while taking picture: " + e.getMessage());
+                                }
+                                break;
+                            case DIALOG_CHOOSE_IMAGE:
+                                chooseImage();
+                                break;
+                            default:
+                                dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+    }
+
     private void updateFromDate() {
         final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT;
         final SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
@@ -199,7 +224,7 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     /**
-     * Gets called when item from menu gets selected
+     * Gets called when an item from the menu gets selected
      *
      * @param item the selected menu item
      * @return true if event was handled successfully
@@ -229,6 +254,7 @@ public class EditOfferActivity extends AppCompatActivity {
     /**
      * Initialize content if edit mode is activated.
      * Pre-fill fields with order values.
+     * Create placeholder for image if there is none.
      */
     private void initContent() {
         Log.d(TAG, ": Initialize Content");
@@ -236,8 +262,13 @@ public class EditOfferActivity extends AppCompatActivity {
         if(offer.getImage() != null) {
             final Uri image = Uri.parse(offer.getImage());
             if (image != null && new File(image.getPath()).exists()) {
-                final Bitmap offerBitmap = BitmapFactory.decodeFile(offer.getImage());
-                offerImage.setImageBitmap(offerBitmap);
+                try {
+                    offerImage.setImageBitmap(this.resizeImage(image));
+                } catch (IOException e) {
+                    Log.e(TAG, "Error while initializing image: " + e.getMessage());
+                }
+            } else {
+                // set Placeholder
             }
         }
 
@@ -286,33 +317,29 @@ public class EditOfferActivity extends AppCompatActivity {
      *
      * @param requestCode request code of the started intent
      * @param resultCode  status code to determine whether intent was successful
-     * @param data        returned data of the intent
+     * @param data        returned intent data (which is null usually since bitmap is stored to URI)
      */
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, @NonNull final Intent data) {
             switch (requestCode) {
                 case REQUEST_IMAGE_CAPTURE:
-                    if (data.getExtras().get("data") != null) {
+                    if (resultCode == RESULT_OK) {
+                        offer.setImage(file.toString());
                         try {
-                            createImageFile();
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(offer.getImage()));
-                            final float width = bitmap.getWidth();
-                            final float height = bitmap.getHeight();
-                            final int aimedHeight = 300;
-                            final int aimedWidth = (int) (width / height * (float) aimedHeight);
-                            Bitmap savedBitmap = Bitmap.createScaledBitmap(bitmap, aimedWidth, aimedHeight, false);
-                            offerImage.setImageBitmap(savedBitmap);
-                            break;
+                            offerImage.setImageBitmap(resizeImage(file));
                         } catch (IOException e) {
-                            Log.e(TAG, " : setBitmap " + e.getMessage());
+                            Log.e(TAG, "Error while getting captured image: " + e.getMessage());
                         }
+                        break;
                     }
                 case REQUEST_IMAGE_CHOOSE:
-                    chooseImage();
-                    if (data.getData() != null) {
-                        offer.setImage(data.getData().toString());
-                        offerImage.setImageURI(data.getData());
-                        cropImage();
+                    if (resultCode == RESULT_OK) {
+                        offer.setImage(file.toString());
+                        try {
+                            offerImage.setImageBitmap(resizeImage(file));
+                        } catch (IOException e) {
+                            Log.e(TAG, "Error while getting chosen image: " + e.getMessage());
+                        }
                         break;
                     }
                 default:
@@ -330,68 +357,77 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     /**
-     * Starts Intent to open camera and take picture
+     * Starts camera to take picture
+     *
+     * @throws IOException if there was an error while accessing the internal storage.
      */
     private void captureImage() throws IOException {
         Log.d(TAG, " : Capture image");
         final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (isIntentSupported(cameraIntent)) {
             try {
-                offer.setImage(Uri.fromFile(createImageFile()).toString());
-            } catch (IOException ex) {
-                Toast.makeText(this, "Whoops - could not access external storage!", Toast.LENGTH_SHORT).show();
+                file = Uri.fromFile(createImageFile());
+                offer.setImage(file.toString());
+            } catch (IOException e) {
+                Log.e(TAG, "Error while capturing image: " + e.getMessage());
+                Toast.makeText(this, "Could not access external storage!", Toast.LENGTH_SHORT).show();
             }
-            if (offer.getImage() != null) {
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, offer.getImage());
+            if (file != null) {
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
                 try {
                     startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(this, "Whoops - something went wrong!", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Error since there is no such activity: " + e.getMessage());
+                    Toast.makeText(this, "No such feature found!", Toast.LENGTH_SHORT).show();
                 }
             }
         } else {
-            Toast.makeText(this, "Whoops - your device doesn't support capturing images!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Seems like there is no camera!", Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
-     * Starts Intent to crop image
+     * Resizes image to fit in ImageView
+     *
+     * @param file Uri to the image path
+     * @return the resized bitmap
+     * @throws IOException if access to external storage fails
      */
-    private void cropImage() {
-        Intent cropIntent = new Intent("com.android.camera.action.CROP");
-        cropIntent.setDataAndType(Uri.parse(offer.getImage()), "image/*");
-        cropIntent.putExtra("crop", "true");
-        cropIntent.putExtra("aspectX", 1);
-        cropIntent.putExtra("aspectY", 1);
-        cropIntent.putExtra("outputX", 500);
-        cropIntent.putExtra("outputY", 500);
-        cropIntent.putExtra("return-data", true);
-        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, offer.getImage());
-        try {
-            startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "Whoops - your device doesn't support the crop action!", Toast.LENGTH_SHORT).show();
-        }
+    private Bitmap resizeImage(final Uri file) throws IOException {
+        final Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), file);
+
+        final float width = bitmap.getWidth();
+        final float height = bitmap.getHeight();
+
+        final int aimedHeight = 500;
+        final int aimedWidth = (int) (width / height * (float) aimedHeight);
+
+        final Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, aimedWidth, aimedHeight, false);
+
+        return scaledBitmap;
     }
 
     /**
      * Creates File for picture in external file directory
      *
-     * @return new File in App's private file storage
+     * @return new File in environment's public directory
      * @throws IOException if access to external storage fails
      */
     private File createImageFile() throws IOException {
         Log.d(TAG, " : Create image file");
 
-        final String dateFormat = ToolbarConstants.TOOLBAR_FILE_DATE_SUFFIX;
-        final SimpleDateFormat timeStamp = new SimpleDateFormat(dateFormat, Locale.GERMAN);
-        final String imageFileName = "OFFER_" + timeStamp + "_";
-        final File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if (storageDir != null && !storageDir.exists()) {
-            storageDir.mkdir();
+        final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT;
+        final String timeStamp = new SimpleDateFormat(dateFormat, Locale.GERMAN).format(new Date());
+        final File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Toolbar");
+
+        if (!storageDir.exists()){
+            if (!storageDir.mkdirs()){
+                return null;
+            }
         }
 
-        return new File(storageDir, imageFileName + ".png");
+        return new File(storageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
     }
 
     /**

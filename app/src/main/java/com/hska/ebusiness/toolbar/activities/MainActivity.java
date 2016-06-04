@@ -33,9 +33,6 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = ToolbarDBHelper.getInstance(context).findUserByUsername("aaa");
         User user1 = UserMapper.map(cursor);
 
-        //cursor = ToolbarDBHelper.getInstance(context).findUserByUsername("bbb");
-        //User user2 = UserMapper.map(cursor);
-
         Offer offer = new Offer();
         offer.setName("Hammer");
         offer.setImage(null);
@@ -77,15 +74,9 @@ public class MainActivity extends AppCompatActivity {
         offer2.setValidTo(DateTime.now().getMillis());
         offer2.setLender_fk(user1.getId());
 
-
         Intent intent = new Intent(this, ShowOfferActivity.class);
-        //intent.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
         intent.putExtra(TOOLBAR_OFFER, offer);
-        //intent.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
         startActivity(intent);
 
-        //final Intent intent = new Intent(this, ShowOfferActivity.class);
-        //intent.putExtra(ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE, false);
-        //startActivity(intent);
     }
 }

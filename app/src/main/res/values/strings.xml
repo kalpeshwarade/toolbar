@@ -9,13 +9,13 @@
     <string name="edit_text_hint_offer_name">Offer name...</string>
     <string name="title_activity_login">Sign in</string>
     <string-array name="menu_navigation">
-        <item >Search</item>
-        <item >MyOffers</item>
-        <item >MyRequests</item>
-        <item >Settings</item>
-        <item >Profile</item>
-        <item >Account</item>
-        <item >Logout</item>
+        <item>Search</item>
+        <item>MyOffers</item>
+        <item>MyRequests</item>
+        <item>Settings</item>
+        <item>Profile</item>
+        <item>Account</item>
+        <item>Logout</item>
 
     </string-array>
 
@@ -37,4 +37,8 @@
     <string name="login_forgot_password_text">Forgot Password?</string>
     <string name="login_register_now_text">Register Now!</string>
     <string name="toolbar_logo">ToolBar</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
