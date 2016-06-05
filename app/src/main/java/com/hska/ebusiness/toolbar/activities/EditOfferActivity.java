@@ -317,7 +317,8 @@ public class EditOfferActivity extends AppCompatActivity {
      *
      * @param requestCode request code of the started intent
      * @param resultCode  status code to determine whether intent was successful
-     * @param data        returned intent data (which is null usually since bitmap is stored to URI)
+     * @param data        returned intent data (which is null when taking picture
+     *                    with camera since the bitmap is stored to file URI)
      */
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, @NonNull final Intent data) {
@@ -333,7 +334,8 @@ public class EditOfferActivity extends AppCompatActivity {
                         break;
                     }
                 case REQUEST_IMAGE_CHOOSE:
-                    if (resultCode == RESULT_OK) {
+                    if (resultCode == RESULT_OK && data.getData() != null) {
+                        file = data.getData();
                         offer.setImage(file.toString());
                         try {
                             offerImage.setImageBitmap(resizeImage(file));
