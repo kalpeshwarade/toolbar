@@ -25,6 +25,8 @@ import java.util.List;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import org.joda.time.DateTime;
+
 public class OfferListFragment extends Fragment {
 
     private static final String TAG = "ListViewFragment";
@@ -75,13 +77,10 @@ public class OfferListFragment extends Fragment {
             hm.put("detail",offer.getDescription());
             hm.put("flag", Integer.toString(R.drawable.ic_home_black_24dp));
 
-            if(offer.getValidFrom() != null && offer.getValidTo() != null){
-
-                String time_from = df.format(offer.getValidFrom().toDate());
-                String time_to = df.format(offer.getValidTo().toDate());
-                String from_to= "From: " + time_from + "   " + "To: " + time_to;
-                hm.put("date", from_to);
-            }
+            String time_from = df.format( new DateTime(offer.getValidFrom()));
+            String time_to = df.format(new DateTime(offer.getValidTo()));
+            String from_to= "From: " + time_from + "   " + "To: " + time_to;
+            hm.put("date", from_to);
 
             hm.put("id", offer.getId() + "");
             aList.add(hm);

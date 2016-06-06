@@ -20,7 +20,7 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.RentalEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 public class ToolbarDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 14;
+    public static final int DATABASE_VERSION = 16;
 
     public static final String DATABASE_NAME = "toolbar.db";
 
