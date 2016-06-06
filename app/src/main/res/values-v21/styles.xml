@@ -1,3 +1,4 @@
+<<<<<<< f547b90fc30579e5ae24b052ce541c1bcaccacac
 <resources>
 
     <style name="AppTheme.NoActionBar">
@@ -7,3 +8,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>
+=======
+<resources>>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+</resources>
+>>>>>>> Erweiterung NavBar
