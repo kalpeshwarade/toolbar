@@ -120,6 +120,17 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     new String[]{Long.toString(id)}, null, null, null);
     }
 
+    public Cursor findOfferByZIP(String zip) {
+        Log.d( TAG, ": findOfferByZIP " + zip );
+
+        final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(OfferEntry.TABLE_NAME);
+        return queryBuilder.query(getReadableDatabase(),
+                new String[]{OfferEntry.COLUMN_NAME_ZIP_CODE, OfferEntry.COLUMN_NAME_NAME, OfferEntry.COLUMN_NAME_DESCRIPTION, OfferEntry.COLUMN_NAME_IMAGE,
+                        OfferEntry.COLUMN_NAME_PRICE, OfferEntry.COLUMN_NAME_VALID_FROM, OfferEntry.COLUMN_NAME_VALID_TO}, OfferEntry.COLUMN_NAME_ZIP_CODE+ "=?",
+                new String[]{zip}, null, null, null);
+    }
+
     public long insertOffer(final Offer offer) {
         Log.d(TAG, ": insertOffer: " + offer.getName());
 
