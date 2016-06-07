@@ -22,10 +22,12 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_search_black_48dp"
+        android:src="@drawable/ic_ask_question_48dp"
         android:id="@+id/imageView2"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:maxHeight="80dp"
+        android:maxWidth="80dp" />
 
     <TextView
         android:layout_width="fill_parent"
