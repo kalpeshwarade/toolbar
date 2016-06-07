@@ -3,6 +3,7 @@ package com.hska.ebusiness.toolbar.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +30,21 @@ import org.joda.time.DateTime;
 
 public class OfferListFragment extends Fragment {
 
-    private static final String TAG = "ListViewFragment";
+    private final String TAG = this.getClass().getSimpleName();
+
     static List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
     static SimpleAdapter listViewAdapter;
-    int positionElement;
-    private static int MENU_ADD = 1;
-    private static int MENU_DETAILS = 2;
     private static View rootView;
-
-    ListView listView;
     List<Offer> offerList;
 
+    /**
+     *  Used to initialize the Fragment ListFragment
+     *
+     * @param inflater to inject the Fragment
+     * @param container contains the Fragment
+     * @param savedInstanceState bundle with data for re-initialization
+     * @return returns the View (fragment)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class OfferListFragment extends Fragment {
             rootView = inflater.inflate(R.layout.offerlist_view, container, false);
         }
         catch (InflateException e) {
+            Log.e(TAG, "Error while initializing rootView for ListFragment: " + e.getMessage());
         }
 
         return rootView;
@@ -61,20 +67,17 @@ public class OfferListFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        String[] from = { "flag","price","name","detail","date" };
+        final String[] from = { "flag","price","name","detail","date" };
 
         // Ids of views in listview_layout
-        int[] to = { R.id.flag, R.id.price,R.id.name,R.id.detail,R.id.date};
+        final int[] to = { R.id.flag, R.id.price,R.id.name,R.id.detail,R.id.date};
 
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         offerList = getArguments().getParcelableArrayList("offers");
 
         aList.clear();
 
         for (Offer offer: offerList) {
-
-            Date f = new DateTime(offer.getValidFrom()).toDate();
-            Date t = new DateTime(offer.getValidTo()).toDate();
 
             HashMap<String, String> hm = new HashMap<String,String>();
             hm.put("name",offer.getName());
@@ -82,13 +85,14 @@ public class OfferListFragment extends Fragment {
             hm.put("detail",offer.getDescription());
             hm.put("flag", Integer.toString(R.drawable.ic_home_black_24dp));
 
-            String time_from = df.format(f);
-            String time_to = df.format(t);
+            String time_from = df.format(new DateTime(offer.getValidFrom()).toDate());
+            String time_to = df.format(new DateTime(offer.getValidTo()).toDate());
             String from_to= "From: " + time_from + "   " + "To: " + time_to;
 
             hm.put("date", from_to);
             hm.put("id", offer.getId() + "");
             aList.add(hm);
+            Log.d(TAG, ": " + offer.getName() + " - Added to ListFragment");
         }
 
         listViewAdapter = new SimpleAdapter(getActivity(), aList, R.layout.list_item, from, to);
@@ -107,7 +111,7 @@ public class OfferListFragment extends Fragment {
                 HashMap<String, String> selectedItem = (HashMap<String, String>) listView.getItemAtPosition(position);
 
                 String selectedItemID = selectedItem.get("id");
-                Offer selectedOfferItem = getOfferById(Integer.parseInt(selectedItemID));
+                final Offer selectedOfferItem = getOfferById(Integer.parseInt(selectedItemID));
 
                 Intent intent = new Intent(getContext(), ShowOfferActivity.class);
                 intent.putExtra(ToolbarConstants.TOOLBAR_OFFER, selectedOfferItem);
@@ -118,6 +122,11 @@ public class OfferListFragment extends Fragment {
 
     }
 
+    /**
+     *Search for offers by ID.
+     * @param id the selected
+     * @return returns an offer or null
+     */
     private Offer getOfferById(long id){
         for (Offer offer: offerList ) {
             if(offer.getId() == id)
@@ -125,10 +134,4 @@ public class OfferListFragment extends Fragment {
         }
         return null;
     }
-    //floting Action Button
-
-    //Listner
-
-    //Angebot klick --> Intent mitgeben
-
 }
