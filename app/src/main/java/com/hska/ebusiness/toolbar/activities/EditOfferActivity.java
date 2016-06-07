@@ -159,8 +159,16 @@ public class EditOfferActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Waiting for user permissions and allow image view click if permissions are granted
+     *
+     * @param requestCode the request code
+     * @param permissions all the permissions to ask for
+     * @param grantResults grant results by user
+     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == 0) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
@@ -169,6 +177,9 @@ public class EditOfferActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Add the image click listener once the permissions are granted
+     */
     private void addImageClickListener() {
         offerImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,12 +210,19 @@ public class EditOfferActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Sets the picked date to the text field 'from'
+     */
     private void updateFromDate() {
         final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT;
         final SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
         offerFrom.setText(sdf.format(calendarFrom.getTime()));
     }
 
+    /**
+     * Sets the picked date to the text field 'to'
+     */
     private void updateToDate() {
         final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT;
         final SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
@@ -239,13 +257,14 @@ public class EditOfferActivity extends AppCompatActivity {
                     updateOffer();
                 else
                     insertOffer();
-                final Intent mainIntentSave = new Intent(this, MainActivity.class);
-                mainIntentSave.putExtra(TOOLBAR_OFFER, offer);
-                startActivity(mainIntentSave);
+                final Intent showIntentSave = new Intent(this, ShowOfferActivity.class);
+                showIntentSave.putExtra(TOOLBAR_OFFER, offer);
+                startActivity(showIntentSave);
                 return true;
             case R.id.action_offer_edit_cancel:
-                final Intent mainIntentCancel = new Intent(this, MainActivity.class);
-                startActivity(mainIntentCancel);
+                final Intent showIntentCancel = new Intent(this, ShowOfferActivity.class);
+                showIntentCancel.putExtra(TOOLBAR_OFFER, offer);
+                startActivity(showIntentCancel);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -273,7 +292,7 @@ public class EditOfferActivity extends AppCompatActivity {
             offerImage.setImageResource(R.drawable.ic_insert_photo_black_48dp);
         }
 
-        offerName.setText(offer.getName().toString());
+        offerName.setText(offer.getName());
         offerDescription.setText(offer.getDescription());
         offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
         offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
