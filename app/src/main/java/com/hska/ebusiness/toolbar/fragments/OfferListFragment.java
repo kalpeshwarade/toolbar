@@ -1,10 +1,8 @@
 package com.hska.ebusiness.toolbar.fragments;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +11,14 @@ import android.widget.AdapterView;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.activities.EditOfferActivity;
+import com.hska.ebusiness.toolbar.activities.ShowOfferActivity;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.util.ToolbarConstants;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +62,7 @@ public class OfferListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         String[] from = { "flag","price","name","detail","date" };
+
         // Ids of views in listview_layout
         int[] to = { R.id.flag, R.id.price,R.id.name,R.id.detail,R.id.date};
 
@@ -71,17 +72,21 @@ public class OfferListFragment extends Fragment {
         aList.clear();
 
         for (Offer offer: offerList) {
+
+            Date f = new DateTime(offer.getValidFrom()).toDate();
+            Date t = new DateTime(offer.getValidTo()).toDate();
+
             HashMap<String, String> hm = new HashMap<String,String>();
             hm.put("name",offer.getName());
             hm.put("price", offer.getPrice() + "€");
             hm.put("detail",offer.getDescription());
             hm.put("flag", Integer.toString(R.drawable.ic_home_black_24dp));
 
-            String time_from = df.format( new DateTime(offer.getValidFrom()));
-            String time_to = df.format(new DateTime(offer.getValidTo()));
+            String time_from = df.format(f);
+            String time_to = df.format(t);
             String from_to= "From: " + time_from + "   " + "To: " + time_to;
-            hm.put("date", from_to);
 
+            hm.put("date", from_to);
             hm.put("id", offer.getId() + "");
             aList.add(hm);
         }
@@ -104,7 +109,7 @@ public class OfferListFragment extends Fragment {
                 String selectedItemID = selectedItem.get("id");
                 Offer selectedOfferItem = getOfferById(Integer.parseInt(selectedItemID));
 
-                Intent intent = new Intent(getContext(), EditOfferActivity.class);
+                Intent intent = new Intent(getContext(), ShowOfferActivity.class);
                 intent.putExtra(ToolbarConstants.TOOLBAR_OFFER, selectedOfferItem);
 
                 startActivity(intent);
