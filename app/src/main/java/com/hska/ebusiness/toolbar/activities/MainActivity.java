@@ -198,12 +198,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 title = getString(R.string.title_messages);
                 break;  
 
-            case 3:
-                fragment = new MonthExpFragment();
-                title = getString(R.string.title_offers);
-                break;
-
-
             default:
                 break;
         }

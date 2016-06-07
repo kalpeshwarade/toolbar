@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/action_offers"
-        android:title="@string/action_settings"
+        android:title="@string/action_offer"
         android:orderInCategory="100"
         app:showAsAction="never" />
 </menu>

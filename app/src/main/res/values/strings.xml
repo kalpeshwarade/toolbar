@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:src="http://schemas.android.com/tools">
     <string name="app_name">Toolbar</string>
     <string name="action_offer_edit_save">Save</string>
     <string name="action_settings">Settings</string>
@@ -8,34 +8,45 @@
     <string name="edit_text_hint_offer_description">Offer description...</string>
     <string name="edit_text_hint_offer_name">Offer name...</string>
     <string name="title_activity_login">Sign in</string>
+    <!-- strings related to navigation drawer -->
     <string name="title_home">Home</string>
     <string name="title_friends">Friends</string>
     <string name="title_messages">Messages</string>
     <string name="title_offers">Offers</string>
-    <string-array name="menu_navigation">
-        <item>Search</item>
-        <item>MyOffers</item>
-        <item>MyRequests</item>
-        <item>Settings</item>
-        <item>Profile</item>
-        <item>Account</item>
-        <item>Logout</item>
 
-    </string-array>
     <string name="action_search">Search</string>
     <string name="action_offer">My Offers</string>
+
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="hello_blank_fragment">Hello OFFER</string>
+
     <string name="nav_item_home">Home</string>
     <string name="nav_item_friends">Friends</string>
+    <string name="nav_item_search">Search</string>
+    <string name="nav_item_offers">MyOffers</string>
+    <string name="nav_item_requests">MyRequests</string>
+    <string name="nav_item_settings">Settings</string>
+    <string name="nav_item_profile">Profile</string>
+    <string name="nav_item_account">Account</string>
+    <string name="nav_item_logout">Logout</string>
     <string name="nav_item_notifications">Messages</string>
-    <!-- navigation drawer item labels  -->
+
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
         <item>@string/nav_item_friends</item>
         <item>@string/nav_item_notifications</item>
+        <item>@string/nav_item_search</item>
+        <item>@string/nav_item_offers</item>
+        <item>@string/nav_item_requests</item>
+        <item>@string/nav_item_settings</item>
+        <item>@string/nav_item_profile</item>
+        <item>@string/nav_item_account</item>
+        <item>@string/nav_item_logout</item>
     </string-array>
-
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -57,9 +68,4 @@
 
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_main">MainActivity</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="hello_blank_fragment">Hello OFFER</string>
 </resources>
