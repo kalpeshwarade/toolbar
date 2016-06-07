@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import com.hska.ebusiness.toolbar.R;
 
 
-public class HomeFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
-    public HomeFragment() {
+    public AccountFragment() {
         // Required empty public constructor
     }
 
@@ -25,7 +25,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_account, container, false);
 
 
         // Inflate the layout for this fragment

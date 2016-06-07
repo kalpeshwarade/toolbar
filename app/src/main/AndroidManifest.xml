@@ -14,10 +14,7 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
-<<<<<<< f547b90fc30579e5ae24b052ce541c1bcaccacac
-=======
-    <!-- android:name=".util.ToolbarApplication" -->
->>>>>>> Erweiterung NavBar
+
     <application
         android:name=".util.ToolbarApplication"
         android:allowBackup="true"
@@ -48,8 +45,4 @@
             android:theme="@style/AppTheme" />
     </application>
 
-<<<<<<< f547b90fc30579e5ae24b052ce541c1bcaccacac
 </manifest>
-=======
-</manifest>
->>>>>>> Erweiterung NavBar

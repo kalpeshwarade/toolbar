@@ -1,4 +1,3 @@
-<<<<<<< f547b90fc30579e5ae24b052ce541c1bcaccacac
 package com.hska.ebusiness.toolbar.activities;
 
 import android.content.Context;
@@ -10,7 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
+import com.hska.ebusiness.toolbar.fragments.AccountFragment;
+import com.hska.ebusiness.toolbar.fragments.LogoutFragment;
+import com.hska.ebusiness.toolbar.fragments.MyRequestsFragment;
 import com.hska.ebusiness.toolbar.fragments.OfferListFragment;
+import com.hska.ebusiness.toolbar.fragments.ProfilFragment;
+import com.hska.ebusiness.toolbar.fragments.SearchFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.Rental;
 
@@ -22,26 +26,44 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+
+import android.support.v4.app.FragmentManager;
+        import android.support.v4.app.FragmentTransaction;
+        import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
+        import android.view.Menu;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
 
     private Context context;
+    private static String TAG = MainActivity.class.getSimpleName();
+    private Toolbar mToolbar;
+    private FragmentDrawer drawerFragment;
 
+    /**
+     *
+     * @param savedInstanceState to restore activity state
+     */
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        Fragment offerListFragment = new OfferListFragment();
-                 Bundle args = new Bundle();
-                 args.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip());
-                 offerListFragment.setArguments(getIntent().getExtras());
-                 offerListFragment.setArguments(args);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, offerListFragment).commit();
+        drawerFragment = (FragmentDrawer)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
+        drawerFragment.setDrawerListener(this);
+        displayView(0);
+
     }
-
 
     private List<Offer> getOfferByZip(){
 
@@ -94,53 +116,10 @@ public class MainActivity extends AppCompatActivity {
 
         return offerList;
     }
-}
-=======
-package com.hska.ebusiness.toolbar.activities;
+
+    //----------------------------------------
 
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import com.hska.ebusiness.toolbar.R;
-import com.hska.ebusiness.toolbar.fragments.FriendsFragment;
-import com.hska.ebusiness.toolbar.fragments.HomeFragment;
-import com.hska.ebusiness.toolbar.fragments.MessagesFragment;
-import com.hska.ebusiness.toolbar.fragments.MyOffersFragment;
-
-import sun.bob.mcalendarview.views.MonthExpFragment;
-
-public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
-
-    private static String TAG = MainActivity.class.getSimpleName();
-    private Toolbar mToolbar;
-    private FragmentDrawer drawerFragment;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        drawerFragment = (FragmentDrawer)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
-        drawerFragment.setDrawerListener(this);
-        displayView(0);
-    }
 
 
     @Override
@@ -186,17 +165,39 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new HomeFragment();
-                title = getString(R.string.title_home);
+                fragment = new SearchFragment();
+                title = getString(R.string.title_search);
                 break;
+
             case 1:
-                fragment = new FriendsFragment();
-                title = getString(R.string.title_friends);
+                fragment = new OfferListFragment();
+
+                Bundle args = new Bundle();
+                args.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip());
+                fragment.setArguments(getIntent().getExtras());
+                fragment.setArguments(args);
+                title = getString(R.string.title_offers);
                 break;
+
             case 2:
-                fragment = new MessagesFragment();
-                title = getString(R.string.title_messages);
-                break;  
+                fragment = new MyRequestsFragment();
+                title = getString(R.string.title_requests);
+                break;
+
+            case 3:
+                fragment = new ProfilFragment();
+                title = getString(R.string.title_profile);
+                break;
+
+            case 4:
+                fragment = new AccountFragment();
+                title = getString(R.string.title_account);
+                break;
+
+            case 5:
+                fragment = new LogoutFragment();
+                title = getString(R.string.title_logout);
+                break;
 
             default:
                 break;
@@ -212,11 +213,4 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             getSupportActionBar().setTitle(title);
         }
     }
-<<<<<<< e82a5426d53e8ae8872d446fab012bf55376cd46
 }
->>>>>>> Erweiterung NavBar
-=======
-
-
-}
->>>>>>> Implementierung Navbar
