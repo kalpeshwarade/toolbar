@@ -266,13 +266,13 @@ public class EditOfferActivity extends AppCompatActivity {
                     offerImage.setImageBitmap(this.resizeImage(image));
                 } catch (IOException e) {
                     Log.e(TAG, "Error while initializing image: " + e.getMessage());
+                    return;
                 }
-            } else {
-                // set Placeholder
             }
+        } else {
+            offerImage.setImageResource(R.drawable.ic_insert_photo_black_48dp);
         }
 
-        // offer.setName("Hans");
         offerName.setText(offer.getName().toString());
         offerDescription.setText(offer.getDescription());
         offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
@@ -401,12 +401,10 @@ public class EditOfferActivity extends AppCompatActivity {
         final float width = bitmap.getWidth();
         final float height = bitmap.getHeight();
 
-        final int aimedHeight = 500;
+        final int aimedHeight = 1024;
         final int aimedWidth = (int) (width / height * (float) aimedHeight);
 
-        final Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, aimedWidth, aimedHeight, false);
-
-        return scaledBitmap;
+        return Bitmap.createScaledBitmap(bitmap, aimedWidth, aimedHeight, false);
     }
 
     /**
