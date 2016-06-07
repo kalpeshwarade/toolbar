@@ -8,10 +8,17 @@ import com.hska.ebusiness.toolbar.model.User;
  * Created by bettinakuhefuss on 30.05.16.
  */
 
+/**
+ * Class to Map a Cursor to a User Object
+ */
 public class UserMapper {
 
+    /**
+     * Creates an User
+     * @param cursor Database object
+     * @return User Object
+     */
     public static User map(final Cursor cursor) {
-        cursor.moveToFirst();
         User user = new User();
         user.setId(cursor.getLong(cursor.getColumnIndex("_id")));
         user.setUsername(cursor.getString(cursor.getColumnIndex("username")));

@@ -166,6 +166,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return getWritableDatabase().update(OfferEntry.TABLE_NAME, values, whereClause, whereArgs);
     }
 
+    /**
+     * Method to insert an User object into the database
+     * @param user User object
+     * @return long value.
+     */
     public long insertUser(final User user) {
         Log.d(TAG, ": insertUser: " + user.getUsername());
 
@@ -173,6 +178,10 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return getWritableDatabase().insert(UserEntry.TABLE_NAME, null, values);
     }
 
+    /* Method to insert a Credentials object into the database
+    * @param credentials Credentials object
+    * @return long value.
+    */
     public long insertCredentials(final Credentials credentials) {
         Log.d(TAG, ": insertCredentials: " + credentials.getUserId());
 
@@ -180,6 +189,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return getWritableDatabase().insert(CredentialsEntry.TABLE_NAME, null, values);
     }
 
+    /**
+     * Method to search a User regarding the username in the database.
+     * @param username
+     * @return Cursor object
+     */
     public Cursor findUserByUsername(final String username) {
         Log.d( TAG, ": findUserByUsername " + username );
 
@@ -190,6 +204,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                 new String[]{username}, null, null, null);
     }
 
+    /**
+     * Method to search Credentials regarding the UserId in the database.
+     * @param userId Id of the User.
+     * @return Cursor object
+     */
     public Cursor findCredentialsByUserId(final long userId) {
         Log.d(TAG, ": findCredentialsByUserId " + userId);
 
@@ -232,6 +251,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return values;
     }
 
+    /**
+     * Method to create ContentValues out of a User object.
+     * @param user User object.
+     * @return ContentValues object.
+     */
     private ContentValues getUserValues(final User user) {
         final ContentValues values = new ContentValues();
         values.put(UserEntry.COLUMN_NAME_USERNAME, user.getUsername());
@@ -244,6 +268,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return values;
     }
 
+    /**
+     * Method to create ContentValues out of a Credentials object.
+     * @param credentials Credentials object
+     * @return ContentValue object
+     */
     private ContentValues getCredentialValues(final Credentials credentials) {
         final ContentValues values = new ContentValues();
         values.put(CredentialsEntry.COLUMN_NAME_PASSWORD, credentials.getPassword());

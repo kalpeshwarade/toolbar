@@ -7,19 +7,33 @@ import android.os.StrictMode;
 
 import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
 
+/*
+Class for the Credentials Entity
+ */
 public class Credentials implements Parcelable {
 
+    /*
+    Standard Constructor
+     */
     public Credentials() {
         super();
     }
 
+    /**
+     * Constructor
+     */
     public Credentials(String password, long userId) {
         this.password = password;
         this.userId = userId;
     }
 
+    // id of the Credentials
     private long id;
+
+    // Password
     private String password;
+
+    // ID of the User
     private long userId;
 
     public long getId() {
@@ -79,7 +93,9 @@ public class Credentials implements Parcelable {
         }
     };
 
-
+    /*
+    Constructor for the database transaction
+     */
     private Credentials(final Parcel source) {
         id = source.readLong();
         password = source.readString();

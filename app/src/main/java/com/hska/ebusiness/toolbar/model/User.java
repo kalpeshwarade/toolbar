@@ -4,18 +4,28 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Class for the User Entity
+ */
 public class User implements Parcelable {
 
     public User() {
 
     }
 
+    // ID of the user
     private long id;
+    // Unique Name of the User
     private String username;
+    // Email of the User
     private String email;
+    // Street of the User
     private String street;
+    // Zip Code of the User
     private String zipCode;
+    // Country of the User
     private String country;
+    // Description of the User
     private String description;
 
     public long getId() {
