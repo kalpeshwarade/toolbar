@@ -18,14 +18,12 @@ public class InsertRentalTask extends AsyncTask<Rental, Void, Integer> {
 
     @Override
     protected void onPreExecute() {
-        ProgressDialog.show(context, "", "Please wait...", true);
     }
 
     @Override
     protected Integer doInBackground(final Rental... params) {
         rental = params[0];
-
-        return ((int) ToolbarDBHelper.getInstance(context).insertRental(rental));
+        return ((int) ToolbarDBHelper.getInstance(context).insertRental(rental, ToolbarDBHelper.getInstance(context).getWritableDatabase()));
     }
 
     @Override

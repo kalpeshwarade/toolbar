@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Method to create activity
+     *
      * @param savedInstanceState Bundle object
      */
     @Override
@@ -48,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         context = getApplicationContext();
-        insertMockingUser();
 
         dialogBuilder = new AlertDialog.Builder(this);
         username = (EditText) findViewById(R.id.login_username);
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Functionality and Validations for the login button
         final Button loginButton = (Button) findViewById(R.id.btn_login);
-        if(loginButton != null) {
+        if (loginButton != null) {
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -113,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Dummy-Functionality for the “Forgot password“ link
         final TextView textForgotPassword = (TextView) findViewById(R.id.link_forgot_pw);
-        if(textForgotPassword != null) {
+        if (textForgotPassword != null) {
             textForgotPassword.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -136,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Dummy-Functionality for the “Register now“ link
         final TextView registerNow = (TextView) findViewById(R.id.link_register);
-        if(registerNow != null) {
+        if (registerNow != null) {
             registerNow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -159,41 +160,46 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Method to search a User regarding the entered username
+     *
      * @param username Entered username
      * @return User object
      */
     private User getUserByUsername(String username) {
         Cursor cursor = ToolbarDBHelper.getInstance(context).findUserByUsername(username);
-        if(cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             return UserMapper.map(cursor);
         }
+        cursor.close();
         return null;
     }
 
     /**
      * Method to search a Credential regarding the ID of a user
+     *
      * @param userId ID of an existing User
      * @return Credentials object
      */
     public Credentials getCredentialsByUserId(final long userId) {
         Cursor cursor = ToolbarDBHelper.getInstance(context).findCredentialsByUserId(userId);
-        if(cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             return CredentialsMapper.map(cursor);
         }
+        cursor.close();
         return null;
     }
 
     /**
      * Method to check if the entered credentials are valid
+     *
      * @param userId Id of the user
-     * @param pw Entered password
+     * @param pw     Entered password
      * @return Boolean value
      */
     public boolean checkCredentials(final long userId, final String pw) {
 
         Cursor cursor = ToolbarDBHelper.getInstance(context).findCredentialsByUserId(userId);
 
-        if(cursor != null && cursor.moveToFirst() && pw != null) {
+        if (cursor != null && cursor.moveToFirst() && pw != null) {
             Credentials credentials = CredentialsMapper.map(cursor);
             if (credentials.getPassword().equals(pw)) {
                 return true;
@@ -201,49 +207,10 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         }
+        cursor.close();
         return false;
     }
 
-    /**
-     * Method to insert some Mocking Data into the database
-     */
-    private void insertMockingUser() {
-        User user1 = new User();
-        user1.setUsername("aaa");
-        user1.setDescription("Test-User 1");
-        user1.setCountry("Deutschland");
-        user1.setZipCode("12345");
-        user1.setEmail("test1@test1.de");
-        user1.setStreet("Teststrasse");
 
-        ToolbarDBHelper.getInstance(context).insertUser(user1);
-        insertMockingCredentials("aaa", "123");
-
-        User user2 = new User();
-        user2.setUsername("bbb");
-        user2.setDescription("Test-User 2");
-        user2.setCountry("Deutschland");
-        user2.setZipCode("12345");
-        user2.setEmail("test1@test1.de");
-        user2.setStreet("Teststrasse");
-
-        ToolbarDBHelper.getInstance(context).insertUser(user2);
-        insertMockingCredentials("bbb", "123");
-    }
-
-    /*
-    Method to insert some Mocking Data into the database
-    */
-    private void insertMockingCredentials(final String username, final String pwd) {
-
-        if(username != null) {
-            long userId1 = getUserByUsername(username).getId();
-
-            Credentials credentials1 = new Credentials();
-            credentials1.setPassword(pwd);
-            credentials1.setUserId(userId1);
-
-            ToolbarDBHelper.getInstance(context).insertCredentials(credentials1);
-        }
-    }
 }
+

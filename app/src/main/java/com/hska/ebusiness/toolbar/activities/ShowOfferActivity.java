@@ -208,6 +208,7 @@ public class ShowOfferActivity extends AppCompatActivity {
             cursor.close();
             return rentalList;
         }
+
         cursor.close();
         return null;
     }
