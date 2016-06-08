@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.hska.ebusiness.toolbar.util.RentalMapper;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.w3c.dom.Text;
 
 import android.net.Uri;
 
@@ -46,7 +48,14 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     private Offer offer;
     private User user;
+
     private ImageView offerImage;
+    private TextView offerName;
+    private TextView offerDescription;
+    private TextView offerFrom;
+    private TextView offerTo;
+    private TextView offerZipCode;
+    private TextView offerPrice;
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -58,6 +67,14 @@ public class ShowOfferActivity extends AppCompatActivity {
         offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
         user = ((ToolbarApplication) getApplication()).getCurrentUser();
 
+        offerImage = (ImageView) findViewById(R.id.show_image_offer_image);
+        offerName = (TextView) findViewById(R.id.show_input_offer_name);
+        offerDescription = (TextView) findViewById(R.id.show_input_offer_description);
+        offerFrom = (TextView) findViewById(R.id.show_input_offer_from);
+        offerTo = (TextView) findViewById(R.id.show_input_offer_to);
+        offerZipCode = (TextView) findViewById(R.id.show_input_zip_code);
+        offerPrice = (TextView) findViewById(R.id.show_input_offer_price);
+
         Log.d(TAG, offer.toString());
 
         initContent();
@@ -65,15 +82,17 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     private void initContent() {
         if(offer.getName() != null)
-            ((TextView) findViewById(R.id.show_input_offer_name)).setText(offer.getName());
+            offerName.setText(offer.getName());
         if(offer.getPrice() > 0)
-            ((TextView) findViewById(R.id.show_input_offer_price)).setText(String.valueOf(offer.getPrice()));
+            offerPrice.setText(String.valueOf(offer.getPrice()));
         if(offer.getDescription() != null)
-            ((TextView) findViewById(R.id.show_input_offer_description)).setText(offer.getDescription());
+            offerDescription.setText(offer.getDescription());
+
+        offerFrom.setText(String.valueOf(offer.getValidFrom()));
+        offerTo.setText(String.valueOf(offer.getValidTo()));
+        offerZipCode.setText(offer.getZipCode());
 
         if(offer.getImage() != null) {
-            offerImage = (ImageView) findViewById(R.id.image_offer_image);
-
             final Uri image = Uri.parse(offer.getImage());
             if (image != null && new File(image.getPath()).exists()) {
                 try {
@@ -138,7 +157,8 @@ public class ShowOfferActivity extends AppCompatActivity {
             case R.id.offer_show_delete:
                 if(user.getId() == offer.getLender_fk()) {
                     ToolbarDBHelper.getInstance(this).deleteOffer(offer);
-                    Toast.makeText(ShowOfferActivity.this, offer.getDescription(), Toast.LENGTH_LONG).show();
+                    Intent menuIntent = new Intent(this, MainActivity.class);
+                    startActivity(menuIntent);
                 }
                 else
                     Toast.makeText(ShowOfferActivity.this, "Falscher User!", Toast.LENGTH_LONG).show();

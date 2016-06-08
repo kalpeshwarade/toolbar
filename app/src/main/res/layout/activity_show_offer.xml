@@ -40,14 +40,52 @@
         android:layout_below="@+id/show_image_offer_image"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/layout_date_pickers"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_input_offer_description">
+
+    <TextView
+        android:id="@+id/show_input_offer_from"
+        android:inputType="none"
+        android:drawableEnd="@drawable/ic_event_black_24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/show_input_offer_to"
+        android:drawableEnd="@drawable/ic_event_black_24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"/>
+    </LinearLayout>
+
+<TextView
+android:id="@+id/show_input_zip_code"
+android:hint="@string/edit_text_hint_zip_code"
+android:drawableEnd="@drawable/ic_home_black_24dp"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_below="@+id/layout_date_pickers"
+android:layout_marginLeft="20dp"
+android:layout_marginRight="20dp"/>
 
     <sun.bob.mcalendarview.MCalendarView
         android:layout_width="400dp"
         android:layout_height="200dp"
         tools:context=".MainActivity"
         android:id="@+id/calendar"
-        android:layout_below="@+id/show_input_offer_description"/>
+        android:layout_below="@+id/show_input_zip_code"/>
 
 
 
