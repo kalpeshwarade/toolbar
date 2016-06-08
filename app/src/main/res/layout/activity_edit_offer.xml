@@ -5,47 +5,81 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
 
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="5dp">
+
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="245dp">
+
+            <ImageView
+                android:id="@+id/image_offer_image"
+                android:background="@drawable/picture_frame"
+                android:layout_marginTop="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="20dp" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="245dp">
+
+            <EditText
+                android:id="@+id/edit_input_offer_name"
+                android:hint="@string/edit_text_hint_offer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="245dp">
+
+            <EditText
+                android:id="@+id/input_offer_description"
+                android:hint="@string/edit_text_hint_offer_description"
+                android:gravity="top"
+                android:singleLine="false"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/layout_edit_offer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="2dp">
 
-        <ImageView
-            android:id="@+id/image_offer_image"
-            android:background="@drawable/picture_frame"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_margin="20dp" />
 
-        <EditText
-            android:id="@+id/edit_input_offer_name"
-            android:hint="@string/edit_text_hint_offer_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/image_offer_image"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp" />
-
-        <EditText
-            android:id="@+id/input_offer_description"
-            android:hint="@string/edit_text_hint_offer_description"
-            android:gravity="top"
-            android:singleLine="false"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_below="@+id/image_offer_image"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
 
         <LinearLayout
             android:id="@+id/layout_date_pickers"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/input_offer_description">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/input_offer_from"
