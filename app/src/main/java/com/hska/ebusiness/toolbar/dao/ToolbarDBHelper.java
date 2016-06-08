@@ -27,7 +27,6 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 public class ToolbarDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 8;
 
-
     public static final String DATABASE_NAME = "toolbar.db";
 
     private final String TAG = this.getClass().getSimpleName();

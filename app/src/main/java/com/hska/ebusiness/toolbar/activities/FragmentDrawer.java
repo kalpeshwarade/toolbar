@@ -14,11 +14,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.adapter.NavigationDrawerAdapter;
 import com.hska.ebusiness.toolbar.model.NavDrawerItem;
+
+import java.util.ArrayList;
 import java.util.List;
-import com.hska.ebusiness.toolbar.R;
 
 public class FragmentDrawer extends Fragment {
 
@@ -91,7 +92,7 @@ public class FragmentDrawer extends Fragment {
     public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar) {
         containerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.action_drawer_open, R.string.action_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);

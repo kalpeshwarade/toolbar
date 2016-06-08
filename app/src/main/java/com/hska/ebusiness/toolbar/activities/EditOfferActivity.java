@@ -63,6 +63,7 @@ public class EditOfferActivity extends AppCompatActivity {
     private ImageView offerImage;
     private EditText offerName;
     private EditText offerDescription;
+    private EditText offerPrice;
     private EditText offerFrom;
     private EditText offerTo;
     private EditText offerZipCode;
@@ -82,6 +83,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
         offerName = (EditText) findViewById(R.id.edit_input_offer_name);
         offerDescription = (EditText) findViewById(R.id.input_offer_description);
+        offerPrice = (EditText) findViewById(R.id.input_offer_price);
         offerFrom = (EditText) findViewById(R.id.input_offer_from);
         offerTo = (EditText) findViewById(R.id.input_offer_to);
         offerZipCode = (EditText) findViewById(R.id.input_zip_code);
@@ -107,6 +109,9 @@ public class EditOfferActivity extends AppCompatActivity {
         } else {
             addImageClickListener();
         }
+
+        if (offerPrice != null)
+            offerTo.setRawInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         final DatePickerDialog.OnDateSetListener fromDate = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -237,7 +242,7 @@ public class EditOfferActivity extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.action_menu_edit_offer, menu);
+        getMenuInflater().inflate(R.menu.menu_action_edit_offer, menu);
         return true;
     }
 
@@ -294,6 +299,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
         offerName.setText(offer.getName());
         offerDescription.setText(offer.getDescription());
+        offerPrice.setText(String.valueOf(offer.getPrice()));
         offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
         offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
         offerZipCode.setText(offer.getZipCode());
@@ -307,6 +313,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
         offer.setName(offerName.getText().toString());
         offer.setDescription(offerDescription.getText().toString());
+        offer.setPrice(Long.parseLong(offerPrice.getText().toString()));
         offer.setZipCode(offerZipCode.getText().toString());
         offer.setValidFrom(DateTime.parse(offerFrom.getText().toString()).getMillis());
         offer.setValidTo(DateTime.parse(offerTo.getText().toString()).getMillis());
@@ -323,6 +330,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
         offer.setName(offerName.getText().toString());
         offer.setDescription(offerDescription.getText().toString());
+        offer.setPrice(Long.parseLong(offerPrice.getText().toString()));
         offer.setZipCode(offerZipCode.getText().toString());
         offer.setValidFrom(DateTime.parse(offerFrom.getText().toString()).getMillis());
         offer.setValidTo(DateTime.parse(offerTo.getText().toString()).getMillis());

@@ -4,15 +4,13 @@
 
     <item
         android:id="@+id/offer_show_delete"
-        android:title="Cancel"
+        android:title="@string/action_delete"
         android:icon="@drawable/ic_delete_black_24dp"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/offer_show_edit"
-        android:title="Edit"
+        android:title="@string/action_edit"
         android:icon="@drawable/ic_mode_edit_black_24dp"
         app:showAsAction="ifRoom" />
-
-
 </menu>

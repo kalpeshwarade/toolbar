@@ -4,10 +4,6 @@ import android.provider.BaseColumns;
 
 public final class DatabaseSchema {
 
-    private DatabaseSchema() {
-
-    }
-
     public static abstract class UserEntry implements BaseColumns {
         public static final String TABLE_NAME = "user";
         public static final String COLUMN_NAME_USERNAME = "username";

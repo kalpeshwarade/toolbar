@@ -22,11 +22,11 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:gravity="center"
-            android:textSize="32dip"/>
+            android:textSize="20pt"/>
 
         <ImageView android:src="@drawable/ic_build_white_48dp"
             android:layout_width="120dp"
-            android:layout_height="72dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="12dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.17" />
@@ -71,8 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:text="@string/login_forgot_password_text"
-            android:gravity="center"
-            android:textSize="16dip"/>
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/link_register"
@@ -80,8 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:text="@string/login_register_now_text"
-            android:gravity="center"
-            android:textSize="16dip"/>
+            android:gravity="center"/>
 
     </LinearLayout>
 
