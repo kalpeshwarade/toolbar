@@ -59,7 +59,11 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
 
-
+    /**
+     * Used to initialize the layout and field of the Activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,11 @@ public class ShowOfferActivity extends AppCompatActivity {
         initContent();
     }
 
+    /**
+     * Initialize content if edit mode is activated.
+     * Pre-fill fields with order values.
+     * Create placeholder for image if there is none.
+     */
     private void initContent() {
         if(offer.getName() != null)
             offerName.setText(offer.getName());
@@ -87,10 +96,12 @@ public class ShowOfferActivity extends AppCompatActivity {
             offerPrice.setText(String.valueOf(offer.getPrice()));
         if(offer.getDescription() != null)
             offerDescription.setText(offer.getDescription());
+        if(offer.getZipCode() != null)
+            offerZipCode.setText(offer.getZipCode());
 
-        offerFrom.setText(String.valueOf(offer.getValidFrom()));
-        offerTo.setText(String.valueOf(offer.getValidTo()));
-        offerZipCode.setText(offer.getZipCode());
+        offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
+        offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
+
 
         if(offer.getImage() != null) {
             final Uri image = Uri.parse(offer.getImage());
@@ -125,6 +136,12 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Returns all rental Days from all rentals to mark them in the calendar
+     * @param fromDate
+     * @param toDate
+     * @return
+     */
     public List<DateTime> getRentalDays(DateTime fromDate, DateTime toDate){
         List<DateTime> daysList = new ArrayList<DateTime>();
         int days = Days.daysBetween(fromDate, toDate).getDays();
@@ -176,6 +193,11 @@ public class ShowOfferActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Returns a List with all Rentals of an offer
+     * @param id
+     * @return
+     */
     public ArrayList<Rental> getRentals(long id){
         Cursor cursor = ToolbarDBHelper.getInstance(this).findAllRentalsToOffer(id);
         if(cursor != null && cursor.moveToFirst()) {
