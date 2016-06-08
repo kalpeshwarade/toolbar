@@ -92,7 +92,7 @@ public class EditOfferActivity extends AppCompatActivity {
         isEditMode = getIntent().getExtras().getBoolean(TOOLBAR_OFFER_IS_EDIT_MODE);
         builder = new AlertDialog.Builder(this);
 
-        if(isEditMode) {
+        if (isEditMode) {
             offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
             initContent();
         } else {
@@ -104,8 +104,8 @@ public class EditOfferActivity extends AppCompatActivity {
          * If permissions are not granted, it will not be possible to choose or capture an image.
          */
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
-                offerImage.setOnClickListener(null);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            offerImage.setOnClickListener(null);
         } else {
             addImageClickListener();
         }
@@ -140,7 +140,7 @@ public class EditOfferActivity extends AppCompatActivity {
         offerFrom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(final View v, final boolean hasFocus) {
-                if(hasFocus)
+                if (hasFocus)
                     new DatePickerDialog(EditOfferActivity.this, fromDate,
                             calendarFrom.get(Calendar.YEAR),
                             calendarTo.get(Calendar.MONTH),
@@ -154,13 +154,13 @@ public class EditOfferActivity extends AppCompatActivity {
         offerTo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(final View v, final boolean hasFocus) {
-                if(hasFocus)
+                if (hasFocus)
                     new DatePickerDialog(EditOfferActivity.this, toDate,
                             calendarTo.get(Calendar.YEAR),
                             calendarTo.get(Calendar.MONTH),
                             calendarTo.get(Calendar.DAY_OF_MONTH))
                             .show();
-                }
+            }
         });
     }
 
@@ -168,8 +168,8 @@ public class EditOfferActivity extends AppCompatActivity {
     /**
      * Waiting for user permissions and allow image view click if permissions are granted
      *
-     * @param requestCode the request code
-     * @param permissions all the permissions to ask for
+     * @param requestCode  the request code
+     * @param permissions  all the permissions to ask for
      * @param grantResults grant results by user
      */
     @Override
@@ -177,7 +177,7 @@ public class EditOfferActivity extends AppCompatActivity {
         if (requestCode == 0) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                        addImageClickListener();
+                addImageClickListener();
             }
         }
     }
@@ -258,7 +258,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_offer_edit_save:
-                if(isEditMode)
+                if (isEditMode)
                     updateOffer();
                 else
                     insertOffer();
@@ -283,7 +283,7 @@ public class EditOfferActivity extends AppCompatActivity {
     private void initContent() {
         Log.d(TAG, ": Initialize Content");
 
-        if(offer.getImage() != null) {
+        if (offer.getImage() != null) {
             final Uri image = Uri.parse(offer.getImage());
             if (image != null && new File(image.getPath()).exists()) {
                 try {
@@ -349,31 +349,31 @@ public class EditOfferActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, @NonNull final Intent data) {
-            switch (requestCode) {
-                case REQUEST_IMAGE_CAPTURE:
-                    if (resultCode == RESULT_OK) {
-                        offer.setImage(file.toString());
-                        try {
-                            offerImage.setImageBitmap(resizeImage(file));
-                        } catch (IOException e) {
-                            Log.e(TAG, "Error while getting captured image: " + e.getMessage());
-                        }
-                        break;
+        switch (requestCode) {
+            case REQUEST_IMAGE_CAPTURE:
+                if (resultCode == RESULT_OK) {
+                    offer.setImage(file.toString());
+                    try {
+                        offerImage.setImageBitmap(resizeImage(file));
+                    } catch (IOException e) {
+                        Log.e(TAG, "Error while getting captured image: " + e.getMessage());
                     }
-                case REQUEST_IMAGE_CHOOSE:
-                    if (resultCode == RESULT_OK && data.getData() != null) {
-                        file = data.getData();
-                        offer.setImage(file.toString());
-                        try {
-                            offerImage.setImageBitmap(resizeImage(file));
-                        } catch (IOException e) {
-                            Log.e(TAG, "Error while getting chosen image: " + e.getMessage());
-                        }
-                        break;
+                    break;
+                }
+            case REQUEST_IMAGE_CHOOSE:
+                if (resultCode == RESULT_OK && data.getData() != null) {
+                    file = data.getData();
+                    offer.setImage(file.toString());
+                    try {
+                        offerImage.setImageBitmap(resizeImage(file));
+                    } catch (IOException e) {
+                        Log.e(TAG, "Error while getting chosen image: " + e.getMessage());
                     }
-                default:
-                    super.onActivityResult(requestCode, resultCode, data);
-            }
+                    break;
+                }
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     /**
@@ -447,14 +447,14 @@ public class EditOfferActivity extends AppCompatActivity {
         final String timeStamp = new SimpleDateFormat(dateFormat, Locale.GERMAN).format(new Date());
         final File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Toolbar");
 
-        if (!storageDir.exists()){
-            if (!storageDir.mkdirs()){
+        if (!storageDir.exists()) {
+            if (!storageDir.mkdirs()) {
                 return null;
             }
         }
 
         return new File(storageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
+                "IMG_" + timeStamp + ".jpg");
     }
 
     /**

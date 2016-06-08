@@ -36,6 +36,8 @@ import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_
 
 public class ShowOfferActivity extends AppCompatActivity {
 
+    private final String TAG = this.getClass().getSimpleName();
+
     private Offer offer;
     private User user;
 
@@ -46,8 +48,6 @@ public class ShowOfferActivity extends AppCompatActivity {
     private TextView offerTo;
     private TextView offerZipCode;
     private TextView offerPrice;
-
-    private final String TAG = this.getClass().getSimpleName();
 
     /**
      * Used to initialize the layout and field of the Activity
@@ -80,20 +80,21 @@ public class ShowOfferActivity extends AppCompatActivity {
      * Create placeholder for image if there is none.
      */
     private void initContent() {
-        if(offer.getName() != null)
+        if (offer.getName() != null)
             offerName.setText(offer.getName());
-        if(offer.getPrice() > 0)
+        if (offer.getPrice() > 0)
             offerPrice.setText(String.valueOf(offer.getPrice()));
-        if(offer.getDescription() != null)
+        if (offer.getDescription() != null)
             offerDescription.setText(offer.getDescription());
-        if(offer.getZipCode() != null)
+        if (offer.getZipCode() != null)
             offerZipCode.setText(offer.getZipCode());
+        if (!new DateTime(0).equals(new DateTime(offer.getValidFrom())))
+            offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
+        if (!new DateTime(0).equals(new DateTime(offer.getValidTo())))
+            offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
 
-        offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
-        offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
 
-
-        if(offer.getImage() != null) {
+        if (offer.getImage() != null) {
             final Uri image = Uri.parse(offer.getImage());
             if (image != null && new File(image.getPath()).exists()) {
                 try {
@@ -110,14 +111,14 @@ public class ShowOfferActivity extends AppCompatActivity {
 
         MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
 
-        if(getRentals(offer.getId()) != null) {
+        if (getRentals(offer.getId()) != null) {
             for (final Rental rental : getRentals(offer.getId())) {
                 if (rental.getStatus() == 1) {
                     final DateTime fromDate = new DateTime(rental.getRentFrom());
                     final DateTime toDate = new DateTime(rental.getRentTo());
 
                     for (final DateTime date : getRentalDays(fromDate, toDate)) {
-                        if(calendarView != null)
+                        if (calendarView != null)
                             calendarView.markDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
                     }
                 }
@@ -128,11 +129,12 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     /**
      * Get all rental Days from all rentals to mark them in the calendar
+     *
      * @param fromDate the begin of timespan
-     * @param toDate the end of timespan
+     * @param toDate   the end of timespan
      * @return the list of rentals in the timespan
      */
-    public List<DateTime> getRentalDays(final DateTime fromDate, final DateTime toDate){
+    public List<DateTime> getRentalDays(final DateTime fromDate, final DateTime toDate) {
         final List<DateTime> daysList = new ArrayList<>();
 
         for (DateTime date = fromDate; !date.isAfter(toDate); date = date.plusDays(1)) {
@@ -161,12 +163,11 @@ public class ShowOfferActivity extends AppCompatActivity {
                 return true;
 
             case R.id.offer_show_delete:
-                if(user.getId() == offer.getLender_fk()) {
+                if (user.getId() == offer.getLender_fk()) {
                     ToolbarDBHelper.getInstance(this).deleteOffer(offer);
                     final Intent intentMain = new Intent(this, MainActivity.class);
                     startActivity(intentMain);
-                }
-                else
+                } else
                     Toast.makeText(ShowOfferActivity.this, "No permissions to delete!", Toast.LENGTH_LONG).show();
                 return true;
             default:
@@ -182,20 +183,21 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     /**
      * Returns a list with all rentals of an offer
+     *
      * @param id the offer id
      * @return the list of rentals
      */
-    public ArrayList<Rental> getRentals(final long id){
+    public ArrayList<Rental> getRentals(final long id) {
         final Cursor cursor = ToolbarDBHelper.getInstance(this).findAllRentalsToOffer(id);
-        if(cursor != null && cursor.moveToFirst()) {
-            final ArrayList <Rental> rentalList = new ArrayList<>();
-            for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+        if (cursor != null && cursor.moveToFirst()) {
+            final ArrayList<Rental> rentalList = new ArrayList<>();
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 rentalList.add(RentalMapper.map(cursor));
             }
             cursor.close();
             return rentalList;
         }
-        if(cursor != null)
+        if (cursor != null)
             cursor.close();
         return null;
     }
