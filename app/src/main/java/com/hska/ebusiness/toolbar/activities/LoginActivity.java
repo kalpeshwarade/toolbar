@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
@@ -135,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
         if(cursor != null && cursor.moveToFirst()) {
             return UserMapper.map(cursor);
         }
+        cursor.close();
         return null;
     }
 
@@ -143,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
         if(cursor != null && cursor.moveToFirst()) {
             return CredentialsMapper.map(cursor);
         }
+        cursor.close();
         return null;
     }
 
@@ -158,41 +161,13 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         }
+        cursor.close();
         return false;
     }
 
     public void insertMockingUser() {
-        User user1 = new User();
-        user1.setUsername("aaa");
-        user1.setDescription("Test-User 1");
-        user1.setCountry("Deutschland");
-        user1.setZipCode("12345");
-        user1.setEmail("test1@test1.de");
-        user1.setStreet("Teststrasse");
 
-        ToolbarDBHelper.getInstance(context).insertUser(user1);
-        insertMockingCredentials("aaa", "123");
-
-        User user2 = new User();
-        user2.setUsername("bbb");
-        user2.setDescription("Test-User 2");
-        user2.setCountry("Deutschland");
-        user2.setZipCode("12345");
-        user2.setEmail("test1@test1.de");
-        user2.setStreet("Teststrasse");
-
-        ToolbarDBHelper.getInstance(context).insertUser(user2);
-        insertMockingCredentials("bbb", "123");
     }
 
-    public void insertMockingCredentials(final String username, final String pwd) {
 
-        long userId1 = getUserByUsername(username).getId();
-
-        Credentials credentials1 = new Credentials();
-        credentials1.setPassword(pwd);
-        credentials1.setUserId(userId1);
-
-        ToolbarDBHelper.getInstance(context).insertCredentials(credentials1);
-    }
 }

@@ -20,7 +20,7 @@ public class UserMapper {
         user.setZipCode(cursor.getString(cursor.getColumnIndex("zip_code")));
         user.setCountry(cursor.getString(cursor.getColumnIndex("country")));
         user.setDescription(cursor.getString(cursor.getColumnIndex("description")));
-        cursor.close();
+        //cursor.close();
 
         return user;
     }

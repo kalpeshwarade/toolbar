@@ -18,9 +18,8 @@ public class RentalMapper {
         rental.setRentTo(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_TO)));
         rental.setStatus(cursor.getInt(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_STATUS)));
         rental.setOffer(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_OFFER_FK)));
-        //rental.setHirer(Long.parseLong(cursor.getString(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_HIRER_FK))));
-        //rental.setLender(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_LENDER_FK)));
-        //ToDO
+        rental.setHirer(Long.parseLong(cursor.getString(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_HIRER_FK))));
+        rental.setLender(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_LENDER_FK)));
 
         //cursor.close();
         return rental;
