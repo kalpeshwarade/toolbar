@@ -10,11 +10,8 @@ import android.util.Log;
 
 import com.hska.ebusiness.toolbar.model.Credentials;
 import com.hska.ebusiness.toolbar.model.Offer;
-import com.hska.ebusiness.toolbar.model.User;
 import com.hska.ebusiness.toolbar.model.Rental;
-import com.hska.ebusiness.toolbar.tasks.InsertOfferTask;
-import com.hska.ebusiness.toolbar.tasks.InsertRentalTask;
-import com.hska.ebusiness.toolbar.util.UserMapper;
+import com.hska.ebusiness.toolbar.model.User;
 
 import org.joda.time.DateTime;
 

@@ -4,9 +4,7 @@ import android.database.Cursor;
 
 import com.hska.ebusiness.toolbar.model.User;
 
-/**
- * Created by bettinakuhefuss on 30.05.16.
- */
+import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 /**
  * Class to Map a Cursor to a User Object
@@ -20,13 +18,15 @@ public class UserMapper {
      */
     public static User map(final Cursor cursor) {
         User user = new User();
-        user.setId(cursor.getLong(cursor.getColumnIndex("_id")));
-        user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
-        user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-        user.setStreet(cursor.getString(cursor.getColumnIndex("street")));
-        user.setZipCode(cursor.getString(cursor.getColumnIndex("zip_code")));
-        user.setCountry(cursor.getString(cursor.getColumnIndex("country")));
-        user.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+
+        user.setId(cursor.getLong(cursor.getColumnIndex(UserEntry._ID)));
+        user.setUsername(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_USERNAME)));
+        user.setEmail(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_EMAIL)));
+        user.setStreet(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_STREET)));
+        user.setZipCode(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_ZIP_CODE)));
+        user.setCountry(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_COUNTRY)));
+        user.setDescription(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_DESCRIPTION)));
+
         //cursor.close();
 
         return user;
