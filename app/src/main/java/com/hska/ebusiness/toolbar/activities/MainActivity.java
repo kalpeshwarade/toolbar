@@ -16,7 +16,6 @@ import android.view.View;
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.fragments.AccountFragment;
-import com.hska.ebusiness.toolbar.fragments.LogoutFragment;
 import com.hska.ebusiness.toolbar.fragments.MyRequestsFragment;
 import com.hska.ebusiness.toolbar.fragments.OfferListFragment;
 import com.hska.ebusiness.toolbar.fragments.ProfilFragment;
@@ -24,6 +23,7 @@ import com.hska.ebusiness.toolbar.fragments.SearchFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.Rental;
 import com.hska.ebusiness.toolbar.model.User;
+import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 import com.hska.ebusiness.toolbar.util.ToolbarConstants;
 import com.hska.ebusiness.toolbar.util.UserMapper;
 
@@ -32,7 +32,7 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
+public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private Context context;
     private final String TAG = this.getClass().getSimpleName();
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private FragmentDrawer drawerFragment;
 
     /**
-     *
      * @param savedInstanceState to restore activity state
      */
     @Override
@@ -51,17 +50,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        drawerFragment = (FragmentDrawer)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment = (FragmentDrawer) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
         displayView(0);
 
     }
 
-    private List<Offer> getOfferByZip(){
+    private List<Offer> getOfferByZip() {
 
         Cursor cursor = ToolbarDBHelper.getInstance(context).findUserByUsername("aaa");
         User user1 = UserMapper.map(cursor);
@@ -121,23 +120,22 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         displayView(position);
     }
 
-    private void displayView(int position) {
+    private void displayView(final int position) {
         Fragment fragment = null;
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new SearchFragment();
-                title = getString(R.string.title_search);
-                break;
-
-            case 1:
                 fragment = new OfferListFragment();
-
-                Bundle args = new Bundle();
+                final Bundle args = new Bundle();
                 args.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip());
                 fragment.setArguments(getIntent().getExtras());
                 fragment.setArguments(args);
                 title = getString(R.string.title_offers);
+                break;
+
+            case 1:
+                fragment = new SearchFragment();
+                title = getString(R.string.title_search);
                 break;
 
             case 2:
@@ -159,8 +157,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
 
             case 5:
-                fragment = new LogoutFragment();
-                title = getString(R.string.title_logout);
+                final ToolbarApplication application = (ToolbarApplication) getApplication();
+                application.setCurrentUser(null);
+
+                final Intent logoutIntent = new Intent(this, LoginActivity.class);
+                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(logoutIntent);
+                finish();
                 break;
 
             default:
@@ -176,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             /**
              * Set ActionBar title
              */
-            if(getSupportActionBar() != null)
+            if (getSupportActionBar() != null)
                 getSupportActionBar().setTitle(title);
         }
     }
