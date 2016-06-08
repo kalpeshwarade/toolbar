@@ -12,9 +12,9 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 public class UserMapper {
 
     /**
-     * Creates an User
+     * Creates a user from database
      * @param cursor Database object
-     * @return User Object
+     * @return User object
      */
     public static User map(final Cursor cursor) {
         User user = new User();
@@ -26,8 +26,6 @@ public class UserMapper {
         user.setZipCode(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_ZIP_CODE)));
         user.setCountry(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_COUNTRY)));
         user.setDescription(cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_NAME_DESCRIPTION)));
-
-        //cursor.close();
 
         return user;
     }

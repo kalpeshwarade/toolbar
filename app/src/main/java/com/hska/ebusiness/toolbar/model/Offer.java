@@ -99,11 +99,11 @@ public class Offer implements Parcelable {
         this.validTo = validTo;
     }
 
-    public Long getLender_fk(){
+    public Long getLender_fk() {
         return lender_fk;
     }
 
-    public  void setLender_fk(final Long lender_fk){
+    public void setLender_fk(final Long lender_fk) {
         this.lender_fk = lender_fk;
     }
 
@@ -130,6 +130,7 @@ public class Offer implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel destination, final int flags) {
+        destination.writeLong(id);
         destination.writeString(name);
         destination.writeString(image);
         destination.writeString(description);
@@ -153,6 +154,7 @@ public class Offer implements Parcelable {
     };
 
     private Offer(final Parcel source) {
+        id = source.readLong();
         name = source.readString();
         image = source.readString();
         description = source.readString();

@@ -1,31 +1,35 @@
 package com.hska.ebusiness.toolbar.model;
 
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Class for the User Entity
- */
 public class User implements Parcelable {
 
     public User() {
 
     }
 
-    // ID of the user
+    public User(final String username, final String email, final String street, final String zipCode, final String country, final String description) {
+        this.username = username;
+        this.email = email;
+        this.street = street;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.description = description;
+    }
+
     private long id;
-    // Unique Name of the User
+
     private String username;
-    // Email of the User
+
     private String email;
-    // Street of the User
+
     private String street;
-    // Zip Code of the User
+
     private String zipCode;
-    // Country of the User
+
     private String country;
-    // Description of the User
+
     private String description;
 
     public long getId() {
@@ -107,6 +111,7 @@ public class User implements Parcelable {
         destination.writeLong(id);
         destination.writeString(username);
         destination.writeString(email);
+        destination.writeString(street);
         destination.writeString(zipCode);
         destination.writeString(country);
         destination.writeString(description);
@@ -120,7 +125,7 @@ public class User implements Parcelable {
 
         @Override
         public User[] newArray(final int size) {
-            return new User[0];
+            return new User[size];
         }
     };
 

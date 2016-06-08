@@ -1,11 +1,7 @@
 package com.hska.ebusiness.toolbar.model;
 
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.StrictMode;
-
-import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
 
 /*
 Class for the Credentials Entity
@@ -27,13 +23,10 @@ public class Credentials implements Parcelable {
         this.userId = userId;
     }
 
-    // id of the Credentials
     private long id;
 
-    // Password
     private String password;
 
-    // ID of the User
     private long userId;
 
     public long getId() {
@@ -76,7 +69,6 @@ public class Credentials implements Parcelable {
     @Override
     public void writeToParcel(final Parcel destination, final int flags) {
         destination.writeLong(id);
-        // HASH PASSWORD HERE
         destination.writeString(password);
         destination.writeLong(userId);
     }
@@ -93,9 +85,6 @@ public class Credentials implements Parcelable {
         }
     };
 
-    /*
-    Constructor for the database transaction
-     */
     private Credentials(final Parcel source) {
         id = source.readLong();
         password = source.readString();

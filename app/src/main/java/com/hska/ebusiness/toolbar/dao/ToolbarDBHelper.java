@@ -22,7 +22,7 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.RentalEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 public class ToolbarDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 9;
 
     public static final String DATABASE_NAME = "toolbar.db";
 
@@ -113,14 +113,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
-    public Cursor findAllUsers() {
-        Log.d(TAG, ": findAllUsers");
-        final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        final String sortOder = UserEntry.COLUMN_NAME_USERNAME + " ASC";
-        queryBuilder.setTables(UserEntry.TABLE_NAME);
-        return queryBuilder.query(getReadableDatabase(), null, null, null, null, null, sortOder);
-    }
-
     public Cursor findOfferById(final long id) {
         Log.d( TAG, ": findOfferById " + id );
 
@@ -172,11 +164,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @param user User object
      * @return long value.
      */
-    public long insertUser(final User user, final SQLiteDatabase db) {
+    public long insertUser(final User user) {
         Log.d(TAG, ": insertUser: " + user.getUsername());
 
         final ContentValues values = getUserValues(user);
-        return db.insert(UserEntry.TABLE_NAME, null, values);
+        return getWritableDatabase().insert(UserEntry.TABLE_NAME, null, values);
     }
 
     /* Method to insert a Credentials object into the database
@@ -297,7 +289,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
-        Log.d(TAG, ": onCreate Database with version" + db.getVersion());
+        Log.d(TAG, ": onCreate Database with version " + db.getVersion());
 
         db.execSQL(SQL_CREATE_TABLE_USER);
         db.execSQL(SQL_CREATE_TABLE_CREDENTIALS);
@@ -305,34 +297,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_OFFER);
         db.execSQL(SQL_CREATE_TABLE_RENTAL);
 
-
-        User user1 = new User();
-        user1.setUsername("aaa");
-        user1.setDescription("Test-User 1");
-        user1.setCountry("Deutschland");
-        user1.setZipCode("12345");
-        user1.setEmail("test1@test1.de");
-        user1.setStreet("Teststrasse");
-        this.insertUser(user1, db);
+        User user1 = new User("test", "test@test.de", "Teststrasse 1", "12345", "Germany", "Ich bin cool");
+        this.insertUser(user1);
 
         Credentials credentials1 = new Credentials();
         credentials1.setPassword("123");
         credentials1.setUserId(user1.getId());
         this.insertCredentials(credentials1, db);
-
-        User user2 = new User();
-        user2.setUsername("bbb");
-        user2.setDescription("Test-User 2");
-        user2.setCountry("Deutschland");
-        user2.setZipCode("12345");
-        user2.setEmail("test1@test1.de");
-        user2.setStreet("Teststrasse");
-        this.insertUser(user2, db);
-
-        Credentials credentials2 = new Credentials();
-        credentials1.setPassword("123");
-        credentials1.setUserId(user1.getId());
-        this.insertCredentials(credentials2, db);
 
         Offer offer = new Offer();
         offer.setName("Hammer");
@@ -345,7 +316,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         offer.setLender_fk(user1.getId());
         this.insertOffer(offer, db);
 
-
         Offer offer2 = new Offer();
         offer2.setImage(null);
         offer2.setName("Hammer2");
@@ -356,7 +326,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         offer2.setValidTo(DateTime.now().getMillis());
         offer2.setLender_fk(user1.getId());
         this.insertOffer(offer2, db);
-
 
         Rental rental1 = new Rental();
         rental1.setStatus(0);
