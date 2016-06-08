@@ -60,32 +60,32 @@ public class Rental implements Parcelable {
         this.status = status;
     }
 
-    public long getOffer(){
+    public long getOffer() {
         return offer;
     }
 
-    public void setOffer(final long offer){
+    public void setOffer(final long offer) {
         this.offer = offer;
     }
 
-    public long getLender(){
+    public long getLender() {
         return lender;
     }
 
-    public  void setLender(final long lender){
+    public void setLender(final long lender) {
         this.lender = lender;
     }
 
-    public long getHirer(){
+    public long getHirer() {
         return hirer;
     }
 
-    public  void setHirer(final long hirer) {
+    public void setHirer(final long hirer) {
         this.hirer = hirer;
     }
 
 
-        @Override
+    @Override
     public String toString() {
         return "Rental{" +
                 "rentFrom=" + rentFrom +

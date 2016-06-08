@@ -2,6 +2,7 @@ package com.hska.ebusiness.toolbar.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.InflateException;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.hska.ebusiness.toolbar.R;
+import com.hska.ebusiness.toolbar.activities.EditOfferActivity;
 import com.hska.ebusiness.toolbar.activities.ShowOfferActivity;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.util.ToolbarConstants;
@@ -52,7 +54,7 @@ public class OfferListFragment extends Fragment {
         }
 
         try {
-            rootView = inflater.inflate(R.layout.offerlist_view, container, false);
+            rootView = inflater.inflate(R.layout.fragment_offer_list, container, false);
         }
         catch (final InflateException e) {
             Log.e(TAG, "Error while initializing rootView for ListFragment: " + e.getMessage());
@@ -77,7 +79,7 @@ public class OfferListFragment extends Fragment {
         aList.clear();
 
         for (final Offer offer: offerList) {
-            final HashMap<String, String> hm = new HashMap<String,String>();
+            final HashMap<String, String> hm = new HashMap<>();
 
             hm.put("name",offer.getName());
             hm.put("price", offer.getPrice() + "€");
@@ -115,6 +117,16 @@ public class OfferListFragment extends Fragment {
                 intent.putExtra(ToolbarConstants.TOOLBAR_OFFER, selectedOfferItem);
 
                 startActivity(intent);
+            }
+        });
+
+        final FloatingActionButton buttonNewOffer = (FloatingActionButton) getView().findViewById(R.id.add_offer_floating_button);
+        buttonNewOffer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent newOfferIntent = new Intent(getContext(), EditOfferActivity.class);
+                newOfferIntent.putExtra(ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE, false);
+                startActivity(newOfferIntent);
             }
         });
 

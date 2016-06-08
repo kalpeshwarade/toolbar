@@ -4,135 +4,128 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="245dp"
             android:layout_margin="15dp">
 
             <ImageView
                 android:id="@+id/image_offer_image"
-                android:background="@drawable/picture_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:scaleType="centerCrop"
-                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="15dp"/>
+                android:layout_centerVertical="true"
+                android:layout_margin="15dp"
+                android:background="@drawable/picture_frame"
+                android:gravity="center"
+                android:scaleType="centerCrop" />
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:gravity="center_vertical"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:gravity="center_vertical">
 
             <EditText
                 android:id="@+id/edit_input_offer_name"
-                android:hint="@string/edit_text_hint_offer_name"
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"/>
+                android:layout_margin="15dp"
+                android:gravity="center_vertical"
+                android:hint="@string/edit_text_hint_offer_name" />
         </android.support.v7.widget.CardView>
 
 
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:gravity="center_vertical">
 
             <EditText
                 android:id="@+id/input_offer_description"
-                android:hint="@string/edit_text_hint_offer_description"
-                android:singleLine="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:gravity="center_vertical"
-                android:layout_margin="15dp"/>
+                android:hint="@string/edit_text_hint_offer_description"
+                android:singleLine="false" />
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:gravity="center_vertical"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:gravity="center_vertical">
 
             <EditText
                 android:id="@+id/input_offer_price"
-                android:hint="@string/edit_text_hint_offer_price"
-                android:drawableEnd="@drawable/ic_local_atm_black_24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:drawableEnd="@drawable/ic_local_atm_black_24dp"
                 android:gravity="center_vertical"
-                android:layout_margin="15dp"/>
+                android:hint="@string/edit_text_hint_offer_price" />
         </android.support.v7.widget.CardView>
 
 
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:gravity="center_vertical"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:gravity="center_vertical">
 
             <LinearLayout
                 android:id="@+id/layout_date_pickers"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/input_offer_from"
-                    android:hint="@string/edit_text_hint_valid_from"
-                    android:inputType="none"
-                    android:drawableEnd="@drawable/ic_event_black_24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_margin="15dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_event_black_24dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/edit_text_hint_valid_from"
+                    android:inputType="none" />
 
                 <EditText
                     android:id="@+id/input_offer_to"
-                    android:hint="@string/edit_text_hint_valid_to"
-                    android:inputType="date"
-                    android:drawableEnd="@drawable/ic_event_black_24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_margin="15dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_event_black_24dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/edit_text_hint_valid_to"
+                    android:inputType="date" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:gravity="center_vertical"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:gravity="center_vertical">
 
             <EditText
                 android:id="@+id/input_zip_code"
-                android:hint="@string/edit_text_hint_zip_code"
-                android:drawableEnd="@drawable/ic_home_black_24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:drawableEnd="@drawable/ic_home_black_24dp"
                 android:gravity="center_vertical"
-                android:layout_margin="15dp"/>
+                android:hint="@string/edit_text_hint_zip_code" />
         </android.support.v7.widget.CardView>
 
     </LinearLayout>

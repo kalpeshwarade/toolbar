@@ -1,85 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorFront"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/colorFront"
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
+        android:paddingTop="56dp"
         android:weightSum="1">
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:gravity="center"
             android:text="@string/toolbar_logo"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="20pt"/>
+            android:textSize="20pt"
+            android:textStyle="bold" />
 
-        <ImageView android:src="@drawable/ic_build_white_48dp"
+        <ImageView
             android:layout_width="120dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="12dp"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.17" />
+            android:layout_marginBottom="12dp"
+            android:layout_weight="0.17"
+            android:src="@drawable/ic_build_white_48dp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
             <EditText
                 android:id="@+id/login_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/login_username_hint"/>
+                android:hint="@string/login_username_hint" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
             <EditText
                 android:id="@+id/login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/login_password_hint"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
             android:padding="12dp"
-            android:text="@string/login_loginButton_text"/>
+            android:text="@string/login_loginButton_text" />
 
         <TextView
             android:id="@+id/link_forgot_pw"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="@string/login_forgot_password_text"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/login_forgot_password_text" />
 
         <TextView
             android:id="@+id/link_register"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="@string/login_register_now_text"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/login_register_now_text" />
 
     </LinearLayout>
 

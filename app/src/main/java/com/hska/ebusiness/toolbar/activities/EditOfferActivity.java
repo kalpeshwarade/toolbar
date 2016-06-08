@@ -94,9 +94,11 @@ public class EditOfferActivity extends AppCompatActivity {
 
         if (isEditMode) {
             offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
+            this.setTitle("Edit offer");
             initContent();
         } else {
             offer = new Offer();
+            this.setTitle("New offer");
         }
 
         /**
@@ -267,9 +269,14 @@ public class EditOfferActivity extends AppCompatActivity {
                 startActivity(showIntentSave);
                 return true;
             case R.id.action_offer_edit_cancel:
-                final Intent showIntentCancel = new Intent(this, ShowOfferActivity.class);
-                showIntentCancel.putExtra(TOOLBAR_OFFER, offer);
-                startActivity(showIntentCancel);
+                if (isEditMode) {
+                    final Intent showIntentCancel = new Intent(this, ShowOfferActivity.class);
+                    showIntentCancel.putExtra(TOOLBAR_OFFER, offer);
+                    startActivity(showIntentCancel);
+                } else {
+                    final Intent mainIntentCancel = new Intent(this, MainActivity.class);
+                    startActivity(mainIntentCancel);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }

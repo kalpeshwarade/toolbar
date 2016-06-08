@@ -1,10 +1,9 @@
 package com.hska.ebusiness.toolbar.fragments;
 
-import android.content.Context;
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +65,6 @@ public class MyOffersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_offers, container, false);
-
 
         // Inflate the layout for this fragment
         return rootView;

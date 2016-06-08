@@ -2,44 +2,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.hska.ebusiness.toolbar.fragments.HomeFragment"
     android:background="#e1a67b"
-    android:contextClickable="true">
-
+    android:contextClickable="true"
+    android:orientation="vertical"
+    tools:context="com.hska.ebusiness.toolbar.fragments.HomeFragment">
 
     <TextView
         android:id="@+id/label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="45dp"
-        android:text="Account"
-        android:textStyle="bold"
-        android:layout_marginBottom="102dp"
         android:layout_above="@+id/imageView2"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="102dp"
+        android:gravity="center_horizontal"
+        android:text="Account"
+        android:textSize="45dp"
+        android:textStyle="bold" />
 
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_circled_user_48"
-        android:id="@+id/imageView2"
-        android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:maxWidth="80dp"
         android:minHeight="80dp"
-        android:nestedScrollingEnabled="false" />
+        android:nestedScrollingEnabled="false"
+        android:src="@drawable/ic_circled_user_48" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:gravity="center_horizontal"
-        android:text="Account Fragment  - This is not implemented yet"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="135dp"
-        android:id="@+id/textView" />
+        android:gravity="center_horizontal"
+        android:text="Account Fragment  - This is not implemented yet"
+        android:textSize="12dp" />
 
 </RelativeLayout>

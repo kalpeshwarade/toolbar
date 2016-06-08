@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.hska.ebusiness.toolbar.R;
@@ -17,13 +18,11 @@ import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.fragments.AccountFragment;
 import com.hska.ebusiness.toolbar.fragments.MyRequestsFragment;
 import com.hska.ebusiness.toolbar.fragments.OfferListFragment;
-import com.hska.ebusiness.toolbar.fragments.ProfilFragment;
 import com.hska.ebusiness.toolbar.fragments.SearchFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.User;
 import com.hska.ebusiness.toolbar.util.OfferMapper;
 import com.hska.ebusiness.toolbar.util.ToolbarApplication;
-import com.hska.ebusiness.toolbar.util.ToolbarConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 
     @Override
-    public void onDrawerItemSelected(View view, int position) {
+    public void onDrawerItemSelected(final View view, final int position) {
         displayView(position);
     }
 
@@ -82,14 +81,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             case 2:
                 fragment = new MyRequestsFragment();
-                Intent intent = new Intent(this, EditOfferActivity.class);
-                intent.putExtra(ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE, false);
-                startActivity(intent);
                 title = getString(R.string.title_requests);
                 break;
 
             case 3:
-                fragment = new ProfilFragment();
+                fragment = new AccountFragment();
                 title = getString(R.string.title_profile);
                 break;
 
@@ -118,15 +114,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             fragmentTransaction.replace(R.id.container_body, fragment);
             fragmentTransaction.commit();
 
-            /**
-             * Set ActionBar title
-             */
-            if (getSupportActionBar() != null)
-                getSupportActionBar().setTitle(title);
+            this.setTitle(title);
         }
     }
 
     private List<Offer> getOfferByZip(final String zip) {
+        Log.d(TAG, "getOfferByZip: " + zip);
         final Cursor cursor = ToolbarDBHelper.getInstance(this).findOfferByZIP(zip);
         if (zip != null && cursor != null && cursor.moveToFirst()) {
             final ArrayList<Offer> offerList = new ArrayList<>();
