@@ -10,40 +10,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import sun.bob.mcalendarview.MCalendarView;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.Rental;
 import com.hska.ebusiness.toolbar.model.User;
-import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 import com.hska.ebusiness.toolbar.util.RentalMapper;
+import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.w3c.dom.Text;
-
-import android.net.Uri;
-
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.bob.mcalendarview.MCalendarView;
 
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER;
 import static com.hska.ebusiness.toolbar.util.ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE;
 
-/**
- * Created by Sebastian on 16.05.2016.
- */
 public class ShowOfferActivity extends AppCompatActivity {
 
     private Offer offer;
@@ -62,17 +52,17 @@ public class ShowOfferActivity extends AppCompatActivity {
     /**
      * Used to initialize the layout and field of the Activity
      *
-     * @param savedInstanceState
+     * @param savedInstanceState to restore saved instance state
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_offer);
         offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
         user = ((ToolbarApplication) getApplication()).getCurrentUser();
 
         offerImage = (ImageView) findViewById(R.id.show_image_offer_image);
-        offerName = (TextView) findViewById(R.id.show_input_offer_name);
+        offerName = (TextView) findViewById(R.id.label_offer_name);
         offerDescription = (TextView) findViewById(R.id.show_input_offer_description);
         offerFrom = (TextView) findViewById(R.id.show_input_offer_from);
         offerTo = (TextView) findViewById(R.id.show_input_offer_to);
@@ -121,30 +111,29 @@ public class ShowOfferActivity extends AppCompatActivity {
         MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
 
         if(getRentals(offer.getId()) != null) {
-            for (Rental rental : getRentals(offer.getId())) {
+            for (final Rental rental : getRentals(offer.getId())) {
                 if (rental.getStatus() == 1) {
-                    DateTime fromDate = new DateTime(rental.getRentFrom());
-                    DateTime toDate = new DateTime(rental.getRentTo());
+                    final DateTime fromDate = new DateTime(rental.getRentFrom());
+                    final DateTime toDate = new DateTime(rental.getRentTo());
 
-                    for (DateTime date : getRentalDays(fromDate, toDate)) {
-                        calendarView.markDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+                    for (final DateTime date : getRentalDays(fromDate, toDate)) {
+                        if(calendarView != null)
+                            calendarView.markDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
                     }
-                } else
-                    continue;
+                }
             }
         }
 
     }
 
     /**
-     * Returns all rental Days from all rentals to mark them in the calendar
-     * @param fromDate
-     * @param toDate
-     * @return
+     * Get all rental Days from all rentals to mark them in the calendar
+     * @param fromDate the begin of timespan
+     * @param toDate the end of timespan
+     * @return the list of rentals in the timespan
      */
-    public List<DateTime> getRentalDays(DateTime fromDate, DateTime toDate){
-        List<DateTime> daysList = new ArrayList<DateTime>();
-        int days = Days.daysBetween(fromDate, toDate).getDays();
+    public List<DateTime> getRentalDays(final DateTime fromDate, final DateTime toDate){
+        final List<DateTime> daysList = new ArrayList<>();
 
         for (DateTime date = fromDate; !date.isAfter(toDate); date = date.plusDays(1)) {
             daysList.add(date);
@@ -164,24 +153,22 @@ public class ShowOfferActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.offer_show_edit:
 
-                Intent intent = new Intent(this, EditOfferActivity.class);
-                intent.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
-                intent.putExtra(TOOLBAR_OFFER, offer);
-                startActivity(intent);
+                final Intent intentEdit = new Intent(this, EditOfferActivity.class);
+                intentEdit.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
+                intentEdit.putExtra(TOOLBAR_OFFER, offer);
+                startActivity(intentEdit);
 
                 return true;
 
             case R.id.offer_show_delete:
                 if(user.getId() == offer.getLender_fk()) {
                     ToolbarDBHelper.getInstance(this).deleteOffer(offer);
-                    Intent menuIntent = new Intent(this, MainActivity.class);
-                    startActivity(menuIntent);
+                    final Intent intentMain = new Intent(this, MainActivity.class);
+                    startActivity(intentMain);
                 }
                 else
-                    Toast.makeText(ShowOfferActivity.this, "Falscher User!", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(ShowOfferActivity.this, "No permissions to delete!", Toast.LENGTH_LONG).show();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -189,27 +176,27 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.action_menu_show_offer, menu);
+        getMenuInflater().inflate(R.menu.menu_action_show_offer, menu);
         return true;
     }
 
     /**
-     * Returns a List with all Rentals of an offer
-     * @param id
-     * @return
+     * Returns a list with all rentals of an offer
+     * @param id the offer id
+     * @return the list of rentals
      */
-    public ArrayList<Rental> getRentals(long id){
-        Cursor cursor = ToolbarDBHelper.getInstance(this).findAllRentalsToOffer(id);
+    public ArrayList<Rental> getRentals(final long id){
+        final Cursor cursor = ToolbarDBHelper.getInstance(this).findAllRentalsToOffer(id);
         if(cursor != null && cursor.moveToFirst()) {
-            ArrayList <Rental> rentalList = new ArrayList<Rental>();
+            final ArrayList <Rental> rentalList = new ArrayList<>();
             for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
                 rentalList.add(RentalMapper.map(cursor));
             }
             cursor.close();
             return rentalList;
         }
-
-        cursor.close();
+        if(cursor != null)
+            cursor.close();
         return null;
     }
 
