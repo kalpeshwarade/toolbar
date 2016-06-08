@@ -1,24 +1,22 @@
 package com.hska.ebusiness.toolbar.activities;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
+import android.view.MenuItem;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
-import com.hska.ebusiness.toolbar.fragments.AccountFragment;
-import com.hska.ebusiness.toolbar.fragments.MyRequestsFragment;
+import com.hska.ebusiness.toolbar.fragments.MyOffersFragment;
 import com.hska.ebusiness.toolbar.fragments.OfferListFragment;
-import com.hska.ebusiness.toolbar.fragments.SearchFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.User;
 import com.hska.ebusiness.toolbar.util.OfferMapper;
@@ -27,7 +25,7 @@ import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -37,85 +35,69 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
      * @param savedInstanceState to restore activity state
      */
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         currentUser = ((ToolbarApplication) getApplication()).getCurrentUser();
-        final Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        final FragmentDrawer drawerFragment = (FragmentDrawer) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
-        drawerFragment.setDrawerListener(this);
-        displayView(0);
-
     }
-
 
     @Override
-    public void onDrawerItemSelected(final View view, final int position) {
-        displayView(position);
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    private void displayView(final int position) {
+    @Override
+    public boolean onNavigationItemSelected(final MenuItem item) {
+        int id = item.getItemId();
         Fragment fragment = null;
-        String title = getString(R.string.app_name);
-        switch (position) {
-            case 0:
-                fragment = new OfferListFragment();
-                final Bundle args = new Bundle();
-                args.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
-                fragment.setArguments(getIntent().getExtras());
-                fragment.setArguments(args);
-                title = getString(R.string.title_offers);
-                break;
 
-            case 1:
-                fragment = new SearchFragment();
-                title = getString(R.string.title_search);
-                break;
+        if (id == R.id.nav_search) {
+            fragment = new OfferListFragment();
+            final Bundle arguments = new Bundle();
+            arguments.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
+            fragment.setArguments(arguments);
+            setTitle(getString(R.string.title_search));
 
-            case 2:
-                fragment = new MyRequestsFragment();
-                title = getString(R.string.title_requests);
-                break;
+        } else if (id == R.id.nav_my_offers) {
+            fragment = new MyOffersFragment();
+            setTitle(getString(R.string.title_offers));
+        } else if (id == R.id.nav_my_requests) {
 
-            case 3:
-                fragment = new AccountFragment();
-                title = getString(R.string.title_profile);
-                break;
+        } else if (id == R.id.nav_account) {
 
-            case 4:
-                fragment = new AccountFragment();
-                title = getString(R.string.title_account);
-                break;
+        } else if (id == R.id.nav_logout) {
 
-            case 5:
-                final ToolbarApplication application = (ToolbarApplication) getApplication();
-                application.setCurrentUser(null);
-
-                final Intent logoutIntent = new Intent(this, LoginActivity.class);
-                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(logoutIntent);
-                finish();
-                break;
-
-            default:
-                break;
         }
 
         if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment);
-            fragmentTransaction.commit();
-
-            this.setTitle(title);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_container, fragment)
+                    .commit();
         }
+
+        item.setChecked(true);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private List<Offer> getOfferByZip(final String zip) {

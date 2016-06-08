@@ -27,8 +27,7 @@
         android:layout_centerVertical="true"
         android:maxWidth="80dp"
         android:minHeight="80dp"
-        android:nestedScrollingEnabled="false"
-        android:src="@drawable/ic_circled_user_48" />
+        android:nestedScrollingEnabled="false" />
 
     <TextView
         android:id="@+id/textView"

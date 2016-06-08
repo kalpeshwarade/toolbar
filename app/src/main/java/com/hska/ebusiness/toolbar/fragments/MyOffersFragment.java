@@ -1,23 +1,15 @@
 package com.hska.ebusiness.toolbar.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hska.ebusiness.toolbar.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyOffersFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyOffersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyOffersFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

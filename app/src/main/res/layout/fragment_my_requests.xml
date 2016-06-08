@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#c7b362"
     android:orientation="vertical"
-    tools:context="com.hska.ebusiness.toolbar.fragments.HomeFragment">
+    tools:context="com.hska.ebusiness.toolbar.activities.MainActivity">
 
     <TextView
         android:id="@+id/label"
@@ -25,8 +25,7 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:maxHeight="80dp"
-        android:maxWidth="80dp"
-        android:src="@drawable/ic_ask_question_48dp" />
+        android:maxWidth="80dp" />
 
     <TextView
         android:id="@+id/textView"

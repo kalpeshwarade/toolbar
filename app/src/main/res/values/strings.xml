@@ -2,18 +2,13 @@
     <string name="app_name">Toolbar</string>
 
     <string name="title_search">Search</string>
-    <string name="title_friends">Friends</string>
-    <string name="title_messages">Messages</string>
     <string name="title_offers">My Offers</string>
     <string name="title_requests">My Requests</string>
     <string name="title_account">My Account</string>
-    <string name="title_profile">My Profile</string>
     <string name="title_logout">Logout</string>
     <string name="title_login">Sign in</string>
     <string name="title_main">Home</string>
 
-    <string name="action_search">Search</string>
-    <string name="action_offer">My Offers</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
@@ -26,32 +21,12 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="nav_item_search">Search</string>
-    <string name="nav_item_offers">MyOffers</string>
-    <string name="nav_item_requests">MyRequests</string>
-    <string name="nav_item_profile">Profile</string>
-    <string name="nav_item_account">Account</string>
-    <string name="nav_item_logout">Logout</string>
-
-    <string-array name="nav_drawer_labels">
-        <item>@string/nav_item_search</item>
-        <item>@string/nav_item_offers</item>
-        <item>@string/nav_item_requests</item>
-        <item>@string/nav_item_profile</item>
-        <item>@string/nav_item_account</item>
-        <item>@string/nav_item_logout</item>
-    </string-array>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
     <string name="edit_text_hint_offer_name">Offer name…</string>
     <string name="edit_text_hint_offer_description">Offer description…</string>
     <string name="edit_text_hint_offer_price">Price…</string>
     <string name="edit_text_hint_valid_from">Valid from</string>
     <string name="edit_text_hint_valid_to">Valid to</string>
     <string name="edit_text_hint_zip_code">ZIP code…</string>
-
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

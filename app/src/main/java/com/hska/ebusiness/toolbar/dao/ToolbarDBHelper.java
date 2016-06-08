@@ -164,11 +164,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @param user User object
      * @return long value.
      */
-    public long insertUser(final User user) {
+    public long insertUser(final User user, final SQLiteDatabase db) {
         Log.d(TAG, ": insertUser: " + user.getUsername());
 
         final ContentValues values = getUserValues(user);
-        return getWritableDatabase().insert(UserEntry.TABLE_NAME, null, values);
+        return db.insert(UserEntry.TABLE_NAME, null, values);
     }
 
     /* Method to insert a Credentials object into the database
@@ -298,7 +298,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_RENTAL);
 
         User user1 = new User("test", "test@test.de", "Teststrasse 1", "12345", "Germany", "Ich bin cool");
-        this.insertUser(user1);
+        this.insertUser(user1, db);
 
         Credentials credentials1 = new Credentials();
         credentials1.setPassword("123");
