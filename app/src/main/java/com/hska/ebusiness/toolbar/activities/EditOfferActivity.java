@@ -260,19 +260,29 @@ public class EditOfferActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_offer_edit_save:
+
+                if (offerName.getText() != null && offerDescription.getText() != null && offerZipCode.getText() != null
+                        && offerPrice.getText() != null && offerName.getText() != null && offerTo.getText() != null) {
+                    Toast.makeText(this, "There are missing informations to save the offer!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
                 if (isEditMode)
                     updateOffer();
                 else
                     insertOffer();
+
+
                 final Intent showIntentSave = new Intent(this, ShowOfferActivity.class);
                 showIntentSave.putExtra(TOOLBAR_OFFER, offer);
                 startActivity(showIntentSave);
                 return true;
             case R.id.action_offer_edit_cancel:
-                    super.onBackPressed();
+                super.onBackPressed();
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     /**

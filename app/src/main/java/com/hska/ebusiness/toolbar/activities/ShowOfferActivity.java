@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -164,7 +166,10 @@ public class ShowOfferActivity extends AppCompatActivity {
                 return true;
 
 
+
             case R.id.offer_show_delete:
+                if (user.getId() == offer.getLender())
+                    item.setVisible(true);
                 if (user.getId() == offer.getLender()) {
                     ToolbarDBHelper.getInstance(this).deleteOffer(offer);
                     final Intent intentMain = new Intent(this, MainActivity.class);

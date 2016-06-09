@@ -112,17 +112,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
-    public Cursor findOfferById(final long id) {
-        Log.d(TAG, ": findOfferById " + id);
-
-        final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables(OfferEntry.TABLE_NAME);
-        return queryBuilder.query(getReadableDatabase(),
-                new String[]{OfferEntry._ID, OfferEntry.COLUMN_NAME_NAME}, OfferEntry._ID + "=?",
-                new String[]{Long.toString(id)}, null, null, null);
-    }
-
-    //Neu
+    /**
+     * Get all rentals of an offer
+     * @param offerId of the requested offer
+     * @return a cursor that contains all rentals
+     */
     public Cursor findAllRentalsToOffer(final long offerId) {
         Log.d(TAG, ": findAllRentalsToOffer");
 
@@ -132,6 +126,12 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                 + "=?", new String[]{Long.toString(offerId)}, null, null, null);
     }
 
+    /**
+     * Get all offers that belong to a specific zip code
+     *
+     * @param zip in which shall be looked for offers
+     * @return a cursor that contains all requested offers
+     */
     public Cursor findOfferByZIP(String zip) {
         Log.d(TAG, ": findOfferByZIP " + zip);
 
@@ -144,6 +144,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                 new String[]{zip}, null, null, null);
     }
 
+    /**
+     * Inserts a offer into db
+     *
+     * @param offer that shall be inserted
+     * @param db the SQLiteDatabase
+     * @return the affected rows
+     */
     public long insertOffer(final Offer offer, final SQLiteDatabase db) {
         Log.d(TAG, ": insertOffer: " + offer.getName());
 
@@ -151,6 +158,12 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return db.insert(OfferEntry.TABLE_NAME, null, values);
     }
 
+    /**
+     * Updates a given offer
+     *
+     * @param offer that shall be updated
+     * @return the affected rows
+     */
     public int updateOffer(final Offer offer) {
         Log.d(TAG, ": updateOffer: " + offer.getId());
 
@@ -177,7 +190,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * Method to insert a Credentials object into the database
      *
      * @param credentials Credentials object
-     * @param db          the database
+     * @param db          the SQLiteDatabase
      * @return affected rows
      */
     public long insertCredentials(final Credentials credentials, final SQLiteDatabase db) {
@@ -190,7 +203,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     /**
      * Method to search a User regarding the username in the database.
      *
-     * @param username
+     * @param username that shall be looked for
      * @return Cursor object
      */
     public Cursor findUserByUsername(final String username) {
@@ -219,6 +232,12 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                 new String[]{Long.toString(userId)}, null, null, null);
     }
 
+    /**
+     * Deletes a given offer
+     *
+     * @param offer that shall be deleted
+     * @return the affected rows
+     */
     public int deleteOffer(final Offer offer) {
         Log.d(TAG, ": deleteOffer: " + offer.getName());
 
@@ -228,6 +247,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return getWritableDatabase().delete(OfferEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
+    /**
+     * Inserts a rental into the database
+     *
+     * @param rental that shall be inserted
+     * @param db the SQLiteDatabase
+     * @return the affected rows
+     */
     public long insertRental(final Rental rental, final SQLiteDatabase db) {
         Log.d(TAG, ": insertRental: " + rental.getOffer());
 
@@ -235,6 +261,12 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return db.insert(RentalEntry.TABLE_NAME, null, values);
     }
 
+    /**
+     * Get the values of an offer
+     *
+     * @param offer object which values are requested
+     * @return the values of the requested offer
+     */
     private ContentValues getOfferValues(final Offer offer) {
         final ContentValues values = new ContentValues();
         values.put(OfferEntry.COLUMN_NAME_NAME, offer.getName());
@@ -251,10 +283,10 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to create ContentValues out of a User object.
+     * Get the values of an user
      *
-     * @param user User object.
-     * @return ContentValues object.
+     * @param user object which values are requested
+     * @return the values of the requested object.
      */
     private ContentValues getUserValues(final User user) {
         final ContentValues values = new ContentValues();
@@ -269,10 +301,10 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to create ContentValues out of a Credentials object.
+     * Get the ContentValues of a Credentials object.
      *
-     * @param credentials Credentials object
-     * @return ContentValue object
+     * @param credentials object which values are requested
+     * @return values of the requested object
      */
     private ContentValues getCredentialValues(final Credentials credentials) {
         final ContentValues values = new ContentValues();
@@ -282,6 +314,12 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return values;
     }
 
+    /**
+     * Get the values of a rental
+     *
+     * @param rental object which values are requested
+     * @return values of the requested object
+     */
     private ContentValues getRentalValues(final Rental rental) {
         final ContentValues values = new ContentValues();
         values.put(RentalEntry.COLUMN_NAME_FROM, rental.getRentFrom());
@@ -295,6 +333,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Creates the Tables and inserts testdatas
+     *
+     * @param db the SQLiteDatabase
+     */
     @Override
     public void onCreate(final SQLiteDatabase db) {
         Log.d(TAG, ": onCreate Database with version " + db.getVersion());
@@ -382,6 +425,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         this.insertRental(rental2, db);
     }
 
+    /**
+     * Defines the actions to execute on database upgrade
+     *
+     * @param db the SQLiteDatabase
+     * @param oldVersion number of the db
+     * @param newVersion number of the db
+     */
     @Override
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         Log.d(TAG, ": onUpgrade database from version" + oldVersion + " to" + newVersion);
@@ -401,6 +451,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Defines the actions to execute on database downgrade
+     *
+     * @param db the SQLiteDatabase
+     * @param oldVersion number of the db
+     * @param newVersion number of the db
+     */
     @Override
     public void onDowngrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         Log.d(TAG, ": onDowngrade database from version" + newVersion + " to" + oldVersion);
