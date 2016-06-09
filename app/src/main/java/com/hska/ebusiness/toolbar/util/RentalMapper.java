@@ -1,6 +1,7 @@
 package com.hska.ebusiness.toolbar.util;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
 import com.hska.ebusiness.toolbar.model.Rental;
@@ -12,6 +13,8 @@ public class RentalMapper {
 
     public static Rental map(final Cursor cursor) {
         Rental rental = new Rental();
+
+        Log.d(RentalMapper.class.getSimpleName(), "Rental: " + String.valueOf(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_OFFER_FK)));
 
         rental.setId(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.RentalEntry._ID)));
         rental.setRentFrom(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.RentalEntry.COLUMN_NAME_FROM)));

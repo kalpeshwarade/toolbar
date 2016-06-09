@@ -13,7 +13,7 @@ public class Offer implements Parcelable {
     }
 
     public Offer(final String name, final String description, final String zipCode,
-                 final long price, final long validFrom, final long validTo, final long lender_fk) {
+                 final long price, final long validFrom, final long validTo, final long lender) {
         this.name = name;
         this.image = null;
         this.description = description;
@@ -21,7 +21,7 @@ public class Offer implements Parcelable {
         this.price = price;
         this.validFrom = validFrom;
         this.validTo = validTo;
-        this.lender_fk = lender_fk;
+        this.lender = lender;
     }
 
     private long id;
@@ -32,7 +32,7 @@ public class Offer implements Parcelable {
     private long price;
     private long validFrom;
     private long validTo;
-    private long lender_fk;
+    private long lender;
 
 
     public long getId() {
@@ -91,27 +91,24 @@ public class Offer implements Parcelable {
         this.validFrom = validFrom;
     }
 
-    public long getValidTo() {
-        return validTo;
-    }
+    public long getValidTo() { return validTo; }
 
     public void setValidTo(final long validTo) {
         this.validTo = validTo;
     }
 
-    public Long getLender_fk() {
-        return lender_fk;
+    public long getLender() {
+        return lender;
     }
 
-    public void setLender_fk(final Long lender_fk) {
-        this.lender_fk = lender_fk;
+    public void setLender(final long lender) {
+        this.lender = lender;
     }
 
 
     @Override
     public String toString() {
         return "Offer{" +
-                "id=" + id +
                 ", name=" + name +
                 ", image=" + image +
                 ", description='" + description + '\'' +
@@ -119,7 +116,7 @@ public class Offer implements Parcelable {
                 ", price=" + price +
                 ", validFrom=" + new DateTime(validFrom).toString(ToolbarConstants.TOOLBAR_DATE_FORMAT) +
                 ", validTo=" + new DateTime(validTo).toString(ToolbarConstants.TOOLBAR_DATE_FORMAT) +
-                ", lender=" + lender_fk +
+                ", lender=" + lender +
                 '}';
     }
 
@@ -138,13 +135,13 @@ public class Offer implements Parcelable {
         destination.writeLong(price);
         destination.writeLong(validFrom);
         destination.writeLong(validTo);
-        destination.writeLong(lender_fk);
+        destination.writeLong(lender);
     }
 
     public static final Parcelable.Creator<Offer> CREATOR = new Creator<Offer>() {
         @Override
-        public Offer createFromParcel(final Parcel parcel) {
-            return new Offer(parcel);
+        public Offer createFromParcel(final Parcel source) {
+            return new Offer(source);
         }
 
         @Override
@@ -162,6 +159,6 @@ public class Offer implements Parcelable {
         price = source.readLong();
         validFrom = source.readLong();
         validTo = source.readLong();
-        lender_fk = source.readLong();
+        lender = source.readLong();
     }
 }

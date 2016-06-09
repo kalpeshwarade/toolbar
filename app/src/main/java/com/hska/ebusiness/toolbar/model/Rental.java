@@ -104,6 +104,7 @@ public class Rental implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel destination, final int flags) {
+        destination.writeLong(id);
         destination.writeLong(rentFrom);
         destination.writeLong(rentTo);
         destination.writeInt(status);
@@ -125,6 +126,7 @@ public class Rental implements Parcelable {
     };
 
     private Rental(final Parcel source) {
+        id = source.readLong();
         rentFrom = source.readLong();
         rentTo = source.readLong();
         status = source.readInt();

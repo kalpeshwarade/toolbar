@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.util.Log;
 
 import com.hska.ebusiness.toolbar.R;
+import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.model.Credentials;
 import com.hska.ebusiness.toolbar.model.User;
@@ -106,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                     // Global  variable user
                     // GET: User user = ((MyApplication) getApplication()).getCurrentUser();
                     ((ToolbarApplication) getApplication()).setCurrentUser(user);
+                    Log.d(LoginActivity.class.getSimpleName(), "User Login Activity: " + user.getId());
+
                     final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }

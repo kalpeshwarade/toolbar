@@ -22,7 +22,7 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.RentalEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 public class ToolbarDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 16;
 
     public static final String DATABASE_NAME = "toolbar.db";
 
@@ -30,19 +30,18 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TABLE_USER =
             "CREATE TABLE " + UserEntry.TABLE_NAME + " (" +
-                    UserEntry._ID + " INTEGER PRIMARY KEY," +
+                    UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     UserEntry.COLUMN_NAME_USERNAME + " TEXT," +
                     UserEntry.COLUMN_NAME_EMAIL + " TEXT," +
                     UserEntry.COLUMN_NAME_STREET + " TEXT," +
                     UserEntry.COLUMN_NAME_ZIP_CODE + " TEXT," +
                     UserEntry.COLUMN_NAME_COUNTRY + " TEXT," +
-                    UserEntry.COLUMN_NAME_PHONE + " TEXT," +
                     UserEntry.COLUMN_NAME_DESCRIPTION + " TEXT" +
                     ");";
 
     private static final String SQL_CREATE_TABLE_CREDENTIALS =
             "CREATE TABLE " + CredentialsEntry.TABLE_NAME + " (" +
-                    CredentialsEntry._ID + " INTEGER PRIMARY KEY," +
+                    CredentialsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     CredentialsEntry.COLUMN_NAME_PASSWORD + " TEXT," +
                     CredentialsEntry.COLUMN_NAME_USER_FK + " INTEGER," +
                     "FOREIGN KEY (" + CredentialsEntry.COLUMN_NAME_USER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
@@ -50,7 +49,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TABLE_BALANCE =
             "CREATE TABLE " + BalanceEntry.TABLE_NAME + " (" +
-                    BalanceEntry._ID + " INTEGER PRIMARY KEY," +
+                    BalanceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     BalanceEntry.COLUMN_NAME_AMOUNT + " INTEGER," +
                     BalanceEntry.COLUMN_NAME_USER_FK + " INTEGER," +
                     "FOREIGN KEY (" + BalanceEntry.COLUMN_NAME_USER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
@@ -58,7 +57,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TABLE_OFFER =
             "CREATE TABLE " + OfferEntry.TABLE_NAME + " (" +
-                    OfferEntry._ID + " INTEGER PRIMARY KEY," +
+                    OfferEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     OfferEntry.COLUMN_NAME_NAME + " TEXT," +
                     OfferEntry.COLUMN_NAME_IMAGE + " TEXT," +
                     OfferEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
@@ -73,7 +72,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TABLE_RENTAL =
             "CREATE TABLE " + RentalEntry.TABLE_NAME + " (" +
-                    RentalEntry._ID + " INTEGER PRIMARY KEY, " +
+                    RentalEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     RentalEntry.COLUMN_NAME_FROM + " INTEGER, " +
                     RentalEntry.COLUMN_NAME_TO + " INTEGER, " +
                     RentalEntry.COLUMN_NAME_STATUS + " INTEGER, " +
@@ -138,9 +137,10 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(OfferEntry.TABLE_NAME);
         return queryBuilder.query(getReadableDatabase(),
-                new String[]{OfferEntry.COLUMN_NAME_ZIP_CODE, OfferEntry.COLUMN_NAME_NAME, OfferEntry.COLUMN_NAME_DESCRIPTION, OfferEntry.COLUMN_NAME_IMAGE,
-                        OfferEntry.COLUMN_NAME_PRICE, OfferEntry.COLUMN_NAME_VALID_FROM, OfferEntry.COLUMN_NAME_VALID_TO}, OfferEntry.COLUMN_NAME_ZIP_CODE+ "=?",
-                new String[]{zip}, null, null, null);
+                new String[]{OfferEntry._ID, OfferEntry.COLUMN_NAME_NAME, OfferEntry.COLUMN_NAME_IMAGE, OfferEntry.COLUMN_NAME_DESCRIPTION,
+                        OfferEntry.COLUMN_NAME_ZIP_CODE, OfferEntry.COLUMN_NAME_PRICE, OfferEntry.COLUMN_NAME_VALID_FROM,
+                        OfferEntry.COLUMN_NAME_VALID_TO, OfferEntry.COLUMN_NAME_LENDER_FK}, OfferEntry.COLUMN_NAME_ZIP_CODE+ "=?",
+                        new String[]{zip}, null, null, null);
     }
 
     public long insertOffer(final Offer offer, final SQLiteDatabase db) {
@@ -240,7 +240,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         values.put(OfferEntry.COLUMN_NAME_PRICE, offer.getPrice());
         values.put(OfferEntry.COLUMN_NAME_VALID_FROM, offer.getValidFrom());
         values.put(OfferEntry.COLUMN_NAME_VALID_TO, offer.getValidTo());
-        values.put(OfferEntry.COLUMN_NAME_LENDER_FK, offer.getLender_fk());
+        values.put(OfferEntry.COLUMN_NAME_LENDER_FK, offer.getLender());
 
         return values;
     }
@@ -287,6 +287,8 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return values;
     }
 
+
+
     @Override
     public void onCreate(final SQLiteDatabase db) {
         Log.d(TAG, ": onCreate Database with version " + db.getVersion());
@@ -313,8 +315,11 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         offer.setZipCode("12345");
         offer.setValidFrom(DateTime.now().minusDays(2).getMillis());
         offer.setValidTo(DateTime.now().getMillis());
-        offer.setLender_fk(user1.getId());
+        offer.setLender(user1.getId());
         this.insertOffer(offer, db);
+
+        Log.d(TAG, "Offer1 ID " + offer.getId() + " Offer Lender:" + offer.getLender());
+
 
         Offer offer2 = new Offer();
         offer2.setImage(null);
@@ -324,14 +329,18 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         offer2.setZipCode("12345");
         offer2.setValidFrom(DateTime.now().minusDays(2).getMillis());
         offer2.setValidTo(DateTime.now().getMillis());
-        offer2.setLender_fk(user1.getId());
+        offer2.setLender(user1.getId());
         this.insertOffer(offer2, db);
+
+        Log.d(TAG, "Offer2 ID " + offer2.getId() + " Offer2 Lender:" + offer2.getLender());
+
 
         Rental rental1 = new Rental();
         rental1.setStatus(0);
         rental1.setOffer(offer.getId());
         rental1.setRentFrom(DateTime.now().minusDays(5).getMillis());
         rental1.setRentTo(DateTime.now().getMillis());
+        rental1.setLender(user1.getId());
         this.insertRental(rental1, db);
 
         Rental rental2 = new Rental();

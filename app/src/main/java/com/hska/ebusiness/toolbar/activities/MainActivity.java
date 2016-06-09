@@ -106,7 +106,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (zip != null && cursor != null && cursor.moveToFirst()) {
             final ArrayList<Offer> offerList = new ArrayList<>();
             for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                offerList.add(OfferMapper.map(cursor));
+                Offer offer = OfferMapper.map(cursor);
+                offer.setLender(currentUser.getId());
+                offerList.add(offer);
             }
             cursor.close();
             return offerList;

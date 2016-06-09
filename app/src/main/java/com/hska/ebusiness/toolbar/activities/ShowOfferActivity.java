@@ -59,6 +59,9 @@ public class ShowOfferActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_offer);
         offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
+        Log.d(TAG, "Offer at ShowOfferActivity: " + String.valueOf(offer.getId()));
+
+
         user = ((ToolbarApplication) getApplication()).getCurrentUser();
 
         offerImage = (ImageView) findViewById(R.id.show_image_offer_image);
@@ -68,8 +71,6 @@ public class ShowOfferActivity extends AppCompatActivity {
         offerTo = (TextView) findViewById(R.id.show_input_offer_to);
         offerZipCode = (TextView) findViewById(R.id.show_input_zip_code);
         offerPrice = (TextView) findViewById(R.id.show_input_offer_price);
-
-        Log.d(TAG, offer.toString());
 
         initContent();
     }
@@ -162,13 +163,17 @@ public class ShowOfferActivity extends AppCompatActivity {
 
                 return true;
 
+
+
             case R.id.offer_show_delete:
-                if (user.getId() == offer.getLender_fk()) {
+                if (user.getId() == offer.getLender()) {
                     ToolbarDBHelper.getInstance(this).deleteOffer(offer);
                     final Intent intentMain = new Intent(this, MainActivity.class);
                     startActivity(intentMain);
-                } else
+                } else {
+                    Toast.makeText(ShowOfferActivity.this, "Offer " + offer.getLender() + "User " + user.getId(), Toast.LENGTH_LONG).show();
                     Toast.makeText(ShowOfferActivity.this, "No permissions to delete!", Toast.LENGTH_LONG).show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -9,7 +9,8 @@ public class User implements Parcelable {
 
     }
 
-    public User(final String username, final String email, final String street, final String zipCode, final String country, final String description) {
+    public User(final String username, final String email, final String street, final String zipCode, final String country,
+                final String description) {
         this.username = username;
         this.email = email;
         this.street = street;
@@ -36,7 +37,7 @@ public class User implements Parcelable {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -44,7 +45,7 @@ public class User implements Parcelable {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -52,7 +53,7 @@ public class User implements Parcelable {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -60,7 +61,7 @@ public class User implements Parcelable {
         return street;
     }
 
-    public void setStreet(String street) {
+    public void setStreet(final String street) {
         this.street = street;
     }
 
@@ -68,7 +69,7 @@ public class User implements Parcelable {
         return zipCode;
     }
 
-    public void setZipCode(String zipCode) {
+    public void setZipCode(final String zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -76,7 +77,7 @@ public class User implements Parcelable {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
@@ -84,14 +85,13 @@ public class User implements Parcelable {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", street='" + street + '\'' +

@@ -11,7 +11,6 @@ public final class DatabaseSchema {
         public static final String COLUMN_NAME_STREET = "street";
         public static final String COLUMN_NAME_ZIP_CODE = "zip_code";
         public static final String COLUMN_NAME_COUNTRY = "country";
-        public static final String COLUMN_NAME_PHONE = "phone";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
     }
 
