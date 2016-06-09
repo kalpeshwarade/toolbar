@@ -164,7 +164,6 @@ public class ShowOfferActivity extends AppCompatActivity {
                 return true;
 
 
-
             case R.id.offer_show_delete:
                 if (user.getId() == offer.getLender()) {
                     ToolbarDBHelper.getInstance(this).deleteOffer(offer);

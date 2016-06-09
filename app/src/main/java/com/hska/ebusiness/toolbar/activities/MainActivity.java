@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_search) {
             fragment = new OfferListFragment();
             final Bundle arguments = new Bundle();
-            arguments.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
+            if(getOfferByZip(currentUser.getZipCode()) != null)
+                arguments.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
             fragment.setArguments(arguments);
             setTitle(getString(R.string.title_search));
 

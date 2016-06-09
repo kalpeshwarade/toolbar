@@ -76,24 +76,27 @@ public class OfferListFragment extends Fragment {
 
         aList.clear();
 
-        for (final Offer offer : offerList) {
-            final HashMap<String, String> hm = new HashMap<>();
 
-            hm.put("name", offer.getName());
-            hm.put("price", offer.getPrice() + "€");
-            hm.put("detail", offer.getDescription());
-            hm.put("flag", Integer.toString(R.drawable.ic_home_black_24dp));
+        if (offerList != null) {
+            for (final Offer offer : offerList) {
+                final HashMap<String, String> hm = new HashMap<>();
 
-            final String time_from = dateFormat.format(new DateTime(offer.getValidFrom()).toDate());
-            final String time_to = dateFormat.format(new DateTime(offer.getValidTo()).toDate());
-            final String from_to = "From: " + time_from + "   " + "To: " + time_to;
+                hm.put("name", offer.getName());
+                hm.put("price", offer.getPrice() + "€");
+                hm.put("detail", offer.getDescription());
+                hm.put("flag", Integer.toString(R.drawable.ic_home_black_24dp));
 
-            hm.put("date", from_to);
-            hm.put("id", offer.getId() + "");
+                final String time_from = dateFormat.format(new DateTime(offer.getValidFrom()).toDate());
+                final String time_to = dateFormat.format(new DateTime(offer.getValidTo()).toDate());
+                final String from_to = "From: " + time_from + "   " + "To: " + time_to;
 
-            aList.add(hm);
+                hm.put("date", from_to);
+                hm.put("id", offer.getId() + "");
 
-            Log.d(TAG, ": " + offer.getName() + " - Added to ListFragment");
+                aList.add(hm);
+
+                Log.d(TAG, ": " + offer.getName() + " - Added to ListFragment");
+            }
         }
 
         final SimpleAdapter listViewAdapter = new SimpleAdapter(getActivity(), aList, R.layout.list_item, from, to);

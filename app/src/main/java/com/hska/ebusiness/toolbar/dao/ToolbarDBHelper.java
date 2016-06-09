@@ -22,7 +22,7 @@ import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.RentalEntry;
 import static com.hska.ebusiness.toolbar.dao.DatabaseSchema.UserEntry;
 
 public class ToolbarDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 16;
+    public static final int DATABASE_VERSION = 1;
 
     public static final String DATABASE_NAME = "toolbar.db";
 
@@ -343,6 +343,17 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         offer1.setValidTo(DateTime.now().getMillis());
         offer1.setLender(user1.getId());
         this.insertOffer(offer1, db);
+
+        Offer offer = new Offer();
+        offer.setName("Hammer");
+        offer.setImage(null);
+        offer.setDescription("HamHam");
+        offer.setPrice(5);
+        offer.setZipCode("12345");
+        offer.setValidFrom(DateTime.now().minusDays(2).getMillis());
+        offer.setValidTo(DateTime.now().getMillis());
+        offer.setLender(user1.getId());
+        this.insertOffer(offer, db);
 
         Offer offer2 = new Offer();
         offer2.setImage(null);
