@@ -32,7 +32,7 @@ public class OfferListFragment extends Fragment {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private static List<HashMap<String,String>> aList = new ArrayList<>();
+    private static List<HashMap<String, String>> aList = new ArrayList<>();
     private static View rootView;
 
     private List<Offer> offerList;
@@ -40,8 +40,8 @@ public class OfferListFragment extends Fragment {
     /**
      * Used to initialize the Fragment ListFragment
      *
-     * @param inflater to inject the Fragment
-     * @param container contains the Fragment
+     * @param inflater           to inject the Fragment
+     * @param container          contains the Fragment
      * @param savedInstanceState bundle with data for re-initialization
      * @return returns the view (fragment)
      */
@@ -55,8 +55,7 @@ public class OfferListFragment extends Fragment {
 
         try {
             rootView = inflater.inflate(R.layout.fragment_offer_list, container, false);
-        }
-        catch (final InflateException e) {
+        } catch (final InflateException e) {
             Log.e(TAG, "Error while initializing rootView for ListFragment: " + e.getMessage());
         }
 
@@ -64,7 +63,6 @@ public class OfferListFragment extends Fragment {
     }
 
     /**
-     *
      * @param savedInstanceState to restore instance state
      */
     public void onActivityCreated(final Bundle savedInstanceState) {
@@ -78,17 +76,17 @@ public class OfferListFragment extends Fragment {
 
         aList.clear();
 
-        for (final Offer offer: offerList) {
+        for (final Offer offer : offerList) {
             final HashMap<String, String> hm = new HashMap<>();
 
-            hm.put("name",offer.getName());
+            hm.put("name", offer.getName());
             hm.put("price", offer.getPrice() + "€");
             hm.put("detail", offer.getDescription());
             hm.put("flag", Integer.toString(R.drawable.ic_home_black_24dp));
 
             final String time_from = dateFormat.format(new DateTime(offer.getValidFrom()).toDate());
             final String time_to = dateFormat.format(new DateTime(offer.getValidTo()).toDate());
-            final String from_to= "From: " + time_from + "   " + "To: " + time_to;
+            final String from_to = "From: " + time_from + "   " + "To: " + time_to;
 
             hm.put("date", from_to);
             hm.put("id", offer.getId() + "");
@@ -134,11 +132,12 @@ public class OfferListFragment extends Fragment {
 
     /**
      * Search for offers by ID.
+     *
      * @param id the selected
      * @return returns an offer or null
      */
-    private Offer getOfferById(final long id){
-        for (final Offer offer: offerList) {
+    private Offer getOfferById(final long id) {
+        for (final Offer offer : offerList) {
             if (offer.getId() == id)
                 return offer;
         }

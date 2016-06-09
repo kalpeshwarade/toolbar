@@ -100,7 +100,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     public static ToolbarDBHelper getInstance(final Context context) {
-        if(instance == null) {
+        if (instance == null) {
             return new ToolbarDBHelper(context.getApplicationContext());
         }
 
@@ -113,13 +113,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor findOfferById(final long id) {
-        Log.d( TAG, ": findOfferById " + id );
+        Log.d(TAG, ": findOfferById " + id);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(OfferEntry.TABLE_NAME);
         return queryBuilder.query(getReadableDatabase(),
                 new String[]{OfferEntry._ID, OfferEntry.COLUMN_NAME_NAME}, OfferEntry._ID + "=?",
-                    new String[]{Long.toString(id)}, null, null, null);
+                new String[]{Long.toString(id)}, null, null, null);
     }
 
     //Neu
@@ -131,16 +131,17 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return queryBuilder.query(getReadableDatabase(), null, RentalEntry.COLUMN_NAME_OFFER_FK
                 + "=?", new String[]{Long.toString(offerId)}, null, null, null);
     }
+
     public Cursor findOfferByZIP(String zip) {
-        Log.d( TAG, ": findOfferByZIP " + zip );
+        Log.d(TAG, ": findOfferByZIP " + zip);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(OfferEntry.TABLE_NAME);
         return queryBuilder.query(getReadableDatabase(),
                 new String[]{OfferEntry._ID, OfferEntry.COLUMN_NAME_NAME, OfferEntry.COLUMN_NAME_IMAGE, OfferEntry.COLUMN_NAME_DESCRIPTION,
                         OfferEntry.COLUMN_NAME_ZIP_CODE, OfferEntry.COLUMN_NAME_PRICE, OfferEntry.COLUMN_NAME_VALID_FROM,
-                        OfferEntry.COLUMN_NAME_VALID_TO, OfferEntry.COLUMN_NAME_LENDER_FK}, OfferEntry.COLUMN_NAME_ZIP_CODE+ "=?",
-                        new String[]{zip}, null, null, null);
+                        OfferEntry.COLUMN_NAME_VALID_TO, OfferEntry.COLUMN_NAME_LENDER_FK}, OfferEntry.COLUMN_NAME_ZIP_CODE + "=?",
+                new String[]{zip}, null, null, null);
     }
 
     public long insertOffer(final Offer offer, final SQLiteDatabase db) {
@@ -161,6 +162,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to insert an User object into the database
+     *
      * @param user User object
      * @return long value.
      */
@@ -171,11 +173,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return db.insert(UserEntry.TABLE_NAME, null, values);
     }
 
-    /* Method to insert a Credentials object into the database
-    * @param credentials Credentials object
-    * @return long value.
-    */
-
+    /**
+     * Method to insert a Credentials object into the database
+     *
+     * @param credentials Credentials object
+     * @param db          the database
+     * @return affected rows
+     */
     public long insertCredentials(final Credentials credentials, final SQLiteDatabase db) {
         Log.d(TAG, ": insertCredentials: " + credentials.getUserId());
 
@@ -185,11 +189,12 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to search a User regarding the username in the database.
+     *
      * @param username
      * @return Cursor object
      */
     public Cursor findUserByUsername(final String username) {
-        Log.d( TAG, ": findUserByUsername " + username );
+        Log.d(TAG, ": findUserByUsername " + username);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(UserEntry.TABLE_NAME);
@@ -200,6 +205,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to search Credentials regarding the UserId in the database.
+     *
      * @param userId Id of the User.
      * @return Cursor object
      */
@@ -213,7 +219,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                 new String[]{Long.toString(userId)}, null, null, null);
     }
 
-    public int deleteOffer(final Offer offer){
+    public int deleteOffer(final Offer offer) {
         Log.d(TAG, ": deleteOffer: " + offer.getName());
 
         final String whereClause = OfferEntry._ID + "=?";
@@ -222,7 +228,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         return getWritableDatabase().delete(OfferEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
-    //Neu
     public long insertRental(final Rental rental, final SQLiteDatabase db) {
         Log.d(TAG, ": insertRental: " + rental.getOffer());
 
@@ -247,6 +252,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to create ContentValues out of a User object.
+     *
      * @param user User object.
      * @return ContentValues object.
      */
@@ -264,6 +270,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to create ContentValues out of a Credentials object.
+     *
      * @param credentials Credentials object
      * @return ContentValue object
      */
@@ -272,7 +279,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         values.put(CredentialsEntry.COLUMN_NAME_PASSWORD, credentials.getPassword());
         values.put(CredentialsEntry.COLUMN_NAME_USER_FK, credentials.getUserId());
 
-        return  values;
+        return values;
     }
 
     private ContentValues getRentalValues(final Rental rental) {
@@ -288,7 +295,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
 
-
     @Override
     public void onCreate(final SQLiteDatabase db) {
         Log.d(TAG, ": onCreate Database with version " + db.getVersion());
@@ -299,45 +305,59 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_OFFER);
         db.execSQL(SQL_CREATE_TABLE_RENTAL);
 
-        User user1 = new User("test", "test@test.de", "Teststrasse 1", "12345", "Germany", "Ich bin cool");
+        User user1 = new User();
+        user1.setUsername("ebusiness");
+        user1.setEmail("eBusiness@hska.de");
+        user1.setStreet("Moltkestraße 30");
+        user1.setZipCode("76133");
+        user1.setCountry("Germany");
+        user1.setDescription("Has a lot of tools.");
         this.insertUser(user1, db);
 
         Credentials credentials1 = new Credentials();
-        credentials1.setPassword("123");
+        credentials1.setPassword("test");
         credentials1.setUserId(user1.getId());
         this.insertCredentials(credentials1, db);
 
-        Offer offer = new Offer();
-        offer.setName("Hammer");
-        offer.setImage(null);
-        offer.setDescription("HamHam");
-        offer.setPrice(5);
-        offer.setZipCode("12345");
-        offer.setValidFrom(DateTime.now().minusDays(2).getMillis());
-        offer.setValidTo(DateTime.now().getMillis());
-        offer.setLender(user1.getId());
-        this.insertOffer(offer, db);
+        User user2 = new User();
+        user2.setUsername("user");
+        user2.setEmail("user@hska.de");
+        user2.setStreet("Moltkestraße 30");
+        user2.setZipCode("76134");
+        user2.setCountry("Germany");
+        user2.setDescription("Comes from another city.");
+        this.insertUser(user2, db);
 
-        Log.d(TAG, "Offer1 ID " + offer.getId() + " Offer Lender:" + offer.getLender());
+        Credentials credentials2 = new Credentials();
+        credentials2.setPassword("test");
+        credentials2.setUserId(user2.getId());
+        this.insertCredentials(credentials2, db);
 
+        Offer offer1 = new Offer();
+        offer1.setName("Good Hammer");
+        offer1.setImage(null);
+        offer1.setDescription("This is a really nice hammer.");
+        offer1.setPrice(5);
+        offer1.setZipCode("76133");
+        offer1.setValidFrom(DateTime.now().minusDays(2).getMillis());
+        offer1.setValidTo(DateTime.now().getMillis());
+        offer1.setLender(user1.getId());
+        this.insertOffer(offer1, db);
 
         Offer offer2 = new Offer();
         offer2.setImage(null);
-        offer2.setName("Hammer2");
+        offer2.setName("Screwy Screwdriver");
         offer2.setPrice(5);
-        offer2.setDescription("HamHam");
-        offer2.setZipCode("12345");
+        offer2.setDescription("Only for motivated homeworkers!");
+        offer2.setZipCode("76134");
         offer2.setValidFrom(DateTime.now().minusDays(2).getMillis());
         offer2.setValidTo(DateTime.now().getMillis());
         offer2.setLender(user1.getId());
         this.insertOffer(offer2, db);
 
-        Log.d(TAG, "Offer2 ID " + offer2.getId() + " Offer2 Lender:" + offer2.getLender());
-
-
         Rental rental1 = new Rental();
         rental1.setStatus(0);
-        rental1.setOffer(offer.getId());
+        rental1.setOffer(offer1.getId());
         rental1.setRentFrom(DateTime.now().minusDays(5).getMillis());
         rental1.setRentTo(DateTime.now().getMillis());
         rental1.setLender(user1.getId());
@@ -345,7 +365,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
         Rental rental2 = new Rental();
         rental2.setStatus(1);
-        rental2.setOffer(offer.getId());
+        rental2.setOffer(offer1.getId());
         rental2.setRentFrom(DateTime.now().minusMonths(1).minusDays(5).getMillis());
         rental2.setRentTo(DateTime.now().minusMonths(1).getMillis());
         this.insertRental(rental2, db);

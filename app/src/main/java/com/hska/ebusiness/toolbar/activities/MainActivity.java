@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final Cursor cursor = ToolbarDBHelper.getInstance(this).findOfferByZIP(zip);
         if (zip != null && cursor != null && cursor.moveToFirst()) {
             final ArrayList<Offer> offerList = new ArrayList<>();
-            for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 Offer offer = OfferMapper.map(cursor);
                 offer.setLender(currentUser.getId());
                 offerList.add(offer);
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return offerList;
         }
 
-        if(cursor != null)
+        if (cursor != null)
             cursor.close();
         return null;
     }
