@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final String TAG = this.getClass().getSimpleName();
 
     private User currentUser;
+    private Fragment fragment = null;
 
     /**
      * @param savedInstanceState to restore activity state
@@ -51,6 +52,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         currentUser = ((ToolbarApplication) getApplication()).getCurrentUser();
+
+        fragment = new OfferListFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
+        fragment.setArguments(arguments);
+        setTitle(getString(R.string.title_search));
+
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_container, fragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -66,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
         int id = item.getItemId();
-        Fragment fragment = null;
 
         if (id == R.id.nav_search) {
             fragment = new OfferListFragment();

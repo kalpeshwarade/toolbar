@@ -263,7 +263,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
                 if (offerName.getText() != null && offerDescription.getText() != null && offerZipCode.getText() != null
                         && offerPrice.getText() != null && offerName.getText() != null && offerTo.getText() != null) {
-                    Toast.makeText(this, "There are missing informations to save the offer!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "There are missing information to save the offer!", Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -272,9 +272,7 @@ public class EditOfferActivity extends AppCompatActivity {
                 else
                     insertOffer();
 
-
-                final Intent showIntentSave = new Intent(this, ShowOfferActivity.class);
-                showIntentSave.putExtra(TOOLBAR_OFFER, offer);
+                final Intent showIntentSave = new Intent(this, MainActivity.class);
                 startActivity(showIntentSave);
                 return true;
             case R.id.action_offer_edit_cancel:
