@@ -3,27 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/content_container"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="#000000">
+        android:scrollbars="vertical" />
 
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#76dbcf" />
-
-        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/add_offer_floating_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_add_white_48dp"
-            app:backgroundTint="@color/common_plus_signin_btn_text_light_focused" />
-    </FrameLayout>
+    <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/add_offer_floating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_white_48dp"
+        app:backgroundTint="@color/common_plus_signin_btn_text_light_focused" />
 
 
 </RelativeLayout>

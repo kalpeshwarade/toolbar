@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -32,11 +35,6 @@ public class OfferListFragment extends Fragment {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private static List<HashMap<String, String>> aList = new ArrayList<>();
-    private static View rootView;
-
-    private List<Offer> offerList;
-
     /**
      * Used to initialize the Fragment ListFragment
      *
@@ -47,19 +45,12 @@ public class OfferListFragment extends Fragment {
      */
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        if (rootView != null) {
-            final ViewGroup parent = (ViewGroup) rootView.getParent();
-            if (parent != null)
-                parent.removeView(rootView);
-        }
+        final RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_container);
+        recyclerView.setHasFixedSize(true);
 
-        try {
-            rootView = inflater.inflate(R.layout.fragment_offer_list, container, false);
-        } catch (final InflateException e) {
-            Log.e(TAG, "Error while initializing rootView for ListFragment: " + e.getMessage());
-        }
-
-        return rootView;
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     /**
