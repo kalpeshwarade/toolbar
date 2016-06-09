@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/secondary_text"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -18,8 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="@string/toolbar_logo"
-            android:textColor="#FFFFFF"
+            android:text="@string/app_logo"
+            android:textColor="@color/primary_light"
             android:textSize="20pt"
             android:textStyle="bold" />
 
@@ -41,7 +42,8 @@
                 android:id="@+id/login_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/login_username_hint" />
+                android:hint="@string/login_username_hint"
+                android:textColor="@color/primary_light" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -55,7 +57,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/login_password_hint"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@color/primary_light" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -65,7 +68,7 @@
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
             android:padding="12dp"
-            android:text="@string/login_loginButton_text" />
+            android:text="@string/action_login" />
 
         <TextView
             android:id="@+id/link_forgot_pw"
@@ -73,7 +76,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="@string/login_forgot_password_text" />
+            android:text="@string/login_forgot_password_label"
+            android:textColor="@color/primary_light" />
 
         <TextView
             android:id="@+id/link_register"
@@ -81,7 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="@string/login_register_now_text" />
+            android:text="@string/login_register_now_label"
+            android:textColor="@color/primary_light" />
 
     </LinearLayout>
 

@@ -94,11 +94,11 @@ public class EditOfferActivity extends AppCompatActivity {
 
         if (isEditMode) {
             offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
-            this.setTitle("Edit offer");
+            setTitle(R.string.action_edit_offer);
             initContent();
         } else {
             offer = new Offer();
-            this.setTitle("New offer");
+            setTitle(R.string.action_edit_offer);
         }
 
         /**
@@ -261,8 +261,8 @@ public class EditOfferActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_offer_edit_save:
 
-                if (offerName.getText() != null && offerDescription.getText() != null && offerZipCode.getText() != null
-                        && offerPrice.getText() != null && offerName.getText() != null && offerTo.getText() != null) {
+                if (offerName.getText() == null && offerDescription.getText() == null && offerZipCode.getText() == null
+                        && offerPrice.getText() == null && offerName.getText() == null && offerTo.getText() == null) {
                     Toast.makeText(this, "There are missing information to save the offer!", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -273,6 +273,7 @@ public class EditOfferActivity extends AppCompatActivity {
                     insertOffer();
 
                 final Intent showIntentSave = new Intent(this, MainActivity.class);
+                showIntentSave.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(showIntentSave);
                 return true;
             case R.id.action_offer_edit_cancel:

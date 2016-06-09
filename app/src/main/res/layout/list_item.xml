@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="450dp"
+    android:layout_height="330dp"
     android:layout_margin="15dp"
     android:gravity="center_vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/show_image_offer_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_height="180dp"
             android:layout_margin="15dp"
             android:background="@drawable/picture_frame"
             android:gravity="center"
             android:scaleType="centerCrop" />
 
-        <TextView
-            android:id="@+id/label_offer_name"
+        <RelativeLayout
+            android:id="@+id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/show_image_offer_image"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:textSize="11pt" />
+            android:layout_marginBottom="15dp">
 
-        <TextView
-            android:id="@+id/show_input_offer_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/label_offer_name"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="15dp" />
+            <TextView
+                android:id="@+id/label_offer_name"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:textSize="11pt" />
+
+            <TextView
+                android:id="@+id/show_input_offer_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:textSize="11pt" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/show_input_offer_from"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/show_input_offer_price"
+            android:layout_below="@+id/header_layout"
             android:layout_marginBottom="15dp"
             android:layout_marginStart="15dp" />
 

@@ -21,8 +21,20 @@
         <FrameLayout
             android:id="@+id/content_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
+            <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/add_offer_floating_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_add_white_48dp"
+                app:backgroundTint="@color/icons"
+                app:layout_anchor="@+id/content_container"
+                app:layout_anchorGravity="bottom|right|end" />
+
+        </FrameLayout>
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
@@ -33,5 +45,4 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/menu_drawer" />
-
 </android.support.v4.widget.DrawerLayout>

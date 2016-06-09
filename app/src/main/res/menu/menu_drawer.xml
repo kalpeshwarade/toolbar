@@ -1,37 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_search"
-            android:icon="@drawable/ic_search_black_48dp"
-            android:title="@string/title_search" />
-    </group>
-
-    <item android:title="My toolbar">
-        <menu>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:checkableBehavior="single">
+    <item android:title="@string/app_my_toolbar">
+        <menu android:checkableBehavior="single">
             <item
-                android:id="@+id/nav_my_offers"
-                android:icon="@drawable/ic_event_black_24dp"
-                android:title="@string/title_offers" />
-            <item
-                android:id="@+id/nav_my_requests"
-                android:icon="@drawable/ic_info_outline_black_24dp"
-                android:title="@string/title_requests" />
+                android:id="@+id/nav_search"
+                android:icon="@drawable/ic_search_black_48dp"
+                android:title="@string/action_search" />
         </menu>
     </item>
-
     <item android:title="@string/title_account">
         <menu android:checkableBehavior="single">
             <item
-                android:id="@+id/nav_account"
-                android:icon="@drawable/ic_account_balance_black_48dp"
-                android:title="@string/title_account" />
-            <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_mode_edit_black_24dp"
-                android:title="@string/title_logout" />
+                android:title="@string/action_logout" />
         </menu>
     </item>
-
 </menu>

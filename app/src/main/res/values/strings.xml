@@ -1,25 +1,22 @@
 <resources>
     <string name="app_name">Toolbar</string>
+    <string name="app_logo">ToolBar</string>
+    <string name="hochschule">Hochschule Karlsruhe</string>
+    <string name="app_my_toolbar">My toolbar</string>
 
-    <string name="title_search">Search</string>
-    <string name="title_offers">My Offers</string>
-    <string name="title_requests">My Requests</string>
-    <string name="title_account">My Account</string>
-    <string name="title_logout">Logout</string>
-    <string name="title_login">Sign in</string>
-    <string name="title_main">Home</string>
-
+    <string name="action_login">Login</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_search">Search</string>
+    <string name="action_edit_offer">Edit offer</string>
+    <string name="action_show_offer">Show offer</string>
+    <string name="title_account">Account</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
-    <string name="action_offer_save">Save</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="action_drawer_open">Open</string>
-    <string name="action_drawer_close">Close</string>
+    <string name="action_save">Save</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
 
     <string name="edit_text_hint_offer_name">Offer name…</string>
     <string name="edit_text_hint_offer_description">Offer description…</string>
@@ -28,25 +25,16 @@
     <string name="edit_text_hint_valid_to">Valid to</string>
     <string name="edit_text_hint_zip_code">ZIP code…</string>
 
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
     <string name="login_username_hint">Username</string>
     <string name="login_password_hint">Password</string>
-    <string name="login_loginButton_text">Login</string>
-    <string name="login_forgot_password_text">Forgot Password?</string>
-    <string name="login_register_now_text">Register Now!</string>
-    <string name="toolbar_logo">ToolBar</string>
+    <string name="login_forgot_password_label">Forgot Password?</string>
+    <string name="login_register_now_label">Register Now!</string>
 
     <string name="label_offer_name">%1$s</string>
-    <string name="label_offer_price">Price: %1$d€ per day</string>
+    <string name="label_offer_price">%1$d€/day</string>
     <string name="label_offer_from">Valid from: %1$s</string>
     <string name="label_offer_to">Valid to: %1$s</string>
     <string name="label_offer_zip">Valid for zip: %1$s</string>
     <string name="label_offer_description">Description</string>
     <string name="label_rental_dates">Rental dates</string>
-    <string name="title_settings">Settings</string>
 </resources>

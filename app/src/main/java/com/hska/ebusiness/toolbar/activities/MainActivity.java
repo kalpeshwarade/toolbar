@@ -1,8 +1,10 @@
 package com.hska.ebusiness.toolbar.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -12,15 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
-import com.hska.ebusiness.toolbar.fragments.MyOffersFragment;
 import com.hska.ebusiness.toolbar.fragments.OfferListFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.User;
 import com.hska.ebusiness.toolbar.util.OfferMapper;
 import com.hska.ebusiness.toolbar.util.ToolbarApplication;
+import com.hska.ebusiness.toolbar.util.ToolbarConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,33 +35,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private User currentUser;
     private Fragment fragment = null;
+    private NavigationView navigationView;
+    private int backButtonCount = 0;
 
     /**
+     * onCreate method
+     *
      * @param savedInstanceState to restore activity state
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(0);
 
         currentUser = ((ToolbarApplication) getApplication()).getCurrentUser();
 
         fragment = new OfferListFragment();
         final Bundle arguments = new Bundle();
-        arguments.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
+        arguments.putParcelableArrayList(ToolbarConstants.TOOLBAR_OFFER_LIST, (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
         fragment.setArguments(arguments);
-        setTitle(getString(R.string.title_search));
+        setTitle(R.string.action_search);
 
         if (fragment != null) {
             getSupportFragmentManager()
@@ -65,18 +74,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.content_container, fragment)
                     .commit();
         }
+
+        final FloatingActionButton createOfferActionButton = (FloatingActionButton) findViewById(R.id.add_offer_floating_button);
+        createOfferActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent createOfferIntent = new Intent(MainActivity.this, EditOfferActivity.class);
+                createOfferIntent.putExtra(ToolbarConstants.TOOLBAR_OFFER_IS_EDIT_MODE, false);
+                startActivity(createOfferIntent);
+            }
+        });
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
+    /**
+     * Handle navigation item selections
+     *
+     * @param item the selected item
+     * @return true if success
+     */
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
         int id = item.getItemId();
@@ -84,20 +99,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_search) {
             fragment = new OfferListFragment();
             final Bundle arguments = new Bundle();
-            if(getOfferByZip(currentUser.getZipCode()) != null)
-                arguments.putParcelableArrayList("offers", (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
+            if (getOfferByZip(currentUser.getZipCode()) != null)
+                arguments.putParcelableArrayList(ToolbarConstants.TOOLBAR_OFFER_LIST, (ArrayList<? extends Parcelable>) getOfferByZip(currentUser.getZipCode()));
             fragment.setArguments(arguments);
-            setTitle(getString(R.string.title_search));
-
-        } else if (id == R.id.nav_my_offers) {
-            fragment = new MyOffersFragment();
-            setTitle(getString(R.string.title_offers));
-        } else if (id == R.id.nav_my_requests) {
-
-        } else if (id == R.id.nav_account) {
-
+            setTitle(getString(R.string.action_search));
         } else if (id == R.id.nav_logout) {
-
+            final Intent logoutIntent = new Intent(this, LoginActivity.class);
+            logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            ((ToolbarApplication) getApplication()).setCurrentUser(null);
+            startActivity(logoutIntent);
         }
 
         if (fragment != null) {
@@ -107,13 +117,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .commit();
         }
 
-        item.setChecked(true);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    /**
+     * Get all offers for a specific zip code
+     *
+     * @param zip the zip code
+     * @return the list of offers for this zip code
+     */
     private List<Offer> getOfferByZip(final String zip) {
         Log.d(TAG, "getOfferByZip: " + zip);
         final Cursor cursor = ToolbarDBHelper.getInstance(this).findOfferByZIP(zip);
@@ -131,5 +145,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (cursor != null)
             cursor.close();
         return null;
+    }
+
+    /**
+     * Handle back button press events
+     */
+    @Override
+    public void onBackPressed() {
+        if (backButtonCount >= 1) {
+            backButtonCount = 0;
+            final Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Press again to exit the application", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
     }
 }

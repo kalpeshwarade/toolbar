@@ -3,12 +3,11 @@ package com.hska.ebusiness.toolbar.util;
 public class ToolbarConstants {
 
     public static final String TOOLBAR_OFFER = "com.hska.toolbar.model.offer";
+    public static final String TOOLBAR_OFFER_LIST = "offers";
     public static final String TOOLBAR_OFFER_IS_EDIT_MODE = "isEditMode";
 
     public static final String TOOLBAR_DATE_FORMAT = "yyyy-MM-dd";
-    public static final String TOOLBAR_FILE_DATE_SUFFIX = "yyyy-MM-dd";
 
-    public static final int REQUEST_IMAGE_CROP = 0;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int REQUEST_IMAGE_CHOOSE = 2;
 

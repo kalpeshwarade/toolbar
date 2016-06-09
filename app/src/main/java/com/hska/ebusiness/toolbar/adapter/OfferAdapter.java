@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hska.ebusiness.toolbar.R;
-import com.hska.ebusiness.toolbar.activities.MainActivity;
 import com.hska.ebusiness.toolbar.model.Offer;
 
 import org.joda.time.DateTime;
@@ -25,10 +24,26 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
 
     private final String TAG = this.getClass().getSimpleName();
 
+    private OnItemClickListener onItemClickListener;
     private List<Offer> offerList;
+    private Context context;
 
-    public OfferAdapter(List<Offer> offerList) {
+    public OfferAdapter(List<Offer> offerList, Context context) {
         this.offerList = offerList;
+        this.context = context;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(final View view, final int position);
+    }
+
+    /**
+     * Set onItemClickListener for RecyclerView
+     *
+     * @param onItemClickListener the listener
+     */
+    public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -36,31 +51,53 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         return offerList.size();
     }
 
+    /**
+     * Called when an item is bound to the view (one card in the layout)
+     *
+     * @param offerViewHolder the view holder
+     * @param position        the position of the element in the view
+     */
     @Override
     public void onBindViewHolder(final OfferViewHolder offerViewHolder, final int position) {
-        Offer offer = offerList.get(position);
+        final Offer offer = offerList.get(position);
         offerViewHolder.offerName.setText(offer.getName());
         try {
             offerViewHolder.offerImage.setImageBitmap(resizeImage(Uri.parse(offer.getImage()), context));
         } catch (final IOException e) {
             Log.e(TAG, " Error while loading image: " + e.getMessage());
         }
-        offerViewHolder.offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
-        offerViewHolder.offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
-        offerViewHolder.offerPrice.setText(Long.toString(offer.getPrice()));
-
+        offerViewHolder.offerFrom.setText(context.getString(R.string.label_offer_from, new DateTime(offer.getValidFrom()).toLocalDate().toString()));
+        offerViewHolder.offerTo.setText(context.getString(R.string.label_offer_to, new DateTime(offer.getValidTo()).toLocalDate().toString()));
+        offerViewHolder.offerPrice.setText(context.getString(R.string.label_offer_price, offer.getPrice()));
     }
 
+    /**
+     * Called when view holder is created
+     *
+     * @param viewGroup the view the holder is shown in
+     * @param position  the item position
+     * @return the holder of the view
+     */
     @Override
     public OfferViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int position) {
         final View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.fragment_offer_list, viewGroup, false);
+                inflate(R.layout.list_item, viewGroup, false);
 
         return new OfferViewHolder(itemView);
     }
 
-    public static class OfferViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * Called once the adapter is attached to the view
+     *
+     * @param recyclerView the recycler view
+     */
+    @Override
+    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public class OfferViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         protected ImageView offerImage;
         protected TextView offerName;
@@ -75,6 +112,18 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
             offerPrice = (TextView) itemView.findViewById(R.id.show_input_offer_price);
             offerFrom = (TextView) itemView.findViewById(R.id.show_input_offer_from);
             offerTo = (TextView) itemView.findViewById(R.id.show_input_offer_to);
+            itemView.setOnClickListener(this);
+        }
+
+        /**
+         * Handle item clicks
+         *
+         * @param view the view containing the view holders
+         */
+        @Override
+        public void onClick(final View view) {
+            if (onItemClickListener != null)
+                onItemClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 

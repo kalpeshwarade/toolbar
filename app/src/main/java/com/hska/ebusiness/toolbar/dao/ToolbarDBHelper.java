@@ -114,6 +114,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
     /**
      * Get all rentals of an offer
+     *
      * @param offerId of the requested offer
      * @return a cursor that contains all rentals
      */
@@ -148,7 +149,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * Inserts a offer into db
      *
      * @param offer that shall be inserted
-     * @param db the SQLiteDatabase
+     * @param db    the SQLiteDatabase
      * @return the affected rows
      */
     public long insertOffer(final Offer offer, final SQLiteDatabase db) {
@@ -251,7 +252,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * Inserts a rental into the database
      *
      * @param rental that shall be inserted
-     * @param db the SQLiteDatabase
+     * @param db     the SQLiteDatabase
      * @return the affected rows
      */
     public long insertRental(final Rental rental, final SQLiteDatabase db) {
@@ -377,7 +378,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         this.insertCredentials(credentials2, db);
 
         Offer offer1 = new Offer();
-        offer1.setName("Good Hammer");
+        offer1.setName("Good Hammer with an extremely long title.");
         offer1.setImage(null);
         offer1.setDescription("This is a really nice hammer.");
         offer1.setPrice(5);
@@ -392,7 +393,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         offer.setImage(null);
         offer.setDescription("HamHam");
         offer.setPrice(5);
-        offer.setZipCode("12345");
+        offer.setZipCode("76133");
         offer.setValidFrom(DateTime.now().minusDays(2).getMillis());
         offer.setValidTo(DateTime.now().getMillis());
         offer.setLender(user1.getId());
@@ -403,11 +404,22 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         offer2.setName("Screwy Screwdriver");
         offer2.setPrice(5);
         offer2.setDescription("Only for motivated homeworkers!");
-        offer2.setZipCode("76134");
+        offer2.setZipCode("76133");
         offer2.setValidFrom(DateTime.now().minusDays(2).getMillis());
         offer2.setValidTo(DateTime.now().getMillis());
         offer2.setLender(user1.getId());
         this.insertOffer(offer2, db);
+
+        Offer offer3 = new Offer();
+        offer3.setImage(null);
+        offer3.setName("Chainsaw");
+        offer3.setPrice(10);
+        offer3.setDescription("For trees");
+        offer3.setZipCode("76133");
+        offer3.setValidFrom(DateTime.now().minusDays(2).getMillis());
+        offer3.setValidTo(DateTime.now().getMillis());
+        offer3.setLender(user1.getId());
+        this.insertOffer(offer3, db);
 
         Rental rental1 = new Rental();
         rental1.setStatus(0);
@@ -428,7 +440,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     /**
      * Defines the actions to execute on database upgrade
      *
-     * @param db the SQLiteDatabase
+     * @param db         the SQLiteDatabase
      * @param oldVersion number of the db
      * @param newVersion number of the db
      */
@@ -454,7 +466,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     /**
      * Defines the actions to execute on database downgrade
      *
-     * @param db the SQLiteDatabase
+     * @param db         the SQLiteDatabase
      * @param oldVersion number of the db
      * @param newVersion number of the db
      */
