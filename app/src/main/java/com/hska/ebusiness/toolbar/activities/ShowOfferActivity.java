@@ -1,16 +1,16 @@
 package com.hska.ebusiness.toolbar.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuView;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +51,8 @@ public class ShowOfferActivity extends AppCompatActivity {
     private TextView offerZipCode;
     private TextView offerPrice;
 
+    private AlertDialog.Builder dialogBuilder;
+
     /**
      * Used to initialize the layout and field of the Activity
      *
@@ -61,10 +63,11 @@ public class ShowOfferActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_offer);
         offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
-        Log.d(TAG, "Offer at ShowOfferActivity: " + String.valueOf(offer.getId()));
 
+        Log.d(TAG, " show offer with ID: " + offer.getId());
 
         user = ((ToolbarApplication) getApplication()).getCurrentUser();
+        dialogBuilder = new AlertDialog.Builder(this);
 
         offerImage = (ImageView) findViewById(R.id.show_image_offer_image);
         offerName = (TextView) findViewById(R.id.label_offer_name);
@@ -96,23 +99,20 @@ public class ShowOfferActivity extends AppCompatActivity {
         if (!new DateTime(0).equals(new DateTime(offer.getValidTo())))
             offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
 
-
         if (offer.getImage() != null) {
             final Uri image = Uri.parse(offer.getImage());
             if (image != null && new File(image.getPath()).exists()) {
                 try {
                     offerImage.setImageBitmap(this.resizeImage(image));
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     Log.e(TAG, "Error while initializing image: " + e.getMessage());
                     return;
                 }
             }
-        } else {
+        } else
             offerImage.setImageResource(R.drawable.ic_insert_photo_black_48dp);
-        }
 
-
-        MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
+        final MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
 
         if (getRentals(offer.getId()) != null) {
             for (final Rental rental : getRentals(offer.getId())) {
@@ -127,7 +127,6 @@ public class ShowOfferActivity extends AppCompatActivity {
                 }
             }
         }
-
     }
 
     /**
@@ -157,28 +156,41 @@ public class ShowOfferActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.offer_show_edit:
-
-                final Intent intentEdit = new Intent(this, EditOfferActivity.class);
-                intentEdit.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
-                intentEdit.putExtra(TOOLBAR_OFFER, offer);
-                startActivity(intentEdit);
-
+                if (user.getId() == offer.getLender()) {
+                    final Intent intentEdit = new Intent(this, EditOfferActivity.class);
+                    intentEdit.putExtra(TOOLBAR_OFFER_IS_EDIT_MODE, true);
+                    intentEdit.putExtra(TOOLBAR_OFFER, offer);
+                    startActivity(intentEdit);
+                } else
+                    Toast.makeText(ShowOfferActivity.this, "No permissions to edit!", Toast.LENGTH_LONG).show();
                 return true;
-
-
 
             case R.id.offer_show_delete:
-                if (user.getId() == offer.getLender())
-                    item.setVisible(true);
                 if (user.getId() == offer.getLender()) {
-                    ToolbarDBHelper.getInstance(this).deleteOffer(offer);
-                    final Intent intentMain = new Intent(this, MainActivity.class);
-                    startActivity(intentMain);
-                } else {
-                    Toast.makeText(ShowOfferActivity.this, "Offer " + offer.getLender() + "User " + user.getId(), Toast.LENGTH_LONG).show();
+                    dialogBuilder.setTitle("Delete offer")
+                            .setMessage("Delete this offer?");
+                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            ToolbarDBHelper.getInstance(ShowOfferActivity.this).deleteOffer(offer);
+                            final Intent intentMain = new Intent(ShowOfferActivity.this, MainActivity.class);
+                            startActivity(intentMain);
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialogBuilder.setIcon(R.drawable.ic_delete_black_24dp);
+                    dialogBuilder.create();
+                    dialogBuilder.show();
+                } else
                     Toast.makeText(ShowOfferActivity.this, "No permissions to delete!", Toast.LENGTH_LONG).show();
-                }
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -186,7 +198,9 @@ public class ShowOfferActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_action_show_offer, menu);
+        if (user.getId() == offer.getLender()) {
+            getMenuInflater().inflate(R.menu.menu_action_show_offer, menu);
+        }
         return true;
     }
 

@@ -98,7 +98,7 @@ public class EditOfferActivity extends AppCompatActivity {
             initContent();
         } else {
             offer = new Offer();
-            setTitle(R.string.action_edit_offer);
+            setTitle(R.string.action_new_offer);
         }
 
         /**
@@ -261,8 +261,12 @@ public class EditOfferActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_offer_edit_save:
 
-                if (offerName.getText() == null && offerDescription.getText() == null && offerZipCode.getText() == null
-                        && offerPrice.getText() == null && offerName.getText() == null && offerTo.getText() == null) {
+                if (offerName.getText().toString().isEmpty()
+                        || offerDescription.getText().toString().isEmpty()
+                        || offerZipCode.getText().toString().isEmpty()
+                        || offerPrice.getText().toString().isEmpty()
+                        || offerName.getText().toString().isEmpty()
+                        || offerTo.getText().toString().isEmpty()) {
                     Toast.makeText(this, "There are missing information to save the offer!", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -271,7 +275,6 @@ public class EditOfferActivity extends AppCompatActivity {
                     updateOffer();
                 else
                     insertOffer();
-
                 final Intent showIntentSave = new Intent(this, MainActivity.class);
                 showIntentSave.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(showIntentSave);

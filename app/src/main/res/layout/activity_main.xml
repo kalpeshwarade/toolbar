@@ -9,8 +9,9 @@
     tools:openDrawer="start">
 
     <LinearLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical">
 
         <include
@@ -21,7 +22,7 @@
         <FrameLayout
             android:id="@+id/content_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/add_offer_floating_button"

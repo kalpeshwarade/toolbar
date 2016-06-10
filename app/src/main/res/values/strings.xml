@@ -8,6 +8,7 @@
     <string name="action_logout">Logout</string>
     <string name="action_search">Search</string>
     <string name="action_edit_offer">Edit offer</string>
+    <string name="action_new_offer">New offer</string>
     <string name="action_show_offer">Show offer</string>
     <string name="title_account">Account</string>
     <string name="action_cancel">Cancel</string>

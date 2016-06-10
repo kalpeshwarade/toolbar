@@ -8,15 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.hska.ebusiness.toolbar.R;
-import com.hska.ebusiness.toolbar.dao.DatabaseSchema;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.model.Credentials;
 import com.hska.ebusiness.toolbar.model.User;
@@ -24,27 +23,19 @@ import com.hska.ebusiness.toolbar.util.CredentialsMapper;
 import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 import com.hska.ebusiness.toolbar.util.UserMapper;
 
-/**
- * Acticity class for the Login Page
- */
 public class LoginActivity extends AppCompatActivity {
 
-    // Contains the entered username
-    private EditText username;
-    // Contains the entered password
-    private EditText pw;
-    // Context variable
-    private Context context;
-
-    // LOG variable
     private final String TAG = this.getClass().getSimpleName();
-    //Dialog builder for the pop ups
+
+    private EditText username;
+    private EditText password;
+    private Context context;
     private AlertDialog.Builder dialogBuilder;
 
     /**
      * Method to create activity
      *
-     * @param savedInstanceState Bundle object
+     * @param savedInstanceState for re-initialization of saved instance
      */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,68 +45,43 @@ public class LoginActivity extends AppCompatActivity {
 
         dialogBuilder = new AlertDialog.Builder(this);
         username = (EditText) findViewById(R.id.login_username);
-        pw = (EditText) findViewById(R.id.login_password);
+        password = (EditText) findViewById(R.id.login_password);
 
-        // Functionality and Validations for the login button
         final Button loginButton = (Button) findViewById(R.id.btn_login);
         if (loginButton != null) {
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // username null validation
-                    if (username.getText().toString().matches("")) {
+                    if (username.getText().toString().isEmpty()) {
                         Toast.makeText(LoginActivity.this, "Please enter your Username!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    // password null validation
-                    if (pw.getText().toString().matches("")) {
+
+                    if (password.getText().toString().isEmpty()) {
                         Toast.makeText(LoginActivity.this, "Please enter your Password!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    //Check if the entered user name is available
-                    User user = getUserByUsername(username.getText().toString());
+                    final User user = getUserByUsername(username.getText().toString());
                     if (user == null) {
-                        dialogBuilder.setTitle("Username wrong!")
-                                .setMessage("Can't find the entered user!");
-                        dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
-                        dialogBuilder.create();
-                        dialogBuilder.show();
+                        Toast.makeText(LoginActivity.this, "Can't find the entered user!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    // check the credentials
-                    if (!checkCredentials(user.getId(), pw.getText().toString())) {
-                        dialogBuilder.setTitle("Credentials wrong!")
-                                .setMessage("The entered password is wrong!");
-                        dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
-                        dialogBuilder.create();
-                        dialogBuilder.show();
+                    if (!checkCredentials(user.getId(), password.getText().toString())) {
+                        Toast.makeText(LoginActivity.this, "Credentials are wrong", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    // Global  variable user
-                    // GET: User user = ((MyApplication) getApplication()).getCurrentUser();
                     ((ToolbarApplication) getApplication()).setCurrentUser(user);
-                    Log.d(LoginActivity.class.getSimpleName(), "User Login Activity: " + user.getId());
+                    Log.d(TAG, "User with ID " + user.getId() + " logged in.");
 
-                    final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    final Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
                 }
             });
         }
 
-        // Dummy-Functionality for the “Forgot password“ link
         final TextView textForgotPassword = (TextView) findViewById(R.id.link_forgot_pw);
         if (textForgotPassword != null) {
             textForgotPassword.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +104,6 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
 
-        // Dummy-Functionality for the “Register now“ link
         final TextView registerNow = (TextView) findViewById(R.id.link_register);
         if (registerNow != null) {
             registerNow.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +111,6 @@ public class LoginActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     dialogBuilder.setTitle("Register now!")
                             .setMessage("Under Construction!");
-                    //.setMessage(getCredentialsByUserId(getUserByUsername("bbb").getId()).getPassword());
                     dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -162,30 +126,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to search a User regarding the entered username
+     * Method to find a user regarding the entered username
      *
-     * @param username Entered username
-     * @return User object
+     * @param username the entered username
+     * @return user object
      */
-    private User getUserByUsername(String username) {
-        Cursor cursor = ToolbarDBHelper.getInstance(context).findUserByUsername(username);
+    private User getUserByUsername(final String username) {
+        final Cursor cursor = ToolbarDBHelper.getInstance(context).findUserByUsername(username);
         if (cursor != null && cursor.moveToFirst()) {
             return UserMapper.map(cursor);
-        }
-        cursor.close();
-        return null;
-    }
-
-    /**
-     * Method to search a Credential regarding the ID of a user
-     *
-     * @param userId ID of an existing User
-     * @return Credentials object
-     */
-    public Credentials getCredentialsByUserId(final long userId) {
-        Cursor cursor = ToolbarDBHelper.getInstance(context).findCredentialsByUserId(userId);
-        if (cursor != null && cursor.moveToFirst()) {
-            return CredentialsMapper.map(cursor);
         }
         cursor.close();
         return null;
@@ -195,25 +144,17 @@ public class LoginActivity extends AppCompatActivity {
      * Method to check if the entered credentials are valid
      *
      * @param userId Id of the user
-     * @param pw     Entered password
-     * @return Boolean value
+     * @param password     Entered password
+     * @return true if credentials are valid
      */
-    public boolean checkCredentials(final long userId, final String pw) {
-
-        Cursor cursor = ToolbarDBHelper.getInstance(context).findCredentialsByUserId(userId);
-
-        if (cursor != null && cursor.moveToFirst() && pw != null) {
-            Credentials credentials = CredentialsMapper.map(cursor);
-            if (credentials.getPassword().equals(pw)) {
-                return true;
-            } else {
-                return false;
-            }
+    public boolean checkCredentials(final long userId, final String password) {
+        final Cursor cursor = ToolbarDBHelper.getInstance(context).findCredentialsByUserId(userId);
+        if (cursor != null && cursor.moveToFirst() && password != null) {
+            final Credentials credentials = CredentialsMapper.map(cursor);
+            return credentials.getPassword().equals(password);
         }
         cursor.close();
         return false;
     }
-
-
 }
 
