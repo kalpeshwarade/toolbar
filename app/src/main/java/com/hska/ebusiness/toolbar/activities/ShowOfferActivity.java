@@ -109,8 +109,7 @@ public class ShowOfferActivity extends AppCompatActivity {
                     return;
                 }
             }
-        } else
-            offerImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_a_photo_black_48dp));
+        }
 
         final MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
 

@@ -39,7 +39,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -94,6 +93,7 @@ public class EditOfferActivity extends AppCompatActivity {
 
         if (isEditMode) {
             offer = getIntent().getParcelableExtra(TOOLBAR_OFFER);
+            Log.d(TAG, "Offer: " + offer);
             setTitle(R.string.action_edit_offer);
             initContent();
         } else {
@@ -296,16 +296,16 @@ public class EditOfferActivity extends AppCompatActivity {
         Log.d(TAG, ": Initialize Content");
 
         if (offer.getImage() != null) {
-            if (file != null && new File(file.getPath()).exists()) {
+            final Uri image = Uri.parse(offer.getImage());
+            if (image != null && new File(image.getPath()).exists()) {
                 try {
-                    offerImage.setImageBitmap(this.resizeImage(file));
-                } catch (IOException e) {
+                    offerImage.setImageBitmap(this.resizeImage(image));
+                } catch (final IOException e) {
                     Log.e(TAG, "Error while initializing image: " + e.getMessage());
                     return;
                 }
             }
-        } else
-            offerImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_a_photo_black_48dp));
+        }
 
         offerName.setText(offer.getName());
         offerDescription.setText(offer.getDescription());
@@ -319,7 +319,7 @@ public class EditOfferActivity extends AppCompatActivity {
      * Retrieves oder fields from UI and starts AsyncTask for database insert
      */
     private void insertOffer() {
-        Log.d(TAG, ": Insert offer");
+        Log.d(TAG, "Insert offer");
 
         offer.setName(offerName.getText().toString());
         offer.setDescription(offerDescription.getText().toString());
@@ -336,7 +336,7 @@ public class EditOfferActivity extends AppCompatActivity {
      * Retrieves oder fields from UI and starts AsyncTask for database update
      */
     private void updateOffer() {
-        Log.d(TAG, ": Update offer " + offer.getId());
+        Log.d(TAG, "Update offer " + offer.getId());
 
         offer.setName(offerName.getText().toString());
         offer.setDescription(offerDescription.getText().toString());
@@ -426,7 +426,7 @@ public class EditOfferActivity extends AppCompatActivity {
     }
 
     /**
-     * Resizes image to fit in ImageView
+     * Resize image to fit in ImageView
      *
      * @param file Uri to the image path
      * @return the resized bitmap
@@ -451,10 +451,8 @@ public class EditOfferActivity extends AppCompatActivity {
      * @throws IOException if access to external storage fails
      */
     private File createImageFile() throws IOException {
-        Log.d(TAG, " : Create image file");
+        Log.d(TAG, "Create image file");
 
-        final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT_LONG;
-        final String timeStamp = new SimpleDateFormat(dateFormat, Locale.GERMAN).format(new Date());
         final File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Toolbar");
 
         if (!storageDir.exists()) {
@@ -464,7 +462,7 @@ public class EditOfferActivity extends AppCompatActivity {
         }
 
         return new File(storageDir.getPath() + File.separator +
-                "IMG_" + timeStamp + ".jpg");
+                "IMG_" + DateTime.now().getMillis() + ".jpg");
     }
 
     /**
