@@ -28,7 +28,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
     private List<Offer> offerList;
     private Context context;
 
-    public OfferAdapter(List<Offer> offerList, Context context) {
+    public OfferAdapter(final List<Offer> offerList, final Context context) {
         this.offerList = offerList;
         this.context = context;
     }
@@ -62,7 +62,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         final Offer offer = offerList.get(position);
         offerViewHolder.offerName.setText(offer.getName());
         try {
-            offerViewHolder.offerImage.setImageBitmap(resizeImage(Uri.parse(offer.getImage()), context));
+            offerViewHolder.offerImage.setImageBitmap(resizeImage(Uri.parse(offer.getImage())));
         } catch (final IOException e) {
             Log.e(TAG, " Error while loading image: " + e.getMessage());
         }
@@ -80,9 +80,9 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
      */
     @Override
     public OfferViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int position) {
+        context = viewGroup.getContext();
         final View itemView = LayoutInflater.
-                from(viewGroup.getContext()).
-                inflate(R.layout.list_item, viewGroup, false);
+                from(context).inflate(R.layout.list_item, viewGroup, false);
 
         return new OfferViewHolder(itemView);
     }
@@ -134,7 +134,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
      * @return the resized bitmap
      * @throws IOException if access to external storage fails
      */
-    private Bitmap resizeImage(final Uri file, final Context context) throws IOException {
+    private Bitmap resizeImage(final Uri file) throws IOException {
         final Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), file);
 
         final float width = bitmap.getWidth();

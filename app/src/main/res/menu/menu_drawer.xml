@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     android:checkableBehavior="single">
-    <item android:title="@string/app_my_toolbar">
+    <item android:title="@string/action_search">
         <menu android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_search"
@@ -9,11 +9,27 @@
                 android:title="@string/action_search" />
         </menu>
     </item>
-    <item android:title="@string/title_account">
+    <item android:title="@string/action_my_toolbar">
         <menu android:checkableBehavior="single">
             <item
+                android:id="@+id/nav_my_offers"
+                android:icon="@drawable/ic_content_paste_black_48dp"
+                android:title="@string/action_my_offers" />
+            <item
+                android:id="@+id/nav_my_requests"
+                android:icon="@drawable/ic_move_to_inbox_black_48dp"
+                android:title="@string/action_my_requests" />
+        </menu>
+    </item>
+    <item android:title="@string/action_account">
+        <menu android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_credit"
+                android:icon="@drawable/ic_attach_money_black_24dp"
+                android:title="@string/action_credit" />
+            <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_mode_edit_black_24dp"
+                android:icon="@drawable/ic_power_settings_new_black_48dp"
                 android:title="@string/action_logout" />
         </menu>
     </item>

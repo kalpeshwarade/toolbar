@@ -23,7 +23,6 @@ public class OfferMapper {
         offer.setValidTo(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_VALID_TO)));
         offer.setLender(cursor.getLong(cursor.getColumnIndex(DatabaseSchema.OfferEntry.COLUMN_NAME_LENDER_FK)));
 
-        //cursor.close();
         return offer;
     }
 

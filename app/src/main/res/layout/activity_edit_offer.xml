@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:drawableEnd="@drawable/ic_local_atm_black_24dp"
+                android:drawableEnd="@drawable/ic_attach_money_black_24dp"
                 android:gravity="center_vertical"
                 android:hint="@string/edit_text_hint_offer_price" />
         </android.support.v7.widget.CardView>
@@ -123,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:drawableEnd="@drawable/ic_home_black_24dp"
+                android:drawableEnd="@drawable/ic_location_city_black_24dp"
                 android:gravity="center_vertical"
                 android:hint="@string/edit_text_hint_zip_code" />
         </android.support.v7.widget.CardView>

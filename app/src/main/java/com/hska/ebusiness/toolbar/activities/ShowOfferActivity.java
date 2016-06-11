@@ -87,17 +87,17 @@ public class ShowOfferActivity extends AppCompatActivity {
      */
     private void initContent() {
         if (offer.getName() != null)
-            offerName.setText(offer.getName());
+            offerName.setText(getString(R.string.label_offer_name, offer.getName()));
         if (offer.getPrice() > 0)
-            offerPrice.setText(String.valueOf(offer.getPrice()));
+            offerPrice.setText(getString(R.string.label_offer_price_long, offer.getPrice()));
         if (offer.getDescription() != null)
             offerDescription.setText(offer.getDescription());
         if (offer.getZipCode() != null)
-            offerZipCode.setText(offer.getZipCode());
+            offerZipCode.setText(getString(R.string.label_offer_zip, offer.getZipCode()));
         if (!new DateTime(0).equals(new DateTime(offer.getValidFrom())))
-            offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
+            offerFrom.setText(getString(R.string.label_offer_from, new DateTime(offer.getValidFrom()).toLocalDate().toString()));
         if (!new DateTime(0).equals(new DateTime(offer.getValidTo())))
-            offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
+            offerTo.setText(getString(R.string.label_offer_to, new DateTime(offer.getValidTo()).toLocalDate().toString()));
 
         if (offer.getImage() != null) {
             final Uri image = Uri.parse(offer.getImage());
@@ -110,7 +110,7 @@ public class ShowOfferActivity extends AppCompatActivity {
                 }
             }
         } else
-            offerImage.setImageResource(R.drawable.ic_insert_photo_black_48dp);
+            offerImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_a_photo_black_48dp));
 
         final MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
 

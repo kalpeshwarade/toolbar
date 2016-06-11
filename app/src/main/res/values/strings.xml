@@ -1,16 +1,18 @@
 <resources>
-    <string name="app_name">Toolbar</string>
-    <string name="app_logo">ToolBar</string>
-    <string name="hochschule">Hochschule Karlsruhe</string>
-    <string name="app_my_toolbar">My toolbar</string>
+    <string name="app_name">ToolBar</string>
+    <string name="label_username">%1$s</string>
 
     <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
     <string name="action_search">Search</string>
-    <string name="action_edit_offer">Edit offer</string>
-    <string name="action_new_offer">New offer</string>
+    <string name="action_my_toolbar">My ToolBar</string>
+    <string name="action_my_offers">My offers</string>
+    <string name="action_my_requests">My requests</string>
+    <string name="action_account">My account</string>
+    <string name="action_credit">Credit</string>
     <string name="action_show_offer">Show offer</string>
-    <string name="title_account">Account</string>
+    <string name="action_new_offer">New offer</string>
+    <string name="action_edit_offer">Edit offer</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
@@ -33,9 +35,12 @@
 
     <string name="label_offer_name">%1$s</string>
     <string name="label_offer_price">%1$d€/day</string>
+    <string name="label_offer_price_long">Price: %1$d€/day</string>
     <string name="label_offer_from">Valid from: %1$s</string>
     <string name="label_offer_to">Valid to: %1$s</string>
     <string name="label_offer_zip">Valid for zip: %1$s</string>
     <string name="label_offer_description">Description</string>
     <string name="label_rental_dates">Rental dates</string>
+    <string name="label_under_construction">Discover our other features. \n This one is under construction!</string>
+
 </resources>

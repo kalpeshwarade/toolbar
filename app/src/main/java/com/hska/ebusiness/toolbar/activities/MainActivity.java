@@ -15,10 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hska.ebusiness.toolbar.R;
 import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
+import com.hska.ebusiness.toolbar.fragments.EmptyFragment;
 import com.hska.ebusiness.toolbar.fragments.OfferListFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
 import com.hska.ebusiness.toolbar.model.User;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -61,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(0);
 
         currentUser = ((ToolbarApplication) getApplication()).getCurrentUser();
+        final View navigationHeader = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        final TextView userLabel = (TextView) navigationHeader.findViewById(R.id.label_username);
+        userLabel.setText(getString(R.string.label_username, currentUser.getUsername()));
 
         fragment = new OfferListFragment();
         final Bundle arguments = new Bundle();
@@ -94,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
         if (id == R.id.nav_search) {
             fragment = new OfferListFragment();
@@ -108,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             ((ToolbarApplication) getApplication()).setCurrentUser(null);
             startActivity(logoutIntent);
+        } else {
+            fragment = new EmptyFragment();
+            setTitle(item.getTitle());
         }
 
         if (fragment != null) {

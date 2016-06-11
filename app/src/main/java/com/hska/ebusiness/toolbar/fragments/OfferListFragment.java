@@ -47,7 +47,7 @@ public class OfferListFragment extends Fragment {
         final List<Offer> offerList = getArguments().getParcelableArrayList(TOOLBAR_OFFER_LIST);
 
         if (offerList != null && !offerList.isEmpty()) {
-            final OfferAdapter offerAdapter = new OfferAdapter(offerList, getContext());
+            final OfferAdapter offerAdapter = new OfferAdapter(offerList, getActivity());
             recyclerView.setAdapter(offerAdapter);
 
             offerAdapter.setOnItemClickListener(new OfferAdapter.OnItemClickListener() {

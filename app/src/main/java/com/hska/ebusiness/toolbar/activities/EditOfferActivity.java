@@ -296,18 +296,16 @@ public class EditOfferActivity extends AppCompatActivity {
         Log.d(TAG, ": Initialize Content");
 
         if (offer.getImage() != null) {
-            final Uri image = Uri.parse(offer.getImage());
-            if (image != null && new File(image.getPath()).exists()) {
+            if (file != null && new File(file.getPath()).exists()) {
                 try {
-                    offerImage.setImageBitmap(this.resizeImage(image));
+                    offerImage.setImageBitmap(this.resizeImage(file));
                 } catch (IOException e) {
                     Log.e(TAG, "Error while initializing image: " + e.getMessage());
                     return;
                 }
             }
-        } else {
-            offerImage.setImageResource(R.drawable.ic_insert_photo_black_48dp);
-        }
+        } else
+            offerImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_a_photo_black_48dp));
 
         offerName.setText(offer.getName());
         offerDescription.setText(offer.getDescription());
@@ -455,7 +453,7 @@ public class EditOfferActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
         Log.d(TAG, " : Create image file");
 
-        final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT;
+        final String dateFormat = ToolbarConstants.TOOLBAR_DATE_FORMAT_LONG;
         final String timeStamp = new SimpleDateFormat(dateFormat, Locale.GERMAN).format(new Date());
         final File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Toolbar");
 

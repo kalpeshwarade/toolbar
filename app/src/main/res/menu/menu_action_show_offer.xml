@@ -11,6 +11,6 @@
     <item
         android:id="@+id/offer_show_edit"
         android:title="@string/action_edit"
-        android:icon="@drawable/ic_mode_edit_black_24dp"
+        android:icon="@drawable/ic_edit_black_24dp"
         app:showAsAction="ifRoom" />
 </menu>

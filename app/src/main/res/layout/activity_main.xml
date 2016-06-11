@@ -31,7 +31,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
                 android:src="@drawable/ic_add_white_48dp"
-                app:backgroundTint="@color/icons"
+                app:backgroundTint="@color/accent"
                 app:layout_anchor="@+id/content_container"
                 app:layout_anchorGravity="bottom|right|end" />
 
@@ -44,6 +44,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/menu_drawer" />
+
 </android.support.v4.widget.DrawerLayout>
