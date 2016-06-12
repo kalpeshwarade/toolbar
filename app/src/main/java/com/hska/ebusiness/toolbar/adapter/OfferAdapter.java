@@ -64,8 +64,8 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         try {
             offerViewHolder.offerImage.setImageBitmap(resizeImage(Uri.parse(offer.getImage())));
         } catch (final IOException e) {
-            e.printStackTrace();
-            Log.e(TAG, "Error while loading image: " + e.getMessage());
+            // Exception is ok, since file URIs are not being cut by Android.
+            Log.d(TAG, "Error while loading image: " + e.getMessage());
         }
         offerViewHolder.offerFrom.setText(context.getString(R.string.label_offer_from, new DateTime(offer.getValidFrom()).toLocalDate().toString()));
         offerViewHolder.offerTo.setText(context.getString(R.string.label_offer_to, new DateTime(offer.getValidTo()).toLocalDate().toString()));
