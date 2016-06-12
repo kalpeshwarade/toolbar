@@ -86,6 +86,8 @@ public class ShowOfferActivity extends AppCompatActivity {
      * Create placeholder for image if there is none.
      */
     private void initContent() {
+        Log.d(TAG, "Init content");
+
         if (offer.getName() != null)
             offerName.setText(getString(R.string.label_offer_name, offer.getName()));
         if (offer.getPrice() > 0)

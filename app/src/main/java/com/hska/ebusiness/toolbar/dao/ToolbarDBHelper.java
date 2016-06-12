@@ -69,7 +69,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (" + OfferEntry.COLUMN_NAME_LENDER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
                     ");";
 
-
     private static final String SQL_CREATE_TABLE_RENTAL =
             "CREATE TABLE " + RentalEntry.TABLE_NAME + " (" +
                     RentalEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -83,7 +82,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (" + RentalEntry.COLUMN_NAME_HIRER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + "), " +
                     "FOREIGN KEY (" + RentalEntry.COLUMN_NAME_LENDER_FK + ") REFERENCES " + UserEntry.TABLE_NAME + "(" + UserEntry._ID + ")" +
                     ")";
-
 
     private static final String SQL_DROP_TABLE_USER = "DROP TABLE IF EXISTS " + UserEntry.TABLE_NAME + ";";
     private static final String SQL_DROP_TABLE_CREDENTIALS = "DROP TABLE IF EXISTS " + CredentialsEntry.TABLE_NAME + ";";
@@ -175,20 +173,20 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to insert an User object into the database
+     * Insert a user object into the database
      *
      * @param user User object
      * @return long value.
      */
     public long insertUser(final User user, final SQLiteDatabase db) {
-        Log.d(TAG, ": insertUser: " + user.getUsername());
+        Log.d(TAG, "Insert user: " + user.getUsername());
 
         final ContentValues values = getUserValues(user);
         return db.insert(UserEntry.TABLE_NAME, null, values);
     }
 
     /**
-     * Method to insert a Credentials object into the database
+     * Insert user credentials into the database
      *
      * @param credentials Credentials object
      * @param db          the SQLiteDatabase
@@ -202,7 +200,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to search a User regarding the username in the database.
+     * Find a user regarding the username in the database.
      *
      * @param username that shall be looked for
      * @return Cursor object
@@ -218,13 +216,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to search Credentials regarding the UserId in the database.
+     * Find credentials regarding the userId in the database.
      *
      * @param userId Id of the User.
      * @return Cursor object
      */
     public Cursor findCredentialsByUserId(final long userId) {
-        Log.d(TAG, ": findCredentialsByUserId " + userId);
+        Log.d(TAG, "Find credentials by user id: " + userId);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(CredentialsEntry.TABLE_NAME);
@@ -234,13 +232,13 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Deletes a given offer
+     * Delete a given offer
      *
      * @param offer that shall be deleted
      * @return the affected rows
      */
     public int deleteOffer(final Offer offer) {
-        Log.d(TAG, ": deleteOffer: " + offer.getName());
+        Log.d(TAG, "Delete offer: " + offer.getId());
 
         final String whereClause = OfferEntry._ID + "=?";
         final String[] whereArgs = new String[]{String.valueOf(offer.getId())};
@@ -249,14 +247,14 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Inserts a rental into the database
+     * Insert a rental into the database
      *
      * @param rental that shall be inserted
      * @param db     the SQLiteDatabase
      * @return the affected rows
      */
     public long insertRental(final Rental rental, final SQLiteDatabase db) {
-        Log.d(TAG, ": insertRental: " + rental.getOffer());
+        Log.d(TAG, "Insert rental: " + rental.getOffer());
 
         final ContentValues values = getRentalValues(rental);
         return db.insert(RentalEntry.TABLE_NAME, null, values);
@@ -335,7 +333,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
 
 
     /**
-     * Creates the Tables and inserts testdatas
+     * Create tables and inserts test data
      *
      * @param db the SQLiteDatabase
      */
@@ -438,7 +436,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Defines the actions to execute on database upgrade
+     * Define actions to execute on database upgrade
      *
      * @param db         the SQLiteDatabase
      * @param oldVersion number of the db
@@ -464,7 +462,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Defines the actions to execute on database downgrade
+     * Define actions to execute on database downgrade
      *
      * @param db         the SQLiteDatabase
      * @param oldVersion number of the db

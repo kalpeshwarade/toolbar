@@ -115,6 +115,9 @@ public class EditOfferActivity extends AppCompatActivity {
         if (offerPrice != null)
             offerTo.setRawInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
+        /**
+         * Handle DatePicker clicks
+         */
         final DatePickerDialog.OnDateSetListener fromDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(final DatePicker view, final int year,
@@ -126,6 +129,9 @@ public class EditOfferActivity extends AppCompatActivity {
             }
         };
 
+        /**
+         * Handle DatePicker clicks
+         */
         final DatePickerDialog.OnDateSetListener toDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(final DatePicker view, final int year,
@@ -137,6 +143,9 @@ public class EditOfferActivity extends AppCompatActivity {
             }
         };
 
+        /**
+         * Change DatePicker raw input type
+         */
         if (offerFrom != null)
             offerFrom.setRawInputType(InputType.TYPE_NULL);
         offerFrom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -151,6 +160,9 @@ public class EditOfferActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Change DatePicker raw input type
+         */
         if (offerTo != null)
             offerTo.setRawInputType(InputType.TYPE_NULL);
         offerTo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
