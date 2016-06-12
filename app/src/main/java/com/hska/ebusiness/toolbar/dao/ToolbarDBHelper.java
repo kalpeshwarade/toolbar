@@ -350,12 +350,12 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_RENTAL);
 
         User user1 = new User();
-        user1.setUsername("ebusiness");
-        user1.setEmail("eBusiness@hska.de");
-        user1.setStreet("Moltkestraße 30");
+        user1.setUsername("user1");
+        user1.setEmail("user1@ebusiness.de");
+        user1.setStreet("21 Pennsylvania Rd.");
         user1.setZipCode("76133");
         user1.setCountry("Germany");
-        user1.setDescription("Has a lot of tools.");
+        user1.setDescription("Dummy user. Has a lot of tools.");
         this.insertUser(user1, db);
 
         Credentials credentials1 = new Credentials();
@@ -364,9 +364,9 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         this.insertCredentials(credentials1, db);
 
         User user2 = new User();
-        user2.setUsername("user");
-        user2.setEmail("user@hska.de");
-        user2.setStreet("Moltkestraße 30");
+        user2.setUsername("user2");
+        user2.setEmail("user2@ebusiness.de");
+        user2.setStreet("98 Mountain Highway");
         user2.setZipCode("76134");
         user2.setCountry("Germany");
         user2.setDescription("Comes from another city.");
@@ -378,21 +378,21 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         this.insertCredentials(credentials2, db);
 
         Offer offer1 = new Offer();
-        offer1.setName("Good Hammer with an extremely long title.");
+        offer1.setName("Hammer");
         offer1.setImage(null);
-        offer1.setDescription("This is a really nice hammer.");
-        offer1.setPrice(5);
+        offer1.setDescription("This is a really nice hammer. Watch your fingers!");
+        offer1.setPrice(2);
         offer1.setZipCode("76133");
-        offer1.setValidFrom(DateTime.now().minusDays(2).getMillis());
-        offer1.setValidTo(DateTime.now().getMillis());
+        offer1.setValidFrom(DateTime.now().minusDays(4).getMillis());
+        offer1.setValidTo(DateTime.now().plusDays(3).getMillis());
         offer1.setLender(user1.getId());
         this.insertOffer(offer1, db);
 
         Offer offer = new Offer();
-        offer.setName("Hammer");
+        offer.setName("Another Hammer");
         offer.setImage(null);
-        offer.setDescription("HamHam");
-        offer.setPrice(5);
+        offer.setDescription("This is another hammer.");
+        offer.setPrice(4);
         offer.setZipCode("76133");
         offer.setValidFrom(DateTime.now().minusDays(2).getMillis());
         offer.setValidTo(DateTime.now().getMillis());
@@ -402,22 +402,22 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         Offer offer2 = new Offer();
         offer2.setImage(null);
         offer2.setName("Screwy Screwdriver");
-        offer2.setPrice(5);
+        offer2.setPrice(4);
         offer2.setDescription("Only for motivated homeworkers!");
         offer2.setZipCode("76133");
-        offer2.setValidFrom(DateTime.now().minusDays(2).getMillis());
-        offer2.setValidTo(DateTime.now().getMillis());
+        offer2.setValidFrom(DateTime.now().minusDays(1).getMillis());
+        offer2.setValidTo(DateTime.now().plusDays(4).getMillis());
         offer2.setLender(user1.getId());
         this.insertOffer(offer2, db);
 
         Offer offer3 = new Offer();
         offer3.setImage(null);
-        offer3.setName("Chainsaw");
+        offer3.setName("A saw");
         offer3.setPrice(10);
         offer3.setDescription("For trees");
         offer3.setZipCode("76133");
-        offer3.setValidFrom(DateTime.now().minusDays(2).getMillis());
-        offer3.setValidTo(DateTime.now().getMillis());
+        offer3.setValidFrom(DateTime.now().minusDays(6).getMillis());
+        offer3.setValidTo(DateTime.now().plusDays(10).getMillis());
         offer3.setLender(user1.getId());
         this.insertOffer(offer3, db);
 
