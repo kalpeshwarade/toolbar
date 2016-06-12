@@ -26,7 +26,6 @@ import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 
 import org.joda.time.DateTime;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,12 +102,12 @@ public class ShowOfferActivity extends AppCompatActivity {
 
         if (offer.getImage() != null) {
             final Uri image = Uri.parse(offer.getImage());
-            if (image != null && new File(image.getPath()).exists()) {
+            if (image != null) {
                 try {
                     offerImage.setImageBitmap(this.resizeImage(image));
                 } catch (final IOException e) {
-                    Log.e(TAG, "Error while initializing image: " + e.getMessage());
-                    return;
+                    // Exception is ok, since file URIs are not being cut by Android.
+                    Log.d(TAG, "Error while initializing image: " + e.getMessage());
                 }
             }
         }

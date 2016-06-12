@@ -1,6 +1,5 @@
 package com.hska.ebusiness.toolbar.tasks;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -18,13 +17,11 @@ public class UpdateOfferTask extends AsyncTask<Offer, Void, Integer> {
 
     @Override
     protected void onPreExecute() {
-        ProgressDialog.show(context, "", "Please wait...", true);
     }
 
     @Override
     protected Integer doInBackground(final Offer... params) {
         offer = params[0];
-
         return ToolbarDBHelper.getInstance(context).updateOffer(offer);
     }
 

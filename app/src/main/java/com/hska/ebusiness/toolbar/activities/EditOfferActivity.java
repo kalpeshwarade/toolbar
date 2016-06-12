@@ -307,24 +307,24 @@ public class EditOfferActivity extends AppCompatActivity {
     private void initContent() {
         Log.d(TAG, ": Initialize Content");
 
-        if (offer.getImage() != null) {
-            final Uri image = Uri.parse(offer.getImage());
-            if (image != null && new File(image.getPath()).exists()) {
-                try {
-                    offerImage.setImageBitmap(this.resizeImage(image));
-                } catch (final IOException e) {
-                    Log.e(TAG, "Error while initializing image: " + e.getMessage());
-                    return;
-                }
-            }
-        }
-
         offerName.setText(offer.getName());
         offerDescription.setText(offer.getDescription());
         offerPrice.setText(String.valueOf(offer.getPrice()));
         offerFrom.setText(new DateTime(offer.getValidFrom()).toLocalDate().toString());
         offerTo.setText(new DateTime(offer.getValidTo()).toLocalDate().toString());
         offerZipCode.setText(offer.getZipCode());
+
+        if (offer.getImage() != null) {
+            final Uri image = Uri.parse(offer.getImage());
+            if (image != null) {
+                try {
+                    offerImage.setImageBitmap(this.resizeImage(image));
+                } catch (final IOException e) {
+                    // Exception is ok, since file URIs are not being cut by Android.
+                    Log.d(TAG, "Error while initializing image: " + e.getMessage());
+                }
+            }
+        }
     }
 
     /**
