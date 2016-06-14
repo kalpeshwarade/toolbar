@@ -117,7 +117,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @return a cursor that contains all rentals
      */
     public Cursor findAllRentalsToOffer(final long offerId) {
-        Log.d(TAG, ": findAllRentalsToOffer");
+        Log.d(TAG, "findAllRentalsToOffer: " + offerId);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(RentalEntry.TABLE_NAME);
@@ -132,7 +132,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @return a cursor that contains all requested offers
      */
     public Cursor findOfferByZIP(String zip) {
-        Log.d(TAG, ": findOfferByZIP " + zip);
+        Log.d(TAG, "findOfferByZIP " + zip);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(OfferEntry.TABLE_NAME);
@@ -151,7 +151,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @return the affected rows
      */
     public long insertOffer(final Offer offer, final SQLiteDatabase db) {
-        Log.d(TAG, ": insertOffer: " + offer.getName());
+        Log.d(TAG, "insertOffer: " + offer.getName());
 
         final ContentValues values = getOfferValues(offer);
         return db.insert(OfferEntry.TABLE_NAME, null, values);
@@ -164,7 +164,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @return the affected rows
      */
     public int updateOffer(final Offer offer) {
-        Log.d(TAG, ": updateOffer: " + offer.getId());
+        Log.d(TAG, "updateOffer: " + offer.getId());
 
         final String whereClause = OfferEntry._ID + "=?";
         final String[] whereArgs = new String[]{String.valueOf(offer.getId())};
@@ -179,7 +179,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @return long value.
      */
     public long insertUser(final User user, final SQLiteDatabase db) {
-        Log.d(TAG, "Insert user: " + user.getUsername());
+        Log.d(TAG, "insertUser: " + user.getUsername());
 
         final ContentValues values = getUserValues(user);
         return db.insert(UserEntry.TABLE_NAME, null, values);
@@ -193,7 +193,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @return affected rows
      */
     public long insertCredentials(final Credentials credentials, final SQLiteDatabase db) {
-        Log.d(TAG, ": insertCredentials: " + credentials.getUserId());
+        Log.d(TAG, "insertCredentials: " + credentials.getUserId());
 
         final ContentValues values = getCredentialValues(credentials);
         return db.insert(CredentialsEntry.TABLE_NAME, null, values);
@@ -206,7 +206,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @return Cursor object
      */
     public Cursor findUserByUsername(final String username) {
-        Log.d(TAG, ": findUserByUsername " + username);
+        Log.d(TAG, "findUserByUsername: " + username);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(UserEntry.TABLE_NAME);
@@ -222,7 +222,7 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
      * @return Cursor object
      */
     public Cursor findCredentialsByUserId(final long userId) {
-        Log.d(TAG, "Find credentials by user id: " + userId);
+        Log.d(TAG, "findCredentialsByUserId: " + userId);
 
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(CredentialsEntry.TABLE_NAME);
@@ -418,21 +418,6 @@ public class ToolbarDBHelper extends SQLiteOpenHelper {
         offer3.setValidTo(DateTime.now().plusDays(10).getMillis());
         offer3.setLender(user1.getId());
         this.insertOffer(offer3, db);
-
-        Rental rental1 = new Rental();
-        rental1.setStatus(0);
-        rental1.setOffer(offer1.getId());
-        rental1.setRentFrom(DateTime.now().minusDays(5).getMillis());
-        rental1.setRentTo(DateTime.now().getMillis());
-        rental1.setLender(user1.getId());
-        this.insertRental(rental1, db);
-
-        Rental rental2 = new Rental();
-        rental2.setStatus(1);
-        rental2.setOffer(offer1.getId());
-        rental2.setRentFrom(DateTime.now().minusMonths(1).minusDays(5).getMillis());
-        rental2.setRentTo(DateTime.now().minusMonths(1).getMillis());
-        this.insertRental(rental2, db);
     }
 
     /**

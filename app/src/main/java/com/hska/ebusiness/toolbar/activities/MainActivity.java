@@ -23,10 +23,14 @@ import com.hska.ebusiness.toolbar.dao.ToolbarDBHelper;
 import com.hska.ebusiness.toolbar.fragments.EmptyFragment;
 import com.hska.ebusiness.toolbar.fragments.OfferListFragment;
 import com.hska.ebusiness.toolbar.model.Offer;
+import com.hska.ebusiness.toolbar.model.Rental;
 import com.hska.ebusiness.toolbar.model.User;
+import com.hska.ebusiness.toolbar.tasks.InsertRentalTask;
 import com.hska.ebusiness.toolbar.util.OfferMapper;
 import com.hska.ebusiness.toolbar.util.ToolbarApplication;
 import com.hska.ebusiness.toolbar.util.ToolbarConstants;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +94,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(createOfferIntent);
             }
         });
+
+        createDemoRentals();
+    }
+
+    /**
+     * Only for demo purposes!!!
+     */
+    private void createDemoRentals() {
+
+        Rental rental1 = new Rental();
+        rental1.setStatus(0);
+        rental1.setRentFrom(DateTime.now().minusDays(5).getMillis());
+        rental1.setRentTo(DateTime.now().getMillis());
+        rental1.setLender(currentUser.getId());
+        rental1.setOffer(1);
+        InsertRentalTask insertRentalTask1 = new InsertRentalTask(this);
+        insertRentalTask1.execute(rental1);
+
+        Rental rental2 = new Rental();
+        rental2.setStatus(1);
+        rental2.setOffer(1);
+        rental2.setRentFrom(DateTime.now().minusMonths(1).minusDays(5).getMillis());
+        rental2.setRentTo(DateTime.now().minusMonths(1).getMillis());
+        InsertRentalTask insertRentalTask2 = new InsertRentalTask(this);
+        insertRentalTask2.execute(rental2);
     }
 
     /**

@@ -112,19 +112,24 @@ public class ShowOfferActivity extends AppCompatActivity {
             }
         }
 
-        final MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
+        MCalendarView calendarView = ((MCalendarView) findViewById(R.id.calendar));
 
+        Log.d(TAG, "Vor Schleife");
         if (getRentals(offer.getId()) != null) {
-            for (final Rental rental : getRentals(offer.getId())) {
+            Log.d(TAG, "bin da");
+            for (Rental rental : getRentals(offer.getId())) {
                 if (rental.getStatus() == 1) {
-                    final DateTime fromDate = new DateTime(rental.getRentFrom());
-                    final DateTime toDate = new DateTime(rental.getRentTo());
-
-                    for (final DateTime date : getRentalDays(fromDate, toDate)) {
+                    Log.d(TAG, "Immer noch");
+                    DateTime fromDate = new DateTime(rental.getRentFrom());
+                    DateTime toDate = new DateTime(rental.getRentTo());
+                    List<DateTime> dateTimes = getRentalDays(fromDate, toDate);
+                    Log.d(TAG, "times: " + dateTimes);
+                    for (DateTime date : getRentalDays(fromDate, toDate)) {
                         if (calendarView != null)
                             calendarView.markDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
                     }
-                }
+                } else
+                    continue;
             }
         }
     }
@@ -215,7 +220,8 @@ public class ShowOfferActivity extends AppCompatActivity {
         if (cursor != null && cursor.moveToFirst()) {
             final ArrayList<Rental> rentalList = new ArrayList<>();
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                rentalList.add(RentalMapper.map(cursor));
+                final Rental rental = RentalMapper.map(cursor);
+                rentalList.add(rental);
             }
             cursor.close();
             return rentalList;
